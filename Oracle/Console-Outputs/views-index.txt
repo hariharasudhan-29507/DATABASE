@@ -1,0 +1,806 @@
+1)to create a simple view with member names and cities
+
+SQL> CREATE VIEW member_city_view AS
+  2  SELECT MEMBER_NAME, ADDRESS_CITY FROM MEMBER;
+
+View created.
+
+SQL> SELECT * FROM member_city_view;
+
+MEMBER_NAME                                        ADDRESS_CITY
+-------------------------------------------------- --------------------
+ARJUN                                              MADURAI
+PRIYA                                              CHENNAI
+KARTHIK                                            COIMBATORE
+DIVYA                                              TRICHY
+VIGNESH                                            SALEM
+NITHIN                                             COIMBATORE
+VARUN                                              MADURAI
+ARUN                                               CHENNAI
+LATHA                                              COIMBATORE
+SANJAY                                             MADURAI
+KIRAN                                              CHENNAI
+
+MEMBER_NAME                                        ADDRESS_CITY
+-------------------------------------------------- --------------------
+MEENA                                              COIMBATORE
+ROHIT                                              MADURAI
+ANITHA                                             SALEM
+VIVEK                                              TIRUNELVELI
+rani                                               Coimbatore
+Vash                                               CHENNAI
+
+17 rows selected.
+
+2)to create view with member name ,city where city is Chennai
+
+SQL> CREATE VIEW member_chennai AS
+  2  SELECT MEMBER_NAME, ADDRESS_CITY, WEIGHT
+  3  FROM MEMBER WHERE ADDRESS_CITY = 'CHENNAI';
+
+View created.
+
+SQL>
+SQL> SELECT * FROM member_chennai;
+
+MEMBER_NAME                                        ADDRESS_CITY
+-------------------------------------------------- --------------------
+    WEIGHT
+----------
+PRIYA                                              CHENNAI
+        60
+
+ARUN                                               CHENNAI
+        72
+
+KIRAN                                              CHENNAI
+        70
+
+
+MEMBER_NAME                                        ADDRESS_CITY
+-------------------------------------------------- --------------------
+    WEIGHT
+----------
+Vash                                               CHENNAI
+     -23.6
+
+
+3)to create view branch into member name ,branch name along with gym using join
+
+SQL> CREATE VIEW member_branch_gym_info AS
+  2  SELECT m.MEMBER_NAME, m.WEIGHT, b.BRANCH_NAME, g.GYM_NAME
+  3  FROM MEMBER m
+  4  JOIN BRANCH b ON m.BRANCH_ID = b.BRANCH_ID
+  5  JOIN GYM g ON b.GYM_ID = g.GYM_ID;
+
+View created.
+
+SQL> SELECT * FROM member_branch_gym_info;
+
+MEMBER_NAME              WEIGHT BRANCH_NAME          GYM_NAME
+-------------------- ---------- -------------------- --------------------
+ARJUN                        85 T NAGAR BRANCH       nellai barani fitnes
+                                                     s
+
+PRIYA                        60 GANDHIPURAM BRANCH   nellai barani fitnes
+                                                     s
+
+KARTHIK                      95 KK NAGAR BRANCH      nellai barani fitnes
+                                                     s
+
+DIVYA                        66 OMALUR ROAD BRANCH   nellai barani fitnes
+                                                     s
+
+MEMBER_NAME              WEIGHT BRANCH_NAME          GYM_NAME
+-------------------- ---------- -------------------- --------------------
+
+VIGNESH                      73 PALAYAMKOTTAI BRANCH nellai barani fitnes
+                                                     s
+
+NITHIN                       28 GANDHIPURAM BRANCH   nellai barani fitnes
+                                                     s
+
+VARUN                        35 KK NAGAR BRANCH      nellai barani fitnes
+                                                     s
+
+ARUN                         72 T NAGAR BRANCH       nellai barani fitnes
+
+MEMBER_NAME              WEIGHT BRANCH_NAME          GYM_NAME
+-------------------- ---------- -------------------- --------------------
+                                                     s
+
+LATHA                        60 GANDHIPURAM BRANCH   nellai barani fitnes
+                                                     s
+
+SANJAY                       68 KK NAGAR BRANCH      nellai barani fitnes
+                                                     s
+
+KIRAN                        70 T NAGAR BRANCH       nellai barani fitnes
+                                                     s
+
+
+MEMBER_NAME              WEIGHT BRANCH_NAME          GYM_NAME
+-------------------- ---------- -------------------- --------------------
+MEENA                        58 GANDHIPURAM BRANCH   nellai barani fitnes
+                                                     s
+
+ROHIT                        66 KK NAGAR BRANCH      nellai barani fitnes
+                                                     s
+
+ANITHA                       62 OMALUR ROAD BRANCH   nellai barani fitnes
+                                                     s
+
+VIVEK                        75 PALAYAMKOTTAI BRANCH nellai barani fitnes
+                                                     s
+
+MEMBER_NAME              WEIGHT BRANCH_NAME          GYM_NAME
+-------------------- ---------- -------------------- --------------------
+
+rani                         62 GANDHIPURAM BRANCH   nellai barani fitnes
+                                                     s
+
+Vash                      -23.6 T NAGAR BRANCH       nellai barani fitnes
+                                                     s
+
+
+17 rows selected.
+
+4)to create view payment with aggregate functions along with join
+
+SQL> CREATE VIEW payment_details_view AS
+  2  SELECT p.PAYMENT_ID, p.STATUS, SUM(p.AMOUNT) AS TOTAL_AMOUNT
+  3  FROM PAYMENT p
+  4  JOIN BRANCH b ON p.BRANCH_ID = b.BRANCH_ID
+  5  GROUP BY p.PAYMENT_ID, p.STATUS, b.BRANCH_NAME;
+
+View created.
+
+SQL> select * from payment_details_view;
+
+PAYMENT_ID STATUS               TOTAL_AMOUNT
+---------- -------------------- ------------
+       501 PAID                         5000
+       502 PAID                         7500
+       503 PAID                         6200
+       504 PAID                         4500
+       505 PAID                         8100
+
+5)to drop a view
+SQL> drop view payment_details_view;
+
+View dropped.
+
+SQL> rollback;
+
+Rollback complete.
+
+
+6)to create view high value branch from another view high payment
+
+SQL> CREATE VIEW branch_payment_total AS
+  2  SELECT b.BRANCH_NAME, SUM(p.AMOUNT) AS BRANCH_TOTAL
+  3  FROM PAYMENT p
+  4  JOIN BRANCH b ON p.BRANCH_ID = b.BRANCH_ID
+  5  GROUP BY b.BRANCH_NAME;
+
+View created.
+
+SQL> CREATE VIEW high_revenue_branches AS
+  2  SELECT BRANCH_NAME, BRANCH_TOTAL
+  3  FROM branch_payment_total
+  4  WHERE BRANCH_TOTAL > 1000;
+
+View created.
+
+SQL> SELECT * FROM high_revenue_branches;
+
+BRANCH_NAME          BRANCH_TOTAL
+-------------------- ------------
+T NAGAR BRANCH               5000
+GANDHIPURAM BRANCH           7500
+KK NAGAR BRANCH              6200
+OMALUR ROAD BRANCH           4500
+PALAYAMKOTTAI BRANCH         8100
+
+
+7)to create members using a view active members
+
+SQL> CREATE VIEW active_members AS
+  2  SELECT MEMBER_ID, MEMBER_NAME, WEIGHT
+  3  FROM MEMBER
+  4  WHERE AGE > 18;
+
+View created.
+
+SQL> INSERT INTO active_members VALUES (109, 'Tamil', 75.5);
+
+1 row created.
+
+SQL> SELECT * FROM active_members;
+
+ MEMBER_ID MEMBER_NAME              WEIGHT
+---------- -------------------- ----------
+      1002 ARJUN                        85
+      1003 PRIYA                        60
+      1004 KARTHIK                      95
+      1005 DIVYA                        66
+      1006 VIGNESH                      73
+      1021 ARUN                         72
+      1022 LATHA                        60
+      1023 SANJAY                       68
+      1031 KIRAN                        70
+      1032 MEENA                        58
+      1033 ROHIT                        66
+
+ MEMBER_ID MEMBER_NAME              WEIGHT
+---------- -------------------- ----------
+      1034 ANITHA                       62
+      1035 VIVEK                        75
+        99 Vash                      -23.6
+
+14 rows selected.
+
+SQL> commit;
+
+Commit complete.
+
+
+SQL>  update active_members set weight=67 where member_id=1035;
+
+1 row updated.
+
+
+
+to create a group from another group for cities group them by cities
+SQL> create view city_group_view as select address_city,count(*) as city_count from member_city_view group by address_city;
+
+View created.
+
+SQL>  update city_group_view set address_city ='MADURAI' where address_city='madurai';
+ update city_group_view set address_city ='MADURAI' where address_city='madurai'
+        *
+ERROR at line 1:
+ORA-01732: data manipulation operation not legal on this view
+
+
+SQL> select * from city_group_view;
+
+ADDRESS_CITY                   CITY_COUNT
+------------------------------ ----------
+MADURAI                                 4
+CHENNAI                                 4
+COIMBATORE                              4
+TRICHY                                  1
+SALEM                                   2
+TIRUNELVELI                             1
+Coimbatore                              1
+                                        1
+
+8 rows selected.
+
+
+SQL> insert into city_group_view(address_city) values('Madurai');
+insert into city_group_view(address_city) values('Madurai')
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SYSTEM"."MEMBER"."MEMBER_ID")
+
+8)setting timer on
+SQL> set timing on
+
+9)to display branch details who are not from sivakasi and from gym id 1
+
+SQL> select * from branch where gym_id=1 and address_city<>'sivakasi';
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       102 T NAGAR BRANCH                                              1
+CHENNAI                        USMAN ROAD                     600017
+
+       103 GANDHIPURAM BRANCH                                          1
+COIMBATORE                     100 FEET ROAD                  641012
+
+       104 KK NAGAR BRANCH                                             1
+MADURAI                        LAKE VIEW STREET               625020
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       105 OMALUR ROAD BRANCH                                          1
+SALEM                          OMALUR MAIN ROAD               636004
+
+       106 PALAYAMKOTTAI BRANCH                                        1
+TIRUNELVELI                    NGO COLONY                     627007
+
+       107 RS PURAM BRANCH                                             1
+COIMBATORE                     RS PURAM ROAD                  641002
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       108 PEELAMEDU BRANCH                                            1
+COIMBATORE                     PEELAMEDU AVENUE               641004
+
+       109 ANNA NAGAR BRANCH                                           1
+CHENNAI                        ANNA NAGAR 2ND STREET          600040
+
+       110 ADYAR BRANCH                                                1
+CHENNAI                        LATHA STREET                   600020
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       111 GANDHI NAGAR BRANCH                                         1
+MADURAI                        MELAVEDUGATHU ROAD             625020
+
+       112 MILK STREET BRANCH                                          1
+MADURAI                        LATHA STREET                   600205
+
+       113 RS PURAM BRANCH                                             1
+MADURAI                        RS PURAM ROAD                  641002
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       114 PEELAMEDU BRANCH                                            1
+MADURAI                        PEELAMEDU AVENUE               641004
+
+       115 ANNA NAGAR BRANCH                                           1
+MADURAI                        ANNA NAGAR 2ND STREET          600040
+
+       116 MILK STREET BRANCH                                          1
+MADURAI                        LATHA STREET                   600205
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       117 GANDHI NAGAR BRANCH                                         1
+MADURAI                        MELAVEDUGATHU ROAD             625020
+
+
+16 rows selected.
+
+Elapsed: 00:00:00.00
+
+
+10)to create an index on address_city from branch
+
+SQL> CREATE INDEX idx_branch_city ON BRANCH(ADDRESS_CITY);
+
+Index created.
+
+Elapsed: 00:00:00.00
+
+SQL> select * from branch where gym_id=1 and address_city<>'sivakasi';
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       102 T NAGAR BRANCH                                              1
+CHENNAI                        USMAN ROAD                     600017
+
+       103 GANDHIPURAM BRANCH                                          1
+COIMBATORE                     100 FEET ROAD                  641012
+
+       104 KK NAGAR BRANCH                                             1
+MADURAI                        LAKE VIEW STREET               625020
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       105 OMALUR ROAD BRANCH                                          1
+SALEM                          OMALUR MAIN ROAD               636004
+
+       106 PALAYAMKOTTAI BRANCH                                        1
+TIRUNELVELI                    NGO COLONY                     627007
+
+       107 RS PURAM BRANCH                                             1
+COIMBATORE                     RS PURAM ROAD                  641002
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       108 PEELAMEDU BRANCH                                            1
+COIMBATORE                     PEELAMEDU AVENUE               641004
+
+       109 ANNA NAGAR BRANCH                                           1
+CHENNAI                        ANNA NAGAR 2ND STREET          600040
+
+       110 ADYAR BRANCH                                                1
+CHENNAI                        LATHA STREET                   600020
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       111 GANDHI NAGAR BRANCH                                         1
+MADURAI                        MELAVEDUGATHU ROAD             625020
+
+       112 MILK STREET BRANCH                                          1
+MADURAI                        LATHA STREET                   600205
+
+       113 RS PURAM BRANCH                                             1
+MADURAI                        RS PURAM ROAD                  641002
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       114 PEELAMEDU BRANCH                                            1
+MADURAI                        PEELAMEDU AVENUE               641004
+
+       115 ANNA NAGAR BRANCH                                           1
+MADURAI                        ANNA NAGAR 2ND STREET          600040
+
+       116 MILK STREET BRANCH                                          1
+MADURAI                        LATHA STREET                   600205
+
+
+ BRANCH_ID BRANCH_NAME                                            GYM_ID
+---------- -------------------------------------------------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       117 GANDHI NAGAR BRANCH                                         1
+MADURAI                        MELAVEDUGATHU ROAD             625020
+
+
+16 rows selected.
+
+Elapsed: 00:00:00.00
+
+11)to create a composite index
+
+SQL> CREATE INDEX idx_member_city_age ON MEMBER(ADDRESS_CITY, AGE);
+
+Index created.
+
+Elapsed: 00:00:00.00
+
+SQL> select member_id,address_city from member where age<30 ;
+
+ MEMBER_ID ADDRESS_CITY
+---------- ------------------------------
+      1002 MADURAI
+      1003 CHENNAI
+      1005 TRICHY
+      1006 SALEM
+      1012 COIMBATORE
+      1013 MADURAI
+      1021 CHENNAI
+      1022 COIMBATORE
+      1031 CHENNAI
+      1032 COIMBATORE
+      1033 MADURAI
+
+ MEMBER_ID ADDRESS_CITY
+---------- ------------------------------
+      1035 TIRUNELVELI
+      9997 Coimbatore
+        99 CHENNAI
+
+14 rows selected.
+
+Elapsed: 00:00:00.00
+
+12)to create a index with upper case of member name
+SQL> CREATE INDEX idx_member_name_upper ON MEMBER(UPPER(MEMBER_NAME));
+
+Index created.
+
+Elapsed: 00:00:00.01
+
+SQL> select member_id,upper(member_name) from member ;
+
+ MEMBER_ID UPPER(MEMBER_NAME)
+---------- --------------------------------------------------
+      1002 ARJUN
+      1003 PRIYA
+      1004 KARTHIK
+      1005 DIVYA
+      1006 VIGNESH
+      1012 NITHIN
+      1013 VARUN
+      1021 ARUN
+      1022 LATHA
+      1023 SANJAY
+      1031 KIRAN
+
+ MEMBER_ID UPPER(MEMBER_NAME)
+---------- --------------------------------------------------
+      1032 MEENA
+      1033 ROHIT
+      1034 ANITHA
+      1035 VIVEK
+      9997 RANI
+        99 VASH
+       109 TAMIL
+
+18 rows selected.
+
+Elapsed: 00:00:00.00
+
+13)to create a index with lower case of member name
+SQL> CREATE INDEX idx_member_name_lower ON MEMBER(LOWER(MEMBER_NAME));
+
+Index created.
+
+Elapsed: 00:00:00.00
+
+SQL> select member_id,lower(member_name) from member ;
+
+ MEMBER_ID LOWER(MEMBER_NAME)
+---------- --------------------------------------------------
+      1002 arjun
+      1003 priya
+      1004 karthik
+      1005 divya
+      1006 vignesh
+      1012 nithin
+      1013 varun
+      1021 arun
+      1022 latha
+      1023 sanjay
+      1031 kiran
+
+ MEMBER_ID LOWER(MEMBER_NAME)
+---------- --------------------------------------------------
+      1032 meena
+      1033 rohit
+      1034 anitha
+      1035 vivek
+      9997 rani
+        99 vash
+       109 tamil
+
+18 rows selected.
+
+Elapsed: 00:00:00.00
+
+
+14)to create a bitmap index
+
+SQL> select member_id from member where gender='Male';
+
+ MEMBER_ID
+----------
+      1002
+      1004
+      1006
+      1012
+      1013
+      1021
+      1023
+      1031
+      1033
+      1035
+        99
+
+11 rows selected.
+
+Elapsed: 00:00:00.02
+
+SQL> CREATE BITMAP INDEX idx_member_gender ON MEMBER(GENDER);
+
+Index created.
+
+Elapsed: 00:00:00.00
+
+SQL> select member_id from member where gender='Male';
+
+ MEMBER_ID
+----------
+      1002
+      1004
+      1006
+      1012
+      1013
+      1021
+      1023
+      1031
+      1033
+      1035
+        99
+
+11 rows selected.
+
+Elapsed: 00:00:00.01
+
+15)to create a unique index
+
+SQL> select payment_id,status from payment;
+
+PAYMENT_ID STATUS
+---------- --------------------
+       501 PAID
+       502 PAID
+       503 PAID
+       504 PAID
+       505 PAID
+
+Elapsed: 00:00:00.00
+
+
+SQL> CREATE UNIQUE INDEX idx_payment_status ON PAYMENT(PAYMENT_ID, STATUS);
+
+Index created.
+
+Elapsed: 00:00:00.00
+
+SQL> select payment_id,status from payment;
+
+PAYMENT_ID STATUS
+---------- --------------------
+       501 PAID
+       502 PAID
+       503 PAID
+       504 PAID
+       505 PAID
+
+Elapsed: 00:00:00.00
+
+16)
+SQL>  SELECT member_id, member_name, weight,
+  2    CASE
+  3      WHEN weight > 80 THEN 'HEAVY'
+  4      WHEN weight >= 60 THEN 'MEDIUM'
+  5      ELSE 'LIGHT'
+  6      END AS weight_category
+  7     FROM member;
+
+ MEMBER_ID MEMBER_NAME                                            WEIGHT WEIGHT
+---------- -------------------------------------------------- ---------- ------
+      1002 ARJUN                                                      88 HEAVY
+      1003 PRIYA                                                      62 MEDIUM
+      1004 KARTHIK                                                    95 HEAVY
+      1005 DIVYA                                                      66 MEDIUM
+      1006 VIGNESH                                                    73 MEDIUM
+      1012 NITHIN                                                     28 LIGHT
+      1013 VARUN                                                      35 LIGHT
+      1021 ARUN                                                       72 MEDIUM
+      1022 LATHA                                                      60 MEDIUM
+      1023 SANJAY                                                     68 MEDIUM
+      1031 KIRAN                                                      70 MEDIUM
+
+ MEMBER_ID MEMBER_NAME                                            WEIGHT WEIGHT
+---------- -------------------------------------------------- ---------- ------
+      1032 MEENA                                                      58 LIGHT
+      1033 ROHIT                                                      66 MEDIUM
+      1034 ANITHA                                                     62 MEDIUM
+      1035 VIVEK                                                      67 MEDIUM
+      9997 rani                                                       62 MEDIUM
+        99 Vash                                                    -23.6 LIGHT
+       109 Tamil                                                    75.5 MEDIUM
+
+18 rows selected.
+
+17)
+SQL> UPDATE member
+  2    SET weight = CASE
+  3            WHEN member_id = 1002 THEN 88
+  4             WHEN address_city = 'CHENNAI' THEN weight + 2
+  5              ELSE weight
+  6              END
+  7    WHERE member_id IN (1002, 1003);
+
+2 rows updated
+
+
+SQL> select member_id,address_city,weight from member;
+
+ MEMBER_ID ADDRESS_CITY                       WEIGHT
+---------- ------------------------------ ----------
+      1002 MADURAI                                88
+      1003 CHENNAI                                64
+      1004 COIMBATORE                             95
+      1005 TRICHY                                 66
+      1006 SALEM                                  73
+      1012 COIMBATORE                             28
+      1013 MADURAI                                35
+      1021 CHENNAI                                72
+      1022 COIMBATORE                             60
+      1023 MADURAI                                68
+      1031 CHENNAI                                70
+
+ MEMBER_ID ADDRESS_CITY                       WEIGHT
+---------- ------------------------------ ----------
+      1032 COIMBATORE                             58
+      1033 MADURAI                                66
+      1034 SALEM                                  62
+      1035 TIRUNELVELI                            67
+      9997 Coimbatore                             62
+        99 CHENNAI                             -23.6
+       109                                      75.5
+
+18 rows selected.
+
+
+18)	
+
+SQL> select row_number() over ( order by experience desc) as senior_rank, trainer_id,trainer_name from trainer;
+
+SENIOR_RANK TRAINER_ID TRAINER_NAME
+----------- ---------- --------------------------------------------------
+          1        204 SURESH
+          2        202 KARTHIK
+          3        201 ARUN
+          4        205 DIVYA
+          5        203 PRIYA
+          6        206 ARUN KUMAR
+
+6 rows selected.
+
+19)
+SQL> select trainer_id,trainer_name,age from trainer
+  2  fetch first 4 rows only;
+
+TRAINER_ID TRAINER_NAME                                              AGE
+---------- -------------------------------------------------- ----------
+       201 ARUN                                                       32
+       202 KARTHIK                                                    35
+       203 PRIYA                                                      29
+       204 SURESH                                                     38
+
+20)
+
+SQL> select member_id ,member_name,weight from copy_member;
+
+ MEMBER_ID MEMBER_NAME                                            WEIGHT
+---------- -------------------------------------------------- ----------
+      1002 ARJUN                                                      88
+      1003 PRIYA                                                      62
+      1004 KARTHIK                                                    95
+      1005 DIVYA                                                      66
+      1006 VIGNESH                                                    73
+      1012 NITHIN                                                     28
+      1013 VARUN                                                      35
+      1021 ARUN                                                       72
+      1022 LATHA                                                      60
+      1023 SANJAY                                                     68
+      1031 KIRAN                                                      70
+
+ MEMBER_ID MEMBER_NAME                                            WEIGHT
+---------- -------------------------------------------------- ----------
+      1032 MEENA                                                      58
+      1033 ROHIT                                                      66
+      1034 ANITHA                                                     62
+      1035 VIVEK                                                      67
+      9997 rani                                                       62
+        99 Vash                                                    -23.6
+       109 Tamil                                                    75.5
+
+18 rows selected.
+
+
+SQL> DELETE FROM copy_member
+  2    WHERE CASE
+  3             WHEN member_name<>'Rahul' THEN 1
+  4            WHEN address_city = 'CHENNAI' THEN 1
+  5             WHEN weight < 50 THEN 1
+  6            ELSE 0
+  7           END = 1;
+
+18 rows deleted.
+
+SQL> select * from copy_member;
+
+no rows selected
+
