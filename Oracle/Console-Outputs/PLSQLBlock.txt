@@ -1,0 +1,762 @@
+1) Update ARJUN's weight to 90 in the member table and save the change.
+SQL> select member_name,weight from member;
+
+MEMBER_NAME                 WEIGHT
+-------------------- ----------
+ARJUN                        85
+PRIYA                        60
+KARTHIK                      95
+DIVYA                        66
+VIGNESH                      73
+NITHIN                       28
+VARUN                        35
+
+7 rows selected.
+
+SQL> set serveroutput on;
+SQL> DECLARE
+  2      v_weight NUMBER;
+  3  BEGIN
+  4      v_weight := 90;
+  5      UPDATE member SET WEIGHT = v_weight WHERE MEMBER_NAME = 'ARJUN';
+  6      DBMS_OUTPUT.PUT_LINE('The weight of ARJUN has been updated to: ' || v_weight);
+  7      COMMIT;
+  8  END;
+  9  /
+The weight of ARJUN has been updated to: 90
+
+PL/SQL procedure successfully completed.
+
+SQL> select member_name,weight from member;
+
+MEMBER_NAME                 WEIGHT
+-------------------- ----------
+ARJUN                        90
+PRIYA                        60
+KARTHIK                      95
+DIVYA                        66
+VIGNESH                      73
+NITHIN                       28
+VARUN                        35
+
+7 rows selected.
+
+
+2)Insert member 1007 into session 902 in the enrollment table and save it.
+
+
+SQL> select member_id from enrollment_session where member_id=1007;
+
+no rows selected
+
+
+SQL> DECLARE
+  2      v_member_id member.MEMBER_ID%TYPE := 1007;
+  3      v_session_id training_session.SESSION_ID%TYPE := 902;
+  4  BEGIN
+  5      INSERT INTO enrollment_session (MEMBER_ID, SESSION_ID) VALUES (v_member_id, v_session_id);
+  6      DBMS_OUTPUT.PUT_LINE('Enrollment added for member ' || v_member_id || ' in session ' || v_session_id);
+  7      COMMIT;
+  8  END;
+  9  /
+Enrollment added for member 1007 in session 902
+
+PL/SQL procedure successfully completed.
+
+
+
+SQL> select member_id,session_id from enrollment_session ;
+
+ MEMBER_ID SESSION_ID
+---------- ----------
+      1002        901
+      1002        902
+      1003        901
+      1004        901
+      1006        903
+      1007        902
+
+
+3)Add up all product rates in the machine table where branch ID is 103 and print the total.
+
+SQL> DECLARE
+  2      v_total_rate NUMBER := 0;
+  3  BEGIN
+  4      SELECT SUM(PRODUCT_RATE) INTO v_total_rate FROM machine WHERE BRANCH_ID = 103;
+  5      DBMS_OUTPUT.PUT_LINE('Total product rate for branch 103: ' || v_total_rate);
+  6      COMMIT;
+  7  END;
+  8  /
+Total product rate for branch 103: 29800
+
+PL/SQL procedure successfully completed.
+
+
+
+4)Fetch all column values of ARJUN from the member table using a ROWTYPE variable and print them.
+
+SQL> DECLARE
+  2      v_member member%ROWTYPE;
+  3  BEGIN
+  4      SELECT * INTO v_member FROM member WHERE member_name = 'ARJUN';
+  5      DBMS_OUTPUT.PUT_LINE('Member Name: ' || v_member.member_name);
+  6      DBMS_OUTPUT.PUT_LINE('City: ' || v_member.address_city);
+  7      DBMS_OUTPUT.PUT_LINE('Age: ' || v_member.age);
+  8      DBMS_OUTPUT.PUT_LINE('Body Type: ' || v_member.body_type);
+  9      DBMS_OUTPUT.PUT_LINE('Weight: ' || v_member.weight);
+ 10      DBMS_OUTPUT.PUT_LINE('Status: ' || v_member.status);
+ 11
+ 12  END;
+ 13  /
+Member Name: ARJUN
+City: MADURAI
+Age: 28
+Body Type: Mesoderm
+Weight: 90
+Status:
+
+PL/SQL procedure successfully completed.
+
+
+
+5)Same as Query 4 but using a custom record type instead of ROWTYPE.
+
+SQL> DECLARE
+  2      TYPE member_record IS RECORD (
+  3          member_name   member.member_name%TYPE,
+  4          address_city  member.address_city%TYPE,
+  5          age           member.age%TYPE,
+  6          body_type     member.body_type%TYPE,
+  7          weight        member.weight%TYPE,
+  8          status        member.status%TYPE
+  9      );
+ 10      v_member member_record;
+ 11  BEGIN
+ 12      SELECT member_name, address_city, age, body_type, weight, status INTO v_member FROM member WHERE member_name = 'ARJUN';
+ 13      DBMS_OUTPUT.PUT_LINE('Member Name: ' || v_member.member_name);
+ 14      DBMS_OUTPUT.PUT_LINE('City: ' || v_member.address_city);
+ 15      DBMS_OUTPUT.PUT_LINE('Age: ' || v_member.age);
+ 16      DBMS_OUTPUT.PUT_LINE('Body Type: ' || v_member.body_type);
+ 17      DBMS_OUTPUT.PUT_LINE('Weight: ' || v_member.weight);
+ 18      DBMS_OUTPUT.PUT_LINE('Status: ' || v_member.status);
+ 19
+ 20  END;
+ 21  /
+Member Name: ARJUN
+City: MADURAI
+Age: 28
+Body Type: Mesoderm
+Weight: 90
+Status:
+
+PL/SQL procedure successfully completed.
+
+
+6)Use a cursor to join four tables and get the machine rate for ARJUN, then print it.
+
+SQL> DECLARE
+  2      v_member_name member.member_name%TYPE;
+  3      v_product_rate machine.product_rate%TYPE;
+  4      CURSOR machine_cursor IS
+  5          SELECT m.member_name, mc.product_rate FROM member m JOIN enrollment_session e ON m.member_id = e.member_id JOIN training_session t ON e.session_id = t.session_id JOIN machine mc ON t.branch_id = mc.branch_id WHERE m.member_name = 'ARJUN';
+  6  BEGIN
+  7    
+  8      OPEN machine_cursor;
+  9      FETCH machine_cursor INTO v_member_name, v_product_rate;
+ 10      DBMS_OUTPUT.PUT_LINE('Member: ' || v_member_name);
+ 11      DBMS_OUTPUT.PUT_LINE('Machine Rate: ' || v_product_rate);
+ 12      CLOSE machine_cursor;
+ 13  END;
+ 14  /
+Member: ARJUN
+Machine Rate: 9900
+
+PL/SQL procedure successfully completed.
+
+
+7)Use a cursor to join four tables and get the machine rate for ARJUN, then print it.
+
+
+SQL> DECLARE
+  2      v_member_name member.member_name%TYPE;
+  3      v_product_rate machine.product_rate%TYPE;
+  4  BEGIN
+  5      SELECT m.member_name, mc.product_rate INTO v_member_name, v_product_rate FROM member m JOIN enrollment_session e ON m.member_id = e.member_id JOIN training_session t ON e.session_id = t.session_id JOIN machine mc ON t.branch_id = mc.branch_id WHERE m.member_name = 'ARJUN';
+  6      DBMS_OUTPUT.PUT_LINE('Member: ' || v_member_name);
+  7      DBMS_OUTPUT.PUT_LINE('Machine Rate: ' || v_product_rate);
+  8  END;
+  9  /
+Member: ARJUN
+Machine Rate: 9900
+
+PL/SQL procedure successfully completed.
+
+
+8)Open a cursor, fetch the first two members one by one, and check cursor attributes like FOUND, ROWCOUNT, and ISOPEN.
+
+
+SQL> DECLARE
+  2      v_member_name member.member_name%TYPE;
+  3      v_weight member.weight%TYPE;
+  4      CURSOR member_cursor IS
+  5          SELECT member_name, weight FROM member;
+  6  BEGIN
+  7      OPEN member_cursor;
+  8      FETCH member_cursor INTO v_member_name, v_weight;
+  9      IF member_cursor%FOUND THEN
+ 10          DBMS_OUTPUT.PUT_LINE('First row fetched - Member: ' || v_member_name);
+ 11          DBMS_OUTPUT.PUT_LINE(' Weight: ' || v_weight);
+ 12     ELSE
+ 13          DBMS_OUTPUT.PUT_LINE('No rows found');
+ 14      END IF;
+ 15      FETCH member_cursor INTO v_member_name, v_weight;
+ 16      IF member_cursor%FOUND THEN
+ 17          DBMS_OUTPUT.PUT_LINE('Second row fetched - Member: ' || v_member_name);
+ 18          DBMS_OUTPUT.PUT_LINE('Weight: ' || v_weight);
+ 19      ELSE
+ 20          DBMS_OUTPUT.PUT_LINE('No more rows available');
+ 21      END IF;
+ 22      DBMS_OUTPUT.PUT_LINE('Number of rows fetched so far: ' || member_cursor%ROWCOUNT);
+ 23      IF member_cursor%ISOPEN THEN
+ 24          DBMS_OUTPUT.PUT_LINE('Cursor is still open');
+ 25      ELSE
+ 26          DBMS_OUTPUT.PUT_LINE('Cursor is closed');
+ 27      END IF;
+ 28      CLOSE member_cursor;
+ 29  END;
+ 30  /
+First row fetched - Member: ARJUN
+Weight: 90
+Second row fetched - Member: PRIYA
+Weight: 60
+Number of rows fetched so far: 2
+Cursor is still open
+
+PL/SQL procedure successfully completed.
+
+
+9)Fetch ARJUN's weight and print whether he is underweight, healthy, or overweight using IF ELSIF conditions.
+
+SQL> DECLARE
+  2      v_member_name member.member_name%TYPE;
+  3      v_weight member.weight%TYPE;
+  4  BEGIN
+  5      -- Select the member's name and weight for a specific member (example: ARJUN)
+  6      SELECT member_name, weight
+  7      INTO v_member_name, v_weight
+  8      FROM member
+  9      WHERE member_name = 'ARJUN';      
+ 10      IF v_weight < 60 THEN
+ 11          DBMS_OUTPUT.PUT_LINE(v_member_name || ' is Underweight.');
+ 12      ELSIF v_weight >= 60 AND v_weight <= 85 THEN
+ 13          DBMS_OUTPUT.PUT_LINE(v_member_name || ' is Healthy.');
+ 14      ELSE
+ 15          DBMS_OUTPUT.PUT_LINE(v_member_name || ' is Overweight.');
+ 16      END IF;
+ 17  END;
+ 18  /
+ARJUN is Overweight.
+
+PL/SQL procedure successfully completed.
+
+
+10)Print numbers 1 to 5 using a basic LOOP with an EXIT condition.
+
+
+SQL> DECLARE
+  2      v_num NUMBER := 1;
+  3  BEGIN
+  4      LOOP
+  5          DBMS_OUTPUT.PUT_LINE('Number: ' || v_num);
+  6          v_num := v_num + 1;
+  7          EXIT WHEN v_num > 5;
+  8      END LOOP;
+  9  END;
+ 10  /
+]
+N
+]
+
+umber: 1
+Number: 2
+Number: 3
+Number: 4
+Number: 5
+
+PL/SQL procedure successfully completed.
+
+
+
+11)Print numbers 1 to 5 using a FOR loop.
+
+SQL> BEGIN
+  2      FOR v_num IN 1..5 LOOP
+  3          DBMS_OUTPUT.PUT_LINE('Number: ' || v_num);
+  4      END LOOP;
+  5  END;
+  6  /
+Number: 1
+Number: 2
+Number: 3
+Number: 4
+Number: 5
+
+PL/SQL procedure successfully completed.
+
+
+SQL>  BEGIN
+  2         FOR v_num IN REVERSE 1..5 LOOP
+  3             DBMS_OUTPUT.PUT_LINE('Number: ' || v_num);
+  4         END LOOP;
+  5     END;
+  6      /
+Number: 5
+Number: 4
+Number: 3
+Number: 2
+Number: 1
+
+PL/SQL procedure successfully completed
+
+
+12)Print odd numbers from 1 to 9 using a FOR loop with a step of 2.
+
+SQL> BEGIN
+  2     FOR i IN 1..10 BY 2 LOOP
+  3        DBMS_OUTPUT.PUT_LINE('Value of i: ' || i);
+  4     END LOOP;
+  5  END;
+  6  /
+Value of i: 1
+Value of i: 3
+Value of i: 5
+Value of i: 7
+Value of i: 9
+
+PL/SQL procedure successfully completed.
+
+
+13)Print numbers 1 to 5 using a WHILE loop.
+
+SQL> DECLARE
+  2      v_num NUMBER := 1;
+  3  BEGIN
+  4      WHILE v_num <= 5 LOOP
+  5          DBMS_OUTPUT.PUT_LINE('Number: ' || v_num);
+  6          v_num := v_num + 1;
+  7      END LOOP;
+  8  END;
+  9  /
+Number: 1
+Number: 2
+Number: 3
+Number: 4
+Number: 5
+
+PL/SQL procedure successfully completed.
+
+
+14) Print all member names by looping through a declared cursor using a FOR loop.
+
+SQL> DECLARE
+  2      CURSOR member_cursor IS
+  3          SELECT member_name FROM member;
+  4  BEGIN
+  5      FOR member_record IN member_cursor LOOP
+  6          DBMS_OUTPUT.PUT_LINE('Member Name: ' || member_record.member_name);
+  7      END LOOP;
+  8  END;
+  9  /
+Member Name: ARJUN
+Member Name: PRIYA
+Member Name: KARTHIK
+Member Name: DIVYA
+Member Name: VIGNESH
+Member Name: NITHIN
+Member Name: VARUN
+
+PL/SQL procedure successfully completed.
+
+
+
+15) Print all member names by looping without declared cursor using a FOR loop.
+
+
+SQL> BEGIN
+  2      FOR member_record IN (SELECT member_name FROM member) LOOP
+  3          DBMS_OUTPUT.PUT_LINE('Member Name: ' || member_record.member_name);
+  4      END LOOP;
+  5  END;
+  6  /
+Member Name: ARJUN
+Member Name: PRIYA
+Member Name: KARTHIK
+Member Name: DIVYA
+Member Name: VIGNESH
+Member Name: NITHIN
+Member Name: VARUN
+
+PL/SQL procedure successfully completed.
+
+
+16) Try to fetch a member that does not exist and handle the NO DATA FOUND exception.
+
+SQL> DECLARE
+  2      v_weight member.weight%TYPE;
+  3  BEGIN
+  4      SELECT weight INTO v_weight FROM member WHERE member_id = 99999;  
+  5  EXCEPTION
+  6      WHEN NO_DATA_FOUND THEN
+  7          DBMS_OUTPUT.PUT_LINE('Error: No member found with the provided member id.');
+  8  END;
+  9  /
+Error: No member found with the provided member id.
+
+PL/SQL procedure successfully completed.
+
+
+
+17)Try to fetch one row but get multiple rows back and handle the TOO MANY ROWS exception.
+
+SQL> select * from machine;
+
+MACHINE_ID MACHINE_NAME                                       SUPPLIER_ID
+---------- -------------------------------------------------- -----------
+ BRANCH_ID   QUANTITY PRODUCT_RATE
+---------- ---------- ------------
+       602 lat pull down                                              402
+       103          5         4900
+
+       603 chest flies                                                402
+       103          3        14900
+
+       605 legraise                                                   403
+       103          5         9900
+
+       606 squatrag                                                   404
+       105          3        99900
+
+4 rows selected.
+
+
+SQL> DECLARE
+  2      v_rate machine.product_rate%TYPE;
+  3  BEGIN
+  4      SELECT product_rate INTO v_rate FROM machine WHERE branch_id = 103;
+  5  EXCEPTION
+  6      WHEN TOO_MANY_ROWS THEN
+  7          DBMS_OUTPUT.PUT_LINE('Error: More than one machine found for this branch.');
+  8  END;
+  9  /
+Error: More than one machine found for this branch.
+
+PL/SQL procedure successfully completed.
+
+
+
+19)Try to divide by zero and handle the ZERO DIVIDE exception.
+
+SQL> DECLARE
+  2      v_total_rate NUMBER := 29800;  
+  3      v_machine_count NUMBER := 0;  
+  4      v_average_rate NUMBER;
+  5  BEGIN
+  6      
+  7      v_average_rate := v_total_rate / v_machine_count;
+  8
+  9      DBMS_OUTPUT.PUT_LINE('Average Rate: ' || v_average_rate);
+ 10  EXCEPTION
+ 11      WHEN ZERO_DIVIDE THEN
+ 12          DBMS_OUTPUT.PUT_LINE('Error: Division by zero, machine count is zero.');
+ 13  END;
+ 14  /
+Error: Division by zero, machine count is zero.
+
+PL/SQL procedure successfully completed.
+
+
+
+20)ry to convert the varchar to a number and handle the VALUE ERROR exception.
+
+
+SQL> DECLARE
+  2      v_weight VARCHAR2(10);
+  3      v_result NUMBER;
+  4  BEGIN
+  5      
+  6      v_weight := 'ABC';  
+  7      v_result := TO_NUMBER(v_weight);  
+  8
+  9  EXCEPTION
+ 10      WHEN VALUE_ERROR THEN
+ 11          DBMS_OUTPUT.PUT_LINE('Error: Invalid value for number.');
+ 12  END;
+ 13  /
+Error: Invalid value for number.
+
+PL/SQL procedure successfully completed.
+
+
+
+21)Fetch a non-existent member and handle it using both NO DATA FOUND and WHEN OTHERS exceptions together.
+
+
+SQL> DECLARE
+  2      v_weight member.weight%TYPE;
+  3  BEGIN
+  4     
+  5      SELECT weight
+  6      INTO v_weight
+  7      FROM member
+  8      WHERE member_id = 99999; 
+  9
+ 10  EXCEPTION
+ 11      WHEN NO_DATA_FOUND THEN
+ 12          DBMS_OUTPUT.PUT_LINE('No member found with this id.');
+ 13      WHEN OTHERS THEN
+ 14          DBMS_OUTPUT.PUT_LINE('An unexpected error occurred: ' || SQLERRM);
+ 15  END;
+ 16  /
+No member found with this id.
+
+PL/SQL procedure successfully completed.
+
+
+22) Declare a custom exception, raise it when weight is below 20, and handle it with a message.
+
+SQL> DECLARE
+  2      -- Declare a custom exception
+  3      e_low_weight EXCEPTION;
+  4      v_weight NUMBER := 10;  
+  5  BEGIN
+  6      
+  7      IF v_weight < 20 THEN
+  8          RAISE e_low_weight;  
+  9      END IF;
+ 10
+ 11  EXCEPTION
+ 12      WHEN e_low_weight THEN
+ 13          DBMS_OUTPUT.PUT_LINE('Error: The weight value is too low to be valid.');
+ 14  END;
+ 15  /
+Error: The weight value is too low to be valid.
+
+PL/SQL procedure successfully completed.
+
+
+hackerrank
+
+self II
+
+SQL> set serveroutput on;
+SQL> DECLARE
+  2      v_name   MEMBER.MEMBER_NAME%TYPE;
+  3      v_age    MEMBER.AGE%TYPE;
+  4      CURSOR c_cursor IS
+  5          SELECT MEMBER_NAME, AGE
+  6          FROM MEMBER
+  7          WHERE MEMBER_NAME LIKE 'A%';
+  8  BEGIN
+  9      OPEN c_cursor;
+ 10
+ 11      FETCH c_cursor INTO v_name, v_age;
+ 12      IF c_cursor%FOUND THEN
+ 13          DBMS_OUTPUT.PUT_LINE('First row fetched: ' || v_name);
+ 14      ELSE
+ 15          DBMS_OUTPUT.PUT_LINE('No row fetched');
+ 16      END IF;
+ 17
+ 18      FETCH c_cursor INTO v_name, v_age;
+ 19      IF c_cursor%FOUND THEN
+ 20          DBMS_OUTPUT.PUT_LINE('Second row fetched: ' || v_name);
+ 21      ELSE
+ 22          DBMS_OUTPUT.PUT_LINE('No second row found');
+ 23      END IF;
+ 24
+ 25      IF c_cursor%ISOPEN THEN
+ 26          DBMS_OUTPUT.PUT_LINE('Cursor is open');
+ 27      ELSE
+ 28          DBMS_OUTPUT.PUT_LINE('Cursor is not open');
+ 29      END IF;
+ 30
+ 31      DBMS_OUTPUT.PUT_LINE('Number of rows fetched: ' || c_cursor%ROWCOUNT);
+ 32
+ 33      CLOSE c_cursor;
+ 34
+ 35      IF c_cursor%ISOPEN THEN
+ 36          DBMS_OUTPUT.PUT_LINE('Cursor is open');
+ 37      ELSE
+ 38          DBMS_OUTPUT.PUT_LINE('Cursor is not open');
+ 39      END IF;
+ 40  END;
+ 41  /
+First row fetched: ARJUN
+Second row fetched: ARUN
+Cursor is open
+Number of rows fetched: 2
+Cursor is not open
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2      c_count      NUMBER;
+  3      cursor_open  EXCEPTION;
+  4      CURSOR c_cursor IS
+  5          SELECT COUNT(*)
+  6          FROM MEMBER
+  7          WHERE AGE > (
+  8              SELECT AVG(AGE)
+  9              FROM MEMBER
+ 10              GROUP BY ADDRESS_CITY
+ 11              HAVING ADDRESS_CITY = 'SIVAKASI'
+ 12          )
+ 13          AND ADDRESS_CITY = 'SIVAKASI';
+ 14  BEGIN
+ 15      OPEN c_cursor;
+ 16
+ 17      FETCH c_cursor INTO c_count;
+ 18
+ 19      IF c_cursor%ISOPEN THEN
+ 20          DBMS_OUTPUT.PUT_LINE('Members in SIVAKASI above average age: ' || c_count);
+ 21      ELSE
+ 22          RAISE cursor_open;
+ 23      END IF;
+ 24
+ 25      CLOSE c_cursor;
+ 26
+ 27      IF c_cursor%ISOPEN THEN
+ 28          DBMS_OUTPUT.PUT_LINE('Members in SIVAKASI above average age: ' || c_count);
+ 29      ELSE
+ 30          RAISE cursor_open;
+ 31      END IF;
+ 32
+ 33  EXCEPTION
+ 34      WHEN cursor_open THEN
+ 35          DBMS_OUTPUT.PUT_LINE('Error: Cursor is closed');
+ 36  END;
+ 37  /
+Members in SIVAKASI above average age: 2
+Error: Cursor is closed
+
+PL/SQL procedure successfully completed.
+
+SELF I
+
+TO FIND WHETHER A NUMBER IS EVEN OR ODD,POSITIVE NEGATIVE OR ZERO AND ARMSTRONG OR NOT 
+DECLARE
+	V_NUM NUMBER;
+	L_LEN NUMBER :=0;
+	N NUMBER :=0;
+	REM NUMBER :=0;
+	ANS NUMBER :=0;
+BEGIN
+	v_num :=& v_num;
+	IF V_NUM=0 THEN
+		DBMS_OUTPUT.PUT_LINE('NUMBER IS ZERO');
+	ELSIF V_NUM>0 THEN
+		DBMS_OUTPUT.PUT_LINE('NUMBER IS POSITIVE');
+		IF MOD(V_NUM,2)=0 THEN
+		DBMS_OUTPUT.PUT_LINE('EVEN');
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('ODD');
+	END IF;
+	L_LEN :=LENGTH(TO_CHAR((V_NUM)));
+	N :=(V_NUM);
+	WHILE N!=0 LOOP
+		REM :=MOD(N,10);
+		ANS :=ANS+(POWER(REM,L_LEN));
+		N :=TRUNC(N/10);
+	END LOOP;
+	IF ANS=(V_NUM) THEN
+		DBMS_OUTPUT.PUT_LINE('NUMBER IS ARMSTRONG');
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('NUMBER IS NOT ARMSTRONG');
+	END IF;	
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('NUMBER IS NEGATIVE');
+	END IF;
+	
+END;
+/
+Enter value for v_num: 1634
+old   8:        v_num :=& v_num;
+new   8:        v_num :=1634;
+NUMBER IS POSITIVE
+EVEN
+NUMBER IS ARMSTRONG
+
+Enter value for v_num: 0
+old   8:        v_num :=& v_num;
+new   8:        v_num :=0;
+NUMBER IS ZERO
+EVEN
+NUMBER IS ARMSTRONG
+
+Enter value for v_num: 57
+old   8:        v_num :=& v_num;
+new   8:        v_num :=57;
+NUMBER IS POSITIVE
+ODD
+NUMBER IS NOT ARMSTRONG
+
+Enter value for v_num: -344
+old   8:        v_num :=& v_num;
+new   8:        v_num :=-344;
+NUMBER IS NEGATIVE
+
+
+TO FIND THE FIFONACCI OF A NUMBER
+
+
+SQL> DECLARE
+  2     A NUMBER :=-1 ;
+  3     B NUMBER :=1;
+  4     TEMP NUMBER :=0;
+  5     NUM NUMBER;
+  6  BEGIN
+  7     NUM :=& NUM;
+  8     FOR I IN 1..NUM LOOP
+  9             TEMP :=A+B;
+ 10             DBMS_OUTPUT.PUT_LINE(TEMP||' ');
+ 11             A :=B;
+ 12             B :=TEMP;
+ 13     END LOOP;
+ 14  END;
+ 15  /
+Enter value for num: 5
+old   7:   NUM := &NUM;
+new   7:   NUM := 5;
+0 1 1 2 3
+
+	
+PRIME OR NOT
+
+SQL> declare
+  2  n number;
+  3  flag number :=1;
+  4  begin
+  5  n :=&n;
+  6  for i in 2..n/2 loop
+  7     if mod(n,i)=0 then
+  8             flag :=0;
+  9     else
+ 10             flag :=1;
+ 11     end if;
+ 12  end loop;
+ 13  if flag=1 then
+ 14  dbms_output.put_line('prime');
+ 15  else
+ 16  dbms_output.put_line(' not prime');
+ 17  end if;
+ 18  end;
+ 19  /
+Enter value for n: 2
+old   5: n :=&n;
+new   5: n :=2;
+prime	
+
+Enter value for n: 4
+old   5: n :=&n;
+new   5: n :=4;
+not prime
+
