@@ -1,0 +1,491 @@
+1)to display the oldest member
+SQL> select member_name,age from member where age=(select max(age) from member);
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+SANJAY                                                     31
+ANITHA                                                     31
+
+
+2)to display member older than average age
+SQL> select member_name,age from member where age>(select avg(age) from member);
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+ARJUN                                                      28
+PRIYA                                                      24
+KARTHIK                                                    30
+DIVYA                                                      27
+ARUN                                                       25
+LATHA                                                      29
+SANJAY                                                     31
+KIRAN                                                      24
+MEENA                                                      27
+ROHIT                                                      29
+ANITHA                                                     31
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+VIVEK                                                      26
+Vash                                                       25
+
+13 rows selected.
+
+3)to display members in branches of gym with id 1
+
+SQL> select member_name from member where branch_id in (select branch_id from branch where gym_id=1);
+
+MEMBER_NAME
+--------------------------------------------------
+ARJUN
+PRIYA
+KARTHIK
+DIVYA
+VIGNESH
+NITHIN
+VARUN
+ARUN
+LATHA
+SANJAY
+KIRAN
+
+MEMBER_NAME
+--------------------------------------------------
+MEENA
+ROHIT
+ANITHA
+VIVEK
+rani
+Vash
+
+17 rows selected.
+
+4)to display member younger than any trainer age>30
+SQL> select member_name,age from member where age<any(select age from trainer where age>30);
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+rani                                                        8
+NITHIN                                                      9
+VARUN                                                      11
+VIGNESH                                                    22
+PRIYA                                                      24
+KIRAN                                                      24
+Vash                                                       25
+ARUN                                                       25
+VIVEK                                                      26
+MEENA                                                      27
+DIVYA                                                      27
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+ARJUN                                                      28
+ROHIT                                                      29
+LATHA                                                      29
+KARTHIK                                                    30
+ANITHA                                                     31
+SANJAY                                                     31
+
+17 rows selected.
+
+5)to display member older than any trainer age>30
+SQL> select member_name,age from member where age>any(select age from trainer where age<30);
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+ANITHA                                                     31
+SANJAY                                                     31
+KARTHIK                                                    30
+ROHIT                                                      29
+LATHA                                                      29
+ARJUN                                                      28
+MEENA                                                      27
+DIVYA                                                      27
+
+8 rows selected.
+
+6)to display member same age with any trainer age=30
+
+SQL> select member_name,age from member where age=any(select age from trainer where age<30);
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+LATHA                                                      29
+ROHIT                                                      29
+VIVEK                                                      
+
+7)to display member younger than all trainer age>30
+SQL> select member_name,age from member where age<all(select age from trainer where age>30);
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+KARTHIK                                                    30
+ROHIT                                                      29
+LATHA                                                      29
+ARJUN                                                      28
+MEENA                                                      27
+DIVYA                                                      27
+VIVEK                                                      26
+ARUN                                                       25
+Vash                                                       25
+KIRAN                                                      24
+PRIYA                                                      24
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+VIGNESH                                                    22
+VARUN                                                      11
+NITHIN                                                      9
+rani                                                        8
+
+15 rows selected.
+
+8)to display member older than all trainer age<30
+
+SQL> select member_name,age from member where age>all(select age from trainer where age<30);
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+KARTHIK                                                    30
+ANITHA                                                     31
+SANJAY  
+
+9)to display member with same age of trainer age=30
+
+SQL> select member_name,age from member where age=all(select age from trainer where age=30);
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+ARJUN                                                      28
+PRIYA                                                      24
+KARTHIK                                                    30
+DIVYA                                                      27
+VIGNESH                                                    22
+NITHIN                                                      9
+VARUN                                                      11
+ARUN                                                       25
+LATHA                                                      29
+SANJAY                                                     31
+KIRAN                                                      24
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+MEENA                                                      27
+ROHIT                                                      29
+ANITHA                                                     31
+VIVEK                                                      26
+rani                                                        8
+Vash                                                       25
+
+17 rows selected.
+
+8)to display members younger than average age in their branch
+SQL> select m1.member_name,m1.age from member m1 where m1.age<(select avg(m2.age) from member m2 where m2.branch_id=m1.branch_id)
+  2  ;
+
+MEMBER_NAME                                               AGE
+-------------------------------------------------- ----------
+DIVYA                                                      27
+VIGNESH                                                    22
+NITHIN                                                      9
+VARUN                                                      11
+ARUN                                                       25
+KIRAN                                                      24
+rani                                                        8
+Vash                                                       25
+
+8 rows selected.
+
+9)to display members matching branch city of supplier amount >15000
+
+SQL> select m1.member_name,m1.branch_id,b1.address_city from member m1 join branch b1 on m1.branch_id=b1.branch_id where (m1.branch_id,b1.address_city) in (select s.branch_id,b2.address_city from supplier s join branch b2 on s.branch_id=b2.branch_id where s.amount>15000);
+
+MEMBER_NAME           BRANCH_ID ADDRESS_CITY
+-------------------- ---------- --------------------
+ARJUN                       102 CHENNAI
+ARUN                        102 CHENNAI
+KIRAN                       102 CHENNAI
+Vash                        102 CHENNAI
+PRIYA                       103 COIMBATORE
+NITHIN                      103 COIMBATORE
+LATHA                       103 COIMBATORE
+MEENA                       103 COIMBATORE
+rani                        103 COIMBATORE
+KARTHIK                     104 MADURAI
+VARUN                       104 MADURAI
+
+MEMBER_NAME           BRANCH_ID ADDRESS_CITY
+-------------------- ---------- --------------------
+SANJAY                      104 MADURAI
+ROHIT                       104 MADURAI
+DIVYA                       105 SALEM
+ANITHA                      105 SALEM
+VIGNESH                     106 TIRUNELVELI
+VIVEK                       106 TIRUNELVELI
+
+17 rows selected.
+
+
+10)to display members younger than average age in their branch
+
+SQL> select m1.member_name,m1.age from member m1 where m1.age<(select avg(m2.age) from member m2 where m2.branch_id=m1.branch_id);
+
+MEMBER_NAME                 AGE
+-------------------- ----------
+DIVYA                        27
+VIGNESH                      22
+NITHIN                        9
+VARUN                        11
+ARUN                         25
+KIRAN                        24
+rani                          8
+Vash                         25
+
+8 rows selected.
+
+
+11)to increase salary for experienced trainers
+
+SQL> select * from trainer;
+
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- --------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       201 ARUN                                               15-JUN-92
+        32 20-FEB-26          7      41000 CHENNAI
+T NAGAR                        600017
+
+       202 KARTHIK                                            20-MAR-89
+        35 20-FEB-26          9      48000 COIMBATORE
+GANDHIPURAM                    641012
+
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- --------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+       203 PRIYA                                              10-NOV-95
+        29 20-FEB-26          5      36000 MADURAI
+KK NAGAR                       625020
+
+       204 SURESH                                             05-JAN-86
+        38 20-FEB-26         12      56000 SALEM
+
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- --------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+OMALUR ROAD                    636004
+
+       205 DIVYA                                              25-AUG-93
+        31 20-FEB-26          6      38000 TIRUNELVELI
+PALAYAMKOTTAI                  627007
+
+       206 ARUN KUMAR                                         15-JUN-99
+
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- --------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+VELACHERY MAIN ROAD            600042
+
+
+6 rows selected.
+
+
+
+SQL> update trainer set salary=salary+5000 where experience>(select avg(experience) from trainer);
+
+3 rows updated.
+
+SQL> select * from trainer;
+
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- --------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       201 ARUN                                               15-JUN-92
+        32 20-FEB-26          7      46000 CHENNAI
+T NAGAR                        600017
+
+       202 KARTHIK                                            20-MAR-89
+        35 20-FEB-26          9      53000 COIMBATORE
+GANDHIPURAM                    641012
+
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- --------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+       203 PRIYA                                              10-NOV-95
+        29 20-FEB-26          5      36000 MADURAI
+KK NAGAR                       625020
+
+       204 SURESH                                             05-JAN-86
+        38 20-FEB-26         12      61000 SALEM
+
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- --------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+OMALUR ROAD                    636004
+
+       205 DIVYA                                              25-AUG-93
+        31 20-FEB-26          6      38000 TIRUNELVELI
+PALAYAMKOTTAI                  627007
+
+       206 ARUN KUMAR                                         15-JUN-99
+
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- --------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+VELACHERY MAIN ROAD            600042
+
+
+6 rows selected.
+
+
+12)display members count per body type 
+
+SQL> select body_type,count(*) as number_count from(select distinct body_type from member) group by body_type;
+
+BODY_TYPE            NUMBER_COUNT
+-------------------- ------------
+Mesoderm                        1
+Ectoderm                        1
+Endoderm                        1
+
+
+13)branches with average member age greater than overall age
+
+SQL> select b.branch_name,avg(m.age) as avg_age from member m join branch b on m.branch_id=b.branch_id group by b.branch_name having avg(m.age)>(select avg(age) from member);
+
+BRANCH_NAME                                           AVG_AGE
+-------------------------------------------------- ----------
+T NAGAR BRANCH                                           25.5
+KK NAGAR BRANCH                                         25.25
+OMALUR ROAD BRANCH                                         29
+PALAYAMKOTTAI BRANCH                                       24
+
+
+14)to display members with membership
+SQL> select m.member_name from member m where exists (select 1 from membership ms where ms.member_id=m.member_id);
+
+MEMBER_NAME
+--------------------
+ARJUN
+PRIYA
+KARTHIK
+DIVYA
+VIGNESH
+
+15)to display members without membership
+
+
+SQL> select m.member_name from member m where not exists (select 1 from membership ms where ms.member_id=m.member_id);
+
+MEMBER_NAME
+--------------------
+VARUN
+rani
+Vash
+KIRAN
+LATHA
+MEENA
+SANJAY
+ROHIT
+ARUN
+ANITHA
+VIVEK
+
+MEMBER_NAME
+--------------------
+NITHIN
+
+12 rows selected.
+
+16)to display members from branchs with salary above average salary as highpaying branches
+SQL> with highpaying_branches as (select branch_id from payment group by branch_id having sum(amount)>(select avg(amount) from payment )) select m.member_name,m.age from member m join highpaying_branches h on m.branch_id=h.branch_id;
+
+MEMBER_NAME                 AGE
+-------------------- ----------
+PRIYA                        24
+VIGNESH                      22
+NITHIN                        9
+LATHA                        29
+MEENA                        27
+VIVEK                        26
+rani                          8
+
+7 rows selected.
+
+17)to display members above average age from branches with salary above average salary
+SQL> with highpaying_branches as (select branch_id from payment group by branch_id having sum(amount)>(select avg(amount) from payment )),
+  2  average_age as (select avg(age) as avgage from member) select m.member_name,m.age
+  3   from member m join highpaying_branches h on m.branch_id=h.branch_id join average_age a on m.age>a.avgage;
+
+MEMBER_NAME                 AGE
+-------------------- ----------
+PRIYA                        24
+LATHA                        29
+MEENA                        27
+VIVEK                        26
+
+18)to display member id and their trainer
+
+SQL> select member_id,(select trainer_id from workout_plan where trainer_id = 202) as assigned_trainer_id from member where branch_id=102;
+
+ MEMBER_ID ASSIGNED_TRAINER_ID
+---------- -------------------
+      1002                 202
+      1021                 202
+      1031                 202
+        99                 202
+
+19)to display member id ,plan name ,trainer id with existing plan name
+
+SQL> select m1.member_id,m1.workout_plan_name,m1.trainer_id from workout_plan m1 where (m1.workout_plan_name,m1.trainer_id) in (select m2.workout_plan_name,m2.trainer_id from workout_plan m2 where m1.workout_plan_name=m2.workout_plan_name);
+
+ MEMBER_ID WORKOUT_PLAN_NAME                                  TRAINER_ID
+---------- -------------------------------------------------- ----------
+      1002 BEGINNER STRENGTH                                         201
+      1003 FAT LOSS PROGRAM                                          202
+      1004 MUSCLE BUILDING                                           203
+      1005 CARDIO BOOST                                              204
+      1006 CORE STABILITY                                            205
+
+20)to display trainer name ,address_city not in city with salary above 60000
+SQL> select trainer_name,address_city from trainer where address_city not in (select address_city from trainer where salary>60000);
+
+TRAINER_NAME         ADDRESS_CITY
+-------------------- --------------------
+DIVYA                TIRUNELVELI
+PRIYA                MADURAI
+ARUN                 CHENNAI
+ARUN KUMAR           CHENNAI
+KARTHIK              COIMBATORE
+SURESH               SALEM
+
+6 rows selected.
+
+
