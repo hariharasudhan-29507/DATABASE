@@ -1,0 +1,2854 @@
+1) insert gym entries for gym table
+
+SQL> INSERT INTO GYM VALUES (1, 'nellai barani fitness');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO GYM VALUES (2, 'king power gym');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO GYM VALUES (3, 'iron paradise');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO GYM VALUES (4, 'rajkamal gym');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO GYM VALUES (5, 'power gym');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO GYM VALUES (6, 'valimai gym');
+
+1 row created.
+
+2) insert branch entries for branch table
+
+SQL> INSERT INTO BRANCH VALUES (102, 'T NAGAR BRANCH', 1, 'CHENNAI', 'USMAN ROAD', '600017');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO BRANCH VALUES (103, 'GANDHIPURAM BRANCH', 1, 'COIMBATORE', '100 FEET ROAD', '641012');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO BRANCH VALUES (104, 'KK NAGAR BRANCH', 1, 'MADURAI', 'LAKE VIEW STREET', '625020');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO BRANCH  VALUES (105, 'OMALUR ROAD BRANCH', 1, 'SALEM', 'OMALUR MAIN ROAD', '636004');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO BRANCH VALUES (106, 'PALAYAMKOTTAI BRANCH', 1, 'TIRUNELVELI', 'NGO COLONY', '627007');
+
+1 row created.
+
+
+
+SQL> INSERT INTO BRANCH VALUES (102, 'T NAGAR BRANCH', 1, 'CHENNAI', 'USMAN ROAD', '600017')
+  2  ;
+INSERT INTO BRANCH VALUES (102, 'T NAGAR BRANCH', 1, 'CHENNAI', 'USMAN ROAD', '600017')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008672) violated
+
+
+
+
+3)insert member entries for member table
+
+SQL>  INSERT INTO MEMBER VALUES (1002, 102, 'ARJUN', 'Male', 28, 'Mesoderm', 80, SYSDATE, 'MADURAI', 'POWER HOUSE GYM', '625001');
+
+1 row created.
+
+SQL> INSERT INTO MEMBER VALUES (1003, 103, 'PRIYA', 'Female', 24, 'Ectoderm', 55, SYSDATE, 'CHENNAI', 'FITNESS WORLD', '600028');
+
+1 row created.
+
+SQL> INSERT INTO MEMBER VALUES (1004, 104, 'KARTHIK', 'Male', 30, 'Endoderm', 90, SYSDATE, 'COIMBATORE', 'IRON TEMPLE GYM', '641001');
+
+1 row created.
+
+SQL> INSERT INTO MEMBER VALUES (1005, 105, 'DIVYA', 'Female', 27, 'Mesoderm', 61, SYSDATE, 'TRICHY', 'SHAPE UP FITNESS', '620017');
+
+1 row created.
+
+SQL> INSERT INTO MEMBER VALUES (1006, 106, 'VIGNESH', 'Male', 22, 'Ectoderm', 68, SYSDATE, 'SALEM', 'MUSCLE FACTORY', '636007');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+
+SQL> INSERT INTO MEMBER VALUES (9997, 103, 'rani', 'Female', 28, 'Unknown', 62.0, SYSDATE, 'Coimbatore', 'Lane', '641001')
+  2  ;
+INSERT INTO MEMBER VALUES (9997, 103, 'rani', 'Female', 28, 'Unknown', 62.0, SYSDATE, 'Coimbatore', 'Lane', '641001')
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.CHK_MEMBER_BODYTYPE) violated
+
+
+SQL> INSERT INTO MEMBER VALUES (996, 110, 'q branch', 'Male', 30, 'Mesoderm', 80.0, SYSDATE, 'Salem', 'abc Road', '636001');
+INSERT INTO MEMBER VALUES (996, 110, 'q branch', 'Male', 30, 'Mesoderm', 80.0, SYSDATE, 'Salem', 'abc Road', '636001')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SYSTEM.FK_MEMBER_BRANCH) violated - parent key
+not found
+
+
+
+4)insert trainer entries for entries table
+
+SQL> INSERT INTO TRAINER VALUES (201, 'ARUN', TO_DATE('15-06-1992','DD-MM-YYYY'), 32, SYSDATE, 7, 35000, 'CHENNAI', 'T NAGAR', '600017');
+
+1 row created.
+
+SQL> INSERT INTO TRAINER VALUES (202, 'KARTHIK', TO_DATE('20-03-1989','DD-MM-YYYY'), 35, SYSDATE, 9, 42000, 'COIMBATORE', 'GANDHIPURAM', '641012');
+
+1 row created.
+
+SQL> INSERT INTO TRAINER VALUES (203, 'PRIYA', TO_DATE('10-11-1995','DD-MM-YYYY'), 29, SYSDATE, 5, 30000, 'MADURAI', 'KK NAGAR', '625020');
+
+1 row created.
+
+SQL> INSERT INTO TRAINER VALUES (204, 'SURESH', TO_DATE('05-01-1986','DD-MM-YYYY'), 38, SYSDATE, 12, 50000, 'SALEM', 'OMALUR ROAD', '636004');
+
+1 row created.
+
+SQL> INSERT INTO TRAINER VALUES (205, 'DIVYA', TO_DATE('25-08-1993','DD-MM-YYYY'), 31, SYSDATE, 6, 32000, 'TIRUNELVELI', 'PALAYAMKOTTAI', '627007');
+
+1 row created.
+
+
+SQL>  INSERT INTO TRAINER VALUES (202, 'KARTHIK', TO_DATE('20-03-1989','DD-MM-YYYY'), 35, SYSDATE, 9, 42000, 'COIMBATORE', 'GANDHIPURAM', '641012');
+ INSERT INTO TRAINER VALUES (202, 'KARTHIK', TO_DATE('20-03-1989','DD-MM-YYYY'), 35, SYSDATE, 9, 42000, 'COIMBATORE', 'GANDHIPURAM', '641012')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008679) violated
+
+SQL> INSERT INTO TRAINER VALUES (205, 'DIVYA', TO_DATE('25-08-1993','DD-MM-YYYY'), 101, SYSDATE, 6, 32000, 'TIRUNELVELI', 'PALAYAMKOTTAI', '627007');
+INSERT INTO TRAINER VALUES (205, 'DIVYA', TO_DATE('25-08-1993','DD-MM-YYYY'), 101, SYSDATE, 6, 32000, 'TIRUNELVELI', 'PALAYAMKOTTAI', '627007')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008679) violated
+
+
+5)insert staff values in staff table
+
+SQL> INSERT INTO STAFF VALUES (301, 102, 'RAJESH KUMAR', TO_DATE('12-05-1990','DD-MM-YYYY'), 34, SYSDATE, 8, 25000, 'CHENNAI', 'USMAN ROAD', '600017');
+
+1 row created.
+
+SQL> INSERT INTO STAFF VALUES (302, 103, 'ANITHA DEVI', TO_DATE('22-09-1994','DD-MM-YYYY'), 30, SYSDATE, 5, 22000, 'COIMBATORE', '100 FEET ROAD', '641012');
+
+1 row created.
+
+SQL> INSERT INTO STAFF VALUES (303, 104, 'PRAVEEN KUMAR', TO_DATE('18-01-1988','DD-MM-YYYY'), 36, SYSDATE, 10, 27000, 'MADURAI', 'LAKE VIEW STREET', '625020');
+
+1 row created.
+
+SQL> INSERT INTO STAFF VALUES (304, 105, 'KEERTHANA S', TO_DATE('07-07-1996','DD-MM-YYYY'), 28, SYSDATE, 4, 21000, 'SALEM', 'OMALUR MAIN ROAD', '636004');
+
+1 row created.
+
+SQL> INSERT INTO STAFF VALUES (305, 106, 'MOHAN RAJ', TO_DATE('30-03-1992','DD-MM-YYYY'), 32, SYSDATE, 6, 23000, 'TIRUNELVELI', 'NGO COLONY', '627007');
+
+1 row created.
+
+
+SQL>  INSERT INTO STAFF VALUES (305, 106, 'MOHAN RAJ', TO_DATE('30-03-1992','DD-MM-YYYY'), 32, SYSDATE, 6, 23000, 'TIRUNELVELI', 'NGO COLONY', '627007');
+ INSERT INTO STAFF VALUES (305, 106, 'MOHAN RAJ', TO_DATE('30-03-1992','DD-MM-YYYY'), 32, SYSDATE, 6, 23000, 'TIRUNELVELI', 'NGO COLONY', '627007')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008680) violated
+
+
+SQL> INSERT INTO STAFF VALUES (305, 106, 'MOHAN RAJ', TO_DATE('30-03-1992','DD-MM-YYYY'), 3, SYSDATE, 6, 23000, 'TIRUNELVELI', 'NGO COLONY', '627007');
+INSERT INTO STAFF VALUES (305, 106, 'MOHAN RAJ', TO_DATE('30-03-1992','DD-MM-YYYY'), 3, SYSDATE, 6, 23000, 'TIRUNELVELI', 'NGO COLONY', '627007')
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.CHK_STAFF_AGE) violated
+
+
+6)insert supplier entries for supplier table
+
+SQL> INSERT INTO SUPPLIER VALUES (401, 'FITNESS EQUIP MART', 102, 150000, '33ABCDE1234F1Z5');
+
+1 row created.
+
+SQL> INSERT INTO SUPPLIER VALUES (402, 'POWER GYM SUPPLIES', 103, 120000, '33PQRSX5678K1Z2');
+
+1 row created.
+
+SQL> INSERT INTO SUPPLIER VALUES (403, 'IRON WORLD DISTRIBUTORS', 104, 175000, '33LMNOP9012Q1Z8');
+
+1 row created.
+
+SQL> INSERT INTO SUPPLIER VALUES (404, 'HEALTH PRO EQUIPMENT', 105, 98000, '33UVWXY3456R1Z3');
+
+1 row created.
+
+SQL> INSERT INTO SUPPLIER VALUES (405, 'MUSCLE BUILDERS HUB', 106, 210000, '33HJKLA7890T1Z6');
+
+1 row created.
+
+
+SQL> INSERT INTO SUPPLIER VALUES (402, 'POWER GYM SUPPLIES', 13, 120000, '33PQRSX5678K1Z2');
+INSERT INTO SUPPLIER VALUES (402, 'POWER GYM SUPPLIES', 13, 120000, '33PQRSX5678K1Z2')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008683) violated
+
+
+7)insert payment entries for payment table
+
+SQL> INSERT INTO PAYMENT VALUES (501, SYSDATE, 'PAID', 102, 5000);
+
+1 row created.
+
+SQL> INSERT INTO PAYMENT VALUES (502, SYSDATE, 'PENDING', 103, 7500);
+
+1 row created.
+
+SQL> INSERT INTO PAYMENT VALUES (503, SYSDATE, 'PAID', 104, 6200);
+
+1 row created.
+
+SQL> INSERT INTO PAYMENT VALUES (504, SYSDATE, 'FAILED', 105, 4500);
+
+1 row created.
+
+SQL> INSERT INTO PAYMENT VALUES (505, SYSDATE, 'PAID', 106, 8100);
+
+1 row created.
+
+SQL> INSERT INTO PAYMENT VALUES (599, SYSDATE, 'CANCELLED', 105, 3000.0);
+INSERT INTO PAYMENT VALUES (599, SYSDATE, 'CANCELLED', 105, 3000.0)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.CHK_PAYMENT_STATUS) violated
+
+
+8)insert entries for card table
+
+SQL> INSERT INTO CARD VALUES (601, 'CREDIT CARD', 501);
+
+1 row created.
+
+SQL> INSERT INTO CARD VALUES (602, 'DEBIT CARD', 502);
+
+1 row created.
+
+SQL> INSERT INTO CARD VALUES (603, 'CREDIT CARD', 503);
+
+1 row created.
+
+SQL> INSERT INTO CARD VALUES (604, 'DEBIT CARD', 504);
+
+1 row created.
+
+SQL> INSERT INTO CARD VALUES (605, 'CREDIT CARD', 505);
+
+1 row created.
+
+9)insert entries for cash table
+
+SQL> INSERT INTO CASH VALUES (501, 0, 5000);
+
+1 row created.
+
+SQL> INSERT INTO CASH VALUES (502, 500, 7000);
+
+1 row created.
+
+SQL> INSERT INTO CASH VALUES (503, 0, 6200);
+
+1 row created.
+
+SQL> INSERT INTO CASH VALUES (504, 1000, 3500);
+
+1 row created.
+
+SQL> INSERT INTO CASH VALUES (505, 0, 8100);
+
+1 row created.
+
+10)insert entries for invoice table
+
+SQL>  INSERT INTO INVOICE VALUES (701, 5, SYSDATE, 5250, 501);
+
+1 row created.
+
+SQL> INSERT INTO INVOICE VALUES (702, 5, SYSDATE, 7875, 502);
+
+1 row created.
+
+SQL> INSERT INTO INVOICE VALUES (703, 5, SYSDATE, 6510, 503);
+
+1 row created.
+
+SQL> INSERT INTO INVOICE VALUES (704, 5, SYSDATE, 4725, 504);
+
+1 row created.
+
+SQL> INSERT INTO INVOICE VALUES (705, 5, SYSDATE, 8505, 505);
+
+1 row created.
+
+11)insert  entries for invoice line table
+
+
+SQL> INSERT INTO INVOICE_LINE VALUES (801, 701, 2, 'PROTEIN POWDER', 2500);
+
+1 row created.
+
+SQL> INSERT INTO INVOICE_LINE VALUES (802, 702, 1, 'DUMBBELL SET', 7500);
+
+1 row created.
+
+SQL> INSERT INTO INVOICE_LINE VALUES (803, 703, 3, 'YOGA MAT', 2170);
+
+1 row created.
+
+SQL> INSERT INTO INVOICE_LINE VALUES (804, 704, 1, 'FITNESS ACCESSORIES', 4500);
+
+1 row created.
+
+SQL> INSERT INTO INVOICE_LINE VALUES (805, 705, 1, 'TREADMILL MAINTENANCE', 8100);
+
+1 row created.
+
+
+12)insert entries for workout table using insert all
+
+SQL> INSERT ALL
+  2    INTO WORKOUT_PLAN VALUES (901, 'BEGINNER STRENGTH', 30, 'PUSHUPS, SQUATS, PLANK', 201, 1002)
+  3    INTO WORKOUT_PLAN VALUES (902, 'FAT LOSS PROGRAM', 45, 'BURPEES, JUMP ROPE, MOUNTAIN CLIMBERS', 202, 1003)
+  4    INTO WORKOUT_PLAN VALUES (903, 'MUSCLE BUILDING', 60, 'BENCH PRESS, DEADLIFT, SQUATS', 203, 1004)
+  5    INTO WORKOUT_PLAN VALUES (904, 'CARDIO BOOST', 40, 'TREADMILL, CYCLING, ROWING', 204, 1005)
+  6    INTO WORKOUT_PLAN VALUES (905, 'CORE STABILITY', 35, 'PLANK, LEG RAISES, RUSSIAN TWIST', 205, 1006)
+  7  SELECT * FROM DUAL;
+
+5 rows created.
+
+13)insert entries for membership table using insert table
+
+SQL> INSERT ALL
+  2    INTO MEMBERSHIP VALUES (10001, 1002, 102, 3, 'MONTHLY', 3000, SYSDATE, ADD_MONTHS(SYSDATE, 3))
+  3    INTO MEMBERSHIP VALUES (10002, 1003, 103, 6, 'HALF-YEARLY', 5500, SYSDATE, ADD_MONTHS(SYSDATE, 6))
+  4    INTO MEMBERSHIP VALUES (10003, 1004, 104, 12, 'YEARLY', 10000, SYSDATE, ADD_MONTHS(SYSDATE, 12))
+  5    INTO MEMBERSHIP VALUES (10004, 1005, 105, 1, 'MONTHLY', 1200, SYSDATE, ADD_MONTHS(SYSDATE, 1))
+  6    INTO MEMBERSHIP VALUES (10005, 1006, 106, 3, 'QUARTERLY', 3200, SYSDATE, ADD_MONTHS(SYSDATE, 3))
+  7  SELECT * FROM DUAL;
+
+5 rows created.
+
+SQL> INSERT INTO MEMBERSHIP VALUES (100000, 1000, 106, 3, 'MONTHLY', 2500.0, SYSDATE, SYSDATE + 90);
+INSERT INTO MEMBERSHIP VALUES (100000, 1000, 106, 3, 'MONTHLY', 2500.0, SYSDATE, SYSDATE + 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SYSTEM.FK_MEMBERSHIP_MEMBER) violated - parent
+key not found
+
+
+
+SQL> INSERT INTO MEMBERSHIP VALUES (10001, 1002, 102, 3, 'MONTHLY', 3000.0, SYSDATE, SYSDATE + 90);
+INSERT INTO MEMBERSHIP VALUES (10001, 1002, 102, 3, 'MONTHLY', 3000.0, SYSDATE, SYSDATE + 90)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.PK_MEMBERSHIP) violated
+
+
+SQL> INSERT INTO MEMBERSHIP VALUES (99998, 1003, 103, 6, 'HALF-YEARLY', 5500.0, SYSDATE + 180, SYSDATE);
+INSERT INTO MEMBERSHIP VALUES (99998, 1003, 103, 6, 'HALF-YEARLY', 5500.0, SYSDATE + 180, SYSDATE)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.CHK_MEMBERSHIP_DATE) violated
+
+
+
+14)insert entries for takes_workout_plan table
+
+SQL> INSERT INTO TAKES_WORKOUT_PLAN VALUES (1002, 901, SYSDATE, ADD_MONTHS(SYSDATE, 1));
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TAKES_WORKOUT_PLAN VALUES (1003, 902, SYSDATE, ADD_MONTHS(SYSDATE, 2));
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TAKES_WORKOUT_PLAN VALUES (1004, 903, SYSDATE, ADD_MONTHS(SYSDATE, 3));
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TAKES_WORKOUT_PLAN VALUES (1005, 904, SYSDATE, ADD_MONTHS(SYSDATE, 1));
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TAKES_WORKOUT_PLAN VALUES (1006, 905, SYSDATE, ADD_MONTHS(SYSDATE, 2));
+
+1 row created.
+
+15)insert entries for trainer specialisation table 
+
+SQL> INSERT INTO TRAINER_SPECIALISATION (TRAINER_ID, SPECIALISATION)
+  2  VALUES (201, 'STRENGTH TRAINING');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TRAINER_SPECIALISATION (TRAINER_ID, SPECIALISATION)
+  2  VALUES (202, 'WEIGHT LOSS');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TRAINER_SPECIALISATION (TRAINER_ID, SPECIALISATION)
+  2  VALUES (203, 'BODYBUILDING');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TRAINER_SPECIALISATION (TRAINER_ID, SPECIALISATION)
+  2  VALUES (204, 'CARDIO FITNESS');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TRAINER_SPECIALISATION (TRAINER_ID, SPECIALISATION)
+  2  VALUES (205, 'CORE TRAINING');
+
+1 row created.
+
+SQL> INSERT INTO TRAINER_SPECIALISATION (TRAINER_ID, SPECIALISATION)
+  2  VALUES (201, 'FUNCTIONAL TRAINING');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO TRAINER_SPECIALISATION (TRAINER_ID, SPECIALISATION)
+  2  VALUES (202, 'HIIT');
+
+1 row created.
+
+16)to update member weight increased by 5 kg
+
+SQL> UPDATE MEMBER SET WEIGHT=WEIGHT+5;
+
+5 rows updated.
+
+SQL> SELECT * FROM MEMBER;
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+      1002        102 ARJUN
+Male               28 Mesoderm                     85 20-FEB-26
+MADURAI                        POWER HOUSE GYM                625001
+
+      1003        103 PRIYA
+Female             24 Ectoderm                     60 20-FEB-26
+CHENNAI                        FITNESS WORLD                  600028
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+
+      1004        104 KARTHIK
+Male               30 Endoderm                     95 20-FEB-26
+COIMBATORE                     IRON TEMPLE GYM                641001
+
+      1005        105 DIVYA
+Female             27 Mesoderm                     66 20-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRICHY                         SHAPE UP FITNESS               620017
+
+      1006        106 VIGNESH
+Male               22 Ectoderm                     73 20-FEB-26
+SALEM                          MUSCLE FACTORY                 636007
+
+
+17)to update salary of trainer with experience>2
+
+SQL> select experience,salary from trainer;
+EXPERIENCE     SALARY
+---------- ----------
+         7      35000
+         9      42000
+         5      30000
+        12      50000
+         6      32000
+         1      25000
+
+6 rows selected.
+
+SQL> update trainer set salary = salary+6000 where experience>=2;
+
+5 rows updated.
+
+SQL> select experience,salary from trainer;
+
+EXPERIENCE     SALARY
+---------- ----------
+         7      41000
+         9      48000
+         5      36000
+        12      56000
+         6      38000
+         1      25000
+
+6 rows selected.
+
+18)to update multiple columns in staff table
+
+SQL> select age,salary from staff;
+
+       AGE     SALARY
+---------- ----------
+        34      25000
+        30      22000
+        36      27000
+        28      21000
+        32      23000
+
+SQL> update staff set age=age+1,salary=salary-1000;
+
+5 rows updated.
+
+SQL> select age,salary from staff;
+
+       AGE     SALARY
+---------- ----------
+        35      24000
+        31      21000
+        37      26000
+        29      20000
+        33      22000
+
+19)to delete member with age<12 
+SQL> select age from member;
+
+       AGE
+----------
+        28
+        24
+        30
+        27
+        22
+         9
+        11
+
+7 rows selected.
+
+SQL> delete from member where age<12;
+
+2 rows deleted.
+
+SQL> select age from member;
+
+       AGE
+----------
+        28
+        24
+        30
+        27
+        22
+
+20)to delete payment records with falied status
+
+SQL> delete from payment where status='FAILED';
+delete from payment where status='FAILED'
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SYSTEM.FK_INVOICE_PAYMENT) violated - child
+record found
+
+
+SQL> DELETE FROM INVOICE_LINE
+  2  WHERE INVOICE_ID IN (
+  3      SELECT INVOICE_ID FROM INVOICE
+  4      WHERE PAYMENT_ID IN (
+  5          SELECT PAYMENT_ID FROM PAYMENT WHERE STATUS = 'FAILED'
+  6      )
+  7  );
+
+1 row deleted.
+
+SQL> DELETE FROM INVOICE
+  2  WHERE PAYMENT_ID IN (
+  3      SELECT PAYMENT_ID FROM PAYMENT WHERE STATUS = 'FAILED'
+  4  );
+
+1 row deleted.
+
+SQL> DELETE FROM CARD
+  2  WHERE PAYMENT_ID IN (
+  3      SELECT PAYMENT_ID FROM PAYMENT WHERE STATUS = 'FAILED'
+  4  );
+
+1 row deleted.
+
+SQL> DELETE FROM CASH
+  2  WHERE PAYMENT_ID IN (
+  3      SELECT PAYMENT_ID FROM PAYMENT WHERE STATUS = 'FAILED'
+  4  );
+
+1 row deleted.
+
+SQL> DELETE FROM PAYMENT
+  2  WHERE STATUS = 'FAILED';
+
+1 row deleted.
+
+SQL>
+SQL> ROLLBACK;
+
+Rollback complete.
+
+
+21)to update membership amount as membership+500
+
+SQL> update membership set amount=amount+500;
+
+5 rows updated.
+
+SQL> select amount from membership;
+
+    AMOUNT
+----------
+      3500
+      6000
+     10500
+      1700
+      3700
+
+22)to update payment status of id '504'
+
+SQL>     SELECT PAYMENT_ID,STATUS FROM PAYMENT;
+
+PAYMENT_ID STATUS
+---------- --------------------
+       501 PAID
+       502 PAID
+       503 PAID
+       504 FAILED
+       505 PAID
+
+SQL> update payment set status='PAID' where payment_id=504;
+
+1 row updated.
+
+SQL>     SELECT PAYMENT_ID,STATUS FROM PAYMENT;
+
+PAYMENT_ID STATUS
+---------- --------------------
+       501 PAID
+       502 PAID
+       503 PAID
+       504 PAID
+       505 PAID
+
+23)to update supplier amount by 10000
+
+SQL> select amount from supplier;
+
+    AMOUNT
+----------
+    150000
+    120000
+    175000
+     98000
+    210000
+
+SQL> update supplier set amount=amount+10000;
+
+5 rows updated.
+
+SQL> select amount from supplier;
+
+    AMOUNT
+----------
+    160000
+    130000
+    185000
+    108000
+    220000
+
+24)to update gst number of supplier
+SQL> update supplier set gst_number='gst0000draft011';
+
+5 rows updated.
+
+SQL> select gst_number from supplier;
+
+GST_NUMBER
+--------------------
+gst0000draft011
+gst0000draft011
+gst0000draft011
+gst0000draft011
+gst0000draft011
+
+25)to update trainer specialisation of trainer
+
+SQL> select * from trainer_specialisation;
+
+TRAINER_ID SPECIALISATION
+---------- ------------------------------
+       201 FUNCTIONAL TRAINING
+       201 STRENGTH TRAINING
+       202 HIIT
+       202 WEIGHT LOSS
+       203 BODYBUILDING
+       204 CARDIO FITNESS
+       205 CORE TRAINING
+
+7 rows selected.
+
+SQL> UPDATE trainer_specialisation
+  2  SET specialisation = 'yet_to_be_added'
+  3  WHERE trainer_id = 204
+  4    AND specialisation = 'CARDIO FITNESS';
+
+1 row updated.
+
+SQL> select * from trainer_specialisation;
+
+TRAINER_ID SPECIALISATION
+---------- ------------------------------
+       201 FUNCTIONAL TRAINING
+       201 STRENGTH TRAINING
+       202 HIIT
+       202 WEIGHT LOSS
+       203 BODYBUILDING
+       204 yet_to_be_added
+       205 CORE TRAINING
+
+7 rows selected.
+
+26)to update cash balance of payment_id  501
+
+
+SQL> select * from cash;
+
+PAYMENT_ID    BALANCE RECEIVED_AMOUNT
+---------- ---------- ---------------
+       501          0            5000
+       502        500            7000
+       503          0            6200
+       504       1000            3500
+       505          0            8100
+
+SQL> update cash set balance=received_amount-500 where payment_id=501;
+
+1 row updated.
+
+SQL> select * from cash;
+
+PAYMENT_ID    BALANCE RECEIVED_AMOUNT
+---------- ---------- ---------------
+       501       4500            5000
+       502        500            7000
+       503          0            6200
+       504       1000            3500
+       505          0            8100
+
+27)to delete specialisation of all trainer
+
+SQL> select specialisation from trainer_specialisation;
+
+SPECIALISATION
+------------------------------
+FUNCTIONAL TRAINING
+STRENGTH TRAINING
+HIIT
+WEIGHT LOSS
+BODYBUILDING
+CARDIO FITNESS
+CORE TRAINING
+
+7 rows selected.
+
+SQL> delete specialisation from trainer_specialisation;
+delete specialisation from trainer_specialisation
+                      *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> delete from trainer_specialisation;
+
+7 rows deleted.
+
+
+
+SQL> delete from invoice;
+delete from invoice
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SYSTEM.FK_LINE_INVOICE) violated - child
+record found
+
+
+
+SQL> delete from workout_plan;
+delete from workout_plan
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SYSTEM.FK_TAKES_WORKOUT_PLAN) violated - child
+record found
+
+
+
+28)to delete memberships where enddate is less than today date
+
+SQL> select * from membership;
+
+MEMBERSHIP_ID  MEMBER_ID  BRANCH_ID   DURATION TYPE                     AMOUNT
+------------- ---------- ---------- ---------- -------------------- ----------
+START_DAT END_DATE
+--------- ---------
+        10001       1002        102          3 MONTHLY                    3500
+20-FEB-26 20-MAY-26
+
+        10002       1003        103          6 HALF-YEARLY                6000
+20-FEB-26 20-AUG-26
+
+        10003       1004        104         12 YEARLY                    10500
+20-FEB-26 20-FEB-27
+
+
+MEMBERSHIP_ID  MEMBER_ID  BRANCH_ID   DURATION TYPE                     AMOUNT
+------------- ---------- ---------- ---------- -------------------- ----------
+START_DAT END_DATE
+--------- ---------
+        10004       1005        105          1 MONTHLY                    1700
+20-FEB-26 20-MAR-26
+
+        10005       1006        106          3 QUARTERLY                  3700
+20-FEB-26 20-MAY-26
+
+
+SQL> delete from membership where end_date<sysdate;
+
+0 rows deleted.
+
+SQL> delete from membership where end_date<sysdate+45;
+
+1 row deleted.
+
+SQL> select * from membership;
+
+MEMBERSHIP_ID  MEMBER_ID  BRANCH_ID   DURATION TYPE                     AMOUNT
+------------- ---------- ---------- ---------- -------------------- ----------
+START_DAT END_DATE
+--------- ---------
+        10001       1002        102          3 MONTHLY                    3500
+20-FEB-26 20-MAY-26
+
+        10002       1003        103          6 HALF-YEARLY                6000
+20-FEB-26 20-AUG-26
+
+        10003       1004        104         12 YEARLY                    10500
+20-FEB-26 20-FEB-27
+
+
+MEMBERSHIP_ID  MEMBER_ID  BRANCH_ID   DURATION TYPE                     AMOUNT
+------------- ---------- ---------- ---------- -------------------- ----------
+START_DAT END_DATE
+--------- ---------
+        10005       1006        106          3 QUARTERLY                  3700
+
+29)to rollback from here
+SQL> rollback;
+
+Rollback complete.
+
+30)to commit from here
+SQL> commit
+  2  ;
+
+Commit complete.
+
+31)to delete branch city ends with I
+
+SQL> delete from branch where address_city like '%I';
+
+1 row deleted
+
+32)to delete the member backup
+	
+SQL> delete from member_backup;
+
+5 rows deleted;
+
+33)to display all members
+
+SQL> select * from member;
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+      1002        102 ARJUN
+Male               28 Mesoderm                     85 20-FEB-26
+MADURAI                        POWER HOUSE GYM                625001
+
+      1003        103 PRIYA
+Female             24 Ectoderm                     60 20-FEB-26
+CHENNAI                        FITNESS WORLD                  600028
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+
+      1004        104 KARTHIK
+Male               30 Endoderm                     95 20-FEB-26
+COIMBATORE                     IRON TEMPLE GYM                641001
+
+      1005        105 DIVYA
+Female             27 Mesoderm                     66 20-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRICHY                         SHAPE UP FITNESS               620017
+
+      1006        106 VIGNESH
+Male               22 Ectoderm                     73 20-FEB-26
+SALEM                          MUSCLE FACTORY                 636007
+
+      1012        103 NITHIN
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+Male                9 Mesoderm                     28 20-FEB-26
+COIMBATORE                     FITNESS WORLD                  641012
+
+      1013        104 VARUN
+Male               11 Endoderm                     35 20-FEB-26
+MADURAI                        IRON TEMPLE GYM                625020
+
+
+7 rows selected.
+
+34)to see total from member
+
+SQL> select count(*) from member;
+
+  COUNT(*)
+----------
+         7
+35)to see average weight of members
+
+SQL> select avg(weight) from member;
+
+AVG(WEIGHT)
+-----------
+ 63.1428571
+
+36)to see minimum age of membr
+
+SQL> select min(age) from member;
+
+  MIN(AGE)
+----------
+         9
+
+37)to select maximum age from member
+
+SQL> select max(age) from member;
+
+  MAX(AGE)
+----------
+        30
+
+38)to display body type and average weight of member grouping them by body type
+
+SQL> select body_type,avg(weight) from member group by body_type;
+
+BODY_TYPE            AVG(WEIGHT)
+-------------------- -----------
+Mesoderm              59.6666667
+Ectoderm                    66.5
+Endoderm                      65
+
+39)to display average salary of trainer
+
+SQL> select avg(salary) from trainer;
+
+AVG(SALARY)
+-----------
+ 40666.6667
+
+40)to display the experience and salary of trainer grouping them bye experience 
+
+SQL> select experience,avg(salary) from trainer group by experience;
+
+EXPERIENCE AVG(SALARY)
+---------- -----------
+         7       41000
+         9       48000
+         5       36000
+        12       56000
+         6       38000
+         1       25000
+
+6 rows selected.
+
+41)to see total count of invoices generated
+
+SQL> select count(*) from invoice;
+
+  COUNT(*)
+----------
+         5
+
+42)to display the average of total amount from invoice
+
+SQL> select avg(total_amount) from invoice;
+
+AVG(TOTAL_AMOUNT)
+-----------------
+             6573
+
+43)to display status ,sum of amount from payment grouping by status
+
+SQL> select status,sum(amount) from payment group by status;
+
+STATUS               SUM(AMOUNT)
+-------------------- -----------
+PAID                       31300
+
+44)to display the rounded values of weight of member
+
+SQL> select round(weight) from member;
+
+ROUND(WEIGHT)
+-------------
+           85
+           60
+           95
+           66
+           73
+           28
+           35
+
+7 rows selected.
+
+
+45)to display the truncated values of weight from member
+SQL> select trunc(weight) from member;
+
+TRUNC(WEIGHT)
+-------------
+           85
+           60
+           95
+           66
+           73
+           28
+           35
+
+7 rows selected.
+
+46)to display square root of weight from member
+
+SQL> select sqrt(weight) from member;
+
+SQRT(WEIGHT)
+------------
+  9.21954446
+  7.74596669
+  9.74679434
+   8.1240384
+  8.54400375
+  5.29150262
+  5.91607978
+
+7 rows selected.
+ 47)to display absolute value of weight from member
+
+SQL> select abs(weight) from member;
+
+ABS(WEIGHT)
+-----------
+         85
+         60
+         95
+         66
+         73
+         28
+         35
+
+7 rows selected.
+
+48) to absolute balance from cash
+
+SQL> select abs(balance) from cash;
+
+ABS(BALANCE)
+------------
+        4500
+         500
+           0
+        1000
+           0
+
+49)to display modulus of weight by 10 of member
+
+SQL> select mod(weight,10) from member;
+
+MOD(WEIGHT,10)
+--------------
+             5
+             0
+             5
+             6
+             3
+             8
+             5
+
+7 rows selected.
+
+50)to display maximum rounded value of salary from trainer
+SQL> select ceil(salary) from trainer;
+
+CEIL(SALARY)
+------------
+       41000
+       48000
+       36000
+       56000
+       38000
+       25000
+
+6 rows selected.
+
+51) to display minimum rounded value of salary from trainer
+
+
+SQL> select floor(salary) from trainer;
+
+FLOOR(SALARY)
+-------------
+        41000
+        48000
+        36000
+        56000
+        38000
+        25000
+
+52)to display the truncated value of salary of trainer
+
+SQL> select trunc(mod(salary,3)) from trainer;
+
+TRUNC(MOD(SALARY,3))
+--------------------
+                   2
+                   0
+                   0
+                   2
+                   2
+                   1
+
+6 rows selected.
+
+53)to display the absolute value of amount for payment
+
+SQL> select abs(mod(amount,3)) from payment;
+
+ABS(MOD(AMOUNT,3))
+------------------
+                 2
+                 0
+                 2
+                 0
+                 0
+
+54)to display modulus of amount with 500 from payment
+
+SQL> select mod(amount,500) from payment;
+
+MOD(AMOUNT,500)
+---------------
+              0
+              0
+            200
+              0
+            100
+
+55)to display total count of workout plan
+
+SQL> select count(*) from workout_plan;
+
+  COUNT(*)
+----------
+         5
+
+56)to display the current date
+
+SQL> select sysdate from dual;
+
+SYSDATE
+---------
+21-FEB-26
+
+57)to display members name , joining date of member
+
+SQL> select member_name,date_of_join from member;
+
+MEMBER_NAME                                        DATE_OF_J
+-------------------------------------------------- ---------
+ARJUN                                              20-FEB-26
+PRIYA                                              20-FEB-26
+KARTHIK                                            20-FEB-26
+DIVYA                                              20-FEB-26
+VIGNESH                                            20-FEB-26
+NITHIN                                             20-FEB-26
+VARUN                                              20-FEB-26
+
+7 rows selected.
+
+58)to  display members name , truncated value of joining date of member 
+
+SQL> select member_name,trunc(date_of_join) from member;
+
+MEMBER_NAME                                        TRUNC(DAT
+-------------------------------------------------- ---------
+ARJUN                                              20-FEB-26
+PRIYA                                              20-FEB-26
+KARTHIK                                            20-FEB-26
+DIVYA                                              20-FEB-26
+VIGNESH                                            20-FEB-26
+NITHIN                                             20-FEB-26
+VARUN                                              20-FEB-26
+
+7 rows selected.
+
+59)to display member name along with move month 6 from current month
+
+SQL> select member_name,add_months(date_of_join,6) from member;
+
+MEMBER_NAME                                        ADD_MONTH
+-------------------------------------------------- ---------
+ARJUN                                              20-AUG-26
+PRIYA                                              20-AUG-26
+KARTHIK                                            20-AUG-26
+DIVYA                                              20-AUG-26
+VIGNESH                                            20-AUG-26
+NITHIN                                             20-AUG-26
+VARUN                                              20-AUG-26
+
+7 rows selected.
+
+60)to display months between current date and joining date along member name
+
+
+SQL> select member_name,months_between(sysdate,add_months(date_of_join,6)) from member;
+
+MEMBER_NAME
+--------------------------------------------------
+MONTHS_BETWEEN(SYSDATE,ADD_MONTHS(DATE_OF_JOIN,6))
+--------------------------------------------------
+ARJUN
+                                        -5.9969392
+
+PRIYA
+                                        -5.9969392
+
+KARTHIK
+                                        -5.9969392
+
+
+MEMBER_NAME
+--------------------------------------------------
+MONTHS_BETWEEN(SYSDATE,ADD_MONTHS(DATE_OF_JOIN,6))
+--------------------------------------------------
+DIVYA
+                                        -5.9969392
+
+VIGNESH
+                                        -5.9969392
+
+NITHIN
+                                        -5.9983569
+
+
+MEMBER_NAME
+--------------------------------------------------
+MONTHS_BETWEEN(SYSDATE,ADD_MONTHS(DATE_OF_JOIN,6))
+--------------------------------------------------
+VARUN
+                                        -5.9983569
+
+
+7 rows selected.
+
+61)to select only members who joined 1 month before
+
+
+SQL> select member_name,date_of_join from member where date_of_join<sysdate;
+
+MEMBER_NAME                                        DATE_OF_J
+-------------------------------------------------- ---------
+ARJUN                                              20-FEB-26
+PRIYA                                              20-FEB-26
+KARTHIK                                            20-FEB-26
+DIVYA                                              20-FEB-26
+VIGNESH                                            20-FEB-26
+NITHIN                                             20-FEB-26
+VARUN                                              20-FEB-26
+ARUN                                               21-FEB-26
+LATHA                                              16-FEB-26
+SANJAY                                             11-FEB-26
+
+10 rows selected.
+
+62)to select member with joining date between 3 months from current date
+
+SQL> SELECT member_name, date_of_join FROM member WHERE date_of_join BETWEEN SYSDATE-90 AND SYSDATE;
+
+MEMBER_NAME                                        DATE_OF_J
+-------------------------------------------------- ---------
+ARJUN                                              20-FEB-26
+PRIYA                                              20-FEB-26
+KARTHIK                                            20-FEB-26
+DIVYA                                              20-FEB-26
+VIGNESH                                            20-FEB-26
+NITHIN                                             20-FEB-26
+VARUN                                              20-FEB-26
+ARUN                                               21-FEB-26
+LATHA                                              16-FEB-26
+SANJAY                                             11-FEB-26
+KIRAN                                              11-FEB-26
+
+MEMBER_NAME                                        DATE_OF_J
+-------------------------------------------------- ---------
+MEENA                                              27-JAN-26
+ROHIT                                              07-JAN-26
+ANITHA                                             23-DEC-25
+VIVEK                                              28-NOV-25
+
+63)to display only year from joining date
+
+SQL> select extract(year from date_of_join) from member;
+
+EXTRACT(YEARFROMDATE_OF_JOIN)
+-----------------------------
+                         2026
+                         2026
+                         2026
+                         2026
+                         2026
+                         2026
+                         2026
+                         2026
+                         2026
+                         2026
+                         2026
+
+EXTRACT(YEARFROMDATE_OF_JOIN)
+-----------------------------
+                         2026
+                         2026
+                         2025
+                         2025
+
+15 rows selected.
+
+
+64)to display only month from joining date
+
+
+SQL> select extract(month from date_of_join) from member;
+
+EXTRACT(MONTHFROMDATE_OF_JOIN)
+------------------------------
+                             2
+                             2
+                             2
+                             2
+                             2
+                             2
+                             2
+                             2
+                             2
+                             2
+                             2
+
+EXTRACT(MONTHFROMDATE_OF_JOIN)
+------------------------------
+                             1
+                             1
+                            12
+                            11
+
+15 rows selected.
+
+65)to display only day from joining date
+
+
+SQL> select extract(day from date_of_join) from member;
+
+EXTRACT(DAYFROMDATE_OF_JOIN)
+----------------------------
+                          20
+                          20
+                          20
+                          20
+                          20
+                          20
+                          20
+                          21
+                          16
+                          11
+                          11
+
+EXTRACT(DAYFROMDATE_OF_JOIN)
+----------------------------
+                          27
+                           7
+                          23
+                          28
+
+15 rows selected.
+
+
+66)to display trainer name along with date of birth
+
+SQL> select trainer_name,date_of_birth from trainer;
+
+TRAINER_NAME                                       DATE_OF_B
+-------------------------------------------------- ---------
+ARUN                                               15-JUN-92
+KARTHIK                                            20-MAR-89
+PRIYA                                              10-NOV-95
+SURESH                                             05-JAN-86
+DIVYA                                              25-AUG-93
+ARUN KUMAR                                         15-JUN-99
+
+6 rows selected.
+
+67)to display only year from date of birth of trainer
+
+SQL> select extract(year from date_of_birth) from trainer;
+
+EXTRACT(YEARFROMDATE_OF_BIRTH)
+------------------------------
+                          1992
+                          1989
+                          1995
+                          1986
+                          1993
+                          1999
+
+6 rows selected.
+
+68)to display only year from date of birth of staff
+
+SQL> select extract(year from date_of_birth) from staff;
+
+EXTRACT(YEARFROMDATE_OF_BIRTH)
+------------------------------
+                          1990
+                          1994
+                          1988
+                          1996
+                          1992
+
+69)to display payment id ,payment date from payment table
+
+SQL> select payment_id,payment_date from payment;
+
+PAYMENT_ID PAYMENT_D
+---------- ---------
+       501 20-FEB-26
+       502 20-FEB-26
+       503 20-FEB-26
+       504 20-FEB-26
+       505 20-FEB-26
+
+70)to display only payments made on current date
+
+SQL> select payment_id,payment_date from payment where payment_date=sysdate;
+
+no rows selected
+
+71)to display payment id , along with payment date by adding 1 month
+
+SQL> select payment_id,add_months(payment_date,1) from payment;
+
+PAYMENT_ID ADD_MONTH
+---------- ---------
+       501 20-MAR-26
+       502 20-MAR-26
+       503 20-MAR-26
+       504 20-MAR-26
+       505 20-MAR-26
+
+72)to display invoice id and invoice date from invoice 
+
+SQL> select invoice_id,invoice_date from invoice;
+
+INVOICE_ID INVOICE_D
+---------- ---------
+       701 20-FEB-26
+       702 20-FEB-26
+       703 20-FEB-26
+       704 20-FEB-26
+       705 20-FEB-26
+
+73)to display the months between current date and invoice date 
+
+SQL> select months_between(sysdate,invoice_date) from invoice
+  2  ;
+
+MONTHS_BETWEEN(SYSDATE,INVOICE_DATE)
+------------------------------------
+                          .002886798
+                          .002886798
+                          .002886798
+                          .002886798
+                          .002886798
+
+
+74)to display duration of membership
+
+SQL> select membership_id,(end_date-start_date) as duration from membership;
+
+MEMBERSHIP_ID   DURATION
+------------- ----------
+        10001         89
+        10002        181
+        10003        365
+        10004         28
+        10005         89
+
+75)to display only the membership id where end date is less than current date
+SQL> select membership_id from membership where end_date<sysdate;
+
+no rows selected
+
+76)to display only the membership id where end date is greater than current date
+
+SQL> select membership_id from membership where end_date>sysdate;
+
+MEMBERSHIP_ID
+-------------
+        10001
+        10002
+        10003
+        10004
+        10005
+
+77)to display plan_id along with start date and end date
+
+SQL> select plan_id ,start_date,end_date from takes_workout_plan;
+
+   PLAN_ID START_DAT END_DATE
+---------- --------- ---------
+       901 20-FEB-26 20-MAR-26
+       902 20-FEB-26 20-APR-26
+       903 20-FEB-26 20-MAY-26
+       904 20-FEB-26 20-MAR-26
+       905 20-FEB-26 20-APR-26
+
+78)to display plan id along with months between start and end date
+
+SQL> select plan_id ,months_between(start_date,end_date) from takes_workout_plan;
+
+   PLAN_ID MONTHS_BETWEEN(START_DATE,END_DATE)
+---------- -----------------------------------
+       901                                  -1
+       902                                  -2
+       903                                  -3
+       904                                  -1
+       905                                  -2
+
+79)to display current date as character
+
+SQL> select to_char(sysdate,'dd/mm/yyyy') from dual;
+
+TO_CHAR(SY
+----------
+21/02/2026
+
+80)to display weight as a character
+
+SQL> select member_name,to_char(weight) from member;
+
+MEMBER_NAME
+--------------------------------------------------
+TO_CHAR(WEIGHT)
+----------------------------------------
+ARJUN
+85
+
+PRIYA
+60
+
+KARTHIK
+95
+
+
+MEMBER_NAME
+--------------------------------------------------
+TO_CHAR(WEIGHT)
+----------------------------------------
+DIVYA
+66
+
+VIGNESH
+73
+
+NITHIN
+28
+
+
+MEMBER_NAME
+--------------------------------------------------
+TO_CHAR(WEIGHT)
+----------------------------------------
+VARUN
+35
+
+ARUN
+72
+
+LATHA
+60
+
+
+MEMBER_NAME
+--------------------------------------------------
+TO_CHAR(WEIGHT)
+----------------------------------------
+SANJAY
+68
+
+KIRAN
+70
+
+MEENA
+58
+
+
+MEMBER_NAME
+--------------------------------------------------
+TO_CHAR(WEIGHT)
+----------------------------------------
+ROHIT
+66
+
+ANITHA
+62
+
+VIVEK
+75
+
+
+15 rows selected.
+
+81)to display the day from invoice date as character
+
+SQL> select invoice_id,to_char(invoice_date,'day') from invoice;
+
+INVOICE_ID TO_CHAR(INVOICE_DATE,'DAY')
+---------- ------------------------------------
+       701 friday
+       702 friday
+       703 friday
+       704 friday
+       705 Friday
+
+82)to display the salary of staff with increment by to number()
+
+
+SQL> select salary+to_number('5000') from staff;
+
+SALARY+TO_NUMBER('5000')
+------------------------
+                   29000
+                   26000
+                   31000
+                   25000
+                   27000
+
+83)to display members joined at 1.1.26
+
+SQL> select member_name,member_id from member where date_of_join=to_date('01-01-2026','dd-mm-yyyy');
+
+MEMBER_NAME                                         MEMBER_ID
+-------------------------------------------------- ----------
+AJAY                                                     1014
+NEHA                                                     1015
+RAHUL                                                    1016
+SNEHA                                                    1017
+
+84)to display member_name,gender ,average of weight from member where body type is mesoderm and group them by gender with average weight>50 also order them by average weight
+
+
+SQL>  SELECT gender,avg(weight) AS average_weight
+  2    FROM member
+  3    WHERE body_type='Mesoderm'
+  4    GROUP BY gender;
+
+GENDER     AVERAGE_WEIGHT
+---------- --------------
+Male                46.28
+Female         63.3333333
+
+SQL>  SELECT gender,avg(weight) AS average_weight
+  2     FROM member
+  3     WHERE body_type='Mesoderm'
+  4     GROUP BY gender
+  5     HAVING AVG(weight) > 50;
+
+GENDER     AVERAGE_WEIGHT
+---------- --------------
+Female         63.3333333
+
+SQL> SELECT gender,avg(weight) AS average_weight
+  2     FROM member
+  3     WHERE body_type='Mesoderm'
+  4     GROUP BY gender
+  5     HAVING AVG(weight) > 50
+  6     ORDER BY average_weight;
+
+GENDER     AVERAGE_WEIGHT
+---------- --------------
+Female         63.3333333
+
+
+85)to display the total collection on a day with no pemding status order them in descending order
+
+SQL> select payment_id,sum(amount) as total_collection from payment where status='PAID' group by payment_id order by total_collection desc;
+
+PAYMENT_ID TOTAL_COLLECTION
+---------- ----------------
+       505             8100
+       502             7500
+       503             6200
+       501             5000
+       504             4500
+
+86)to display members with gender male
+SQL> select * from member where gender='male';
+
+no rows selected
+
+SQL> select * from member where gender='Male';
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+      1002        102 ARJUN
+Male               28 Mesoderm                     85 20-FEB-26
+MADURAI                        POWER HOUSE GYM                625001
+
+      1004        104 KARTHIK
+Male               30 Endoderm                     95 20-FEB-26
+COIMBATORE                     IRON TEMPLE GYM                641001
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+
+      1006        106 VIGNESH
+Male               22 Ectoderm                     73 20-FEB-26
+SALEM                          MUSCLE FACTORY                 636007
+
+      1012        103 NITHIN
+Male                9 Mesoderm                     28 20-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+COIMBATORE                     FITNESS WORLD                  641012
+
+      1013        104 VARUN
+Male               11 Endoderm                     35 20-FEB-26
+MADURAI                        IRON TEMPLE GYM                625020
+
+      1021        102 ARUN
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+Male               25 Mesoderm                     72 21-FEB-26
+CHENNAI                        USMAN ROAD                     600017
+
+      1023        104 SANJAY
+Male               31 Ectoderm                     68 11-FEB-26
+MADURAI                        LAKE VIEW STREET               625020
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+      1031        102 KIRAN
+Male               24 Mesoderm                     70 11-FEB-26
+CHENNAI                        USMAN ROAD                     600017
+
+      1033        104 ROHIT
+Male               29 Ectoderm                     66 07-JAN-26
+MADURAI                        LAKE VIEW STREET               625020
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+
+      1035        106 VIVEK
+Male               26 Endoderm                     75 28-NOV-25
+TIRUNELVELI                    NGO COLONY                     627007
+
+      1014        102 AJAY
+Male               23 Mesoderm                     72 01-JAN-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+CHENNAI                        USMAN ROAD                     600017
+
+      1016        104 RAHUL
+Male               26 Endoderm                     88 01-JAN-26
+MADURAI                        LAKE VIEW STREET               625020
+
+
+12 rows selected.
+
+87)to display member not from branch 101,102
+
+SQL> select * from member where branch_id not in(101,102);
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+      1003        103 PRIYA
+Female             24 Ectoderm                     60 20-FEB-26
+CHENNAI                        FITNESS WORLD                  600028
+
+      1004        104 KARTHIK
+Male               30 Endoderm                     95 20-FEB-26
+COIMBATORE                     IRON TEMPLE GYM                641001
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+
+      1005        105 DIVYA
+Female             27 Mesoderm                     66 20-FEB-26
+TRICHY                         SHAPE UP FITNESS               620017
+
+      1006        106 VIGNESH
+Male               22 Ectoderm                     73 20-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+SALEM                          MUSCLE FACTORY                 636007
+
+      1012        103 NITHIN
+Male                9 Mesoderm                     28 20-FEB-26
+COIMBATORE                     FITNESS WORLD                  641012
+
+      1013        104 VARUN
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+Male               11 Endoderm                     35 20-FEB-26
+MADURAI                        IRON TEMPLE GYM                625020
+
+      1022        103 LATHA
+Female             29 Endoderm                     60 16-FEB-26
+COIMBATORE                     100 FEET ROAD                  641012
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+      1023        104 SANJAY
+Male               31 Ectoderm                     68 11-FEB-26
+MADURAI                        LAKE VIEW STREET               625020
+
+      1032        103 MEENA
+Female             27 Endoderm                     58 27-JAN-26
+COIMBATORE                     100 FEET ROAD                  641012
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+
+      1033        104 ROHIT
+Male               29 Ectoderm                     66 07-JAN-26
+MADURAI                        LAKE VIEW STREET               625020
+
+      1034        105 ANITHA
+Female             31 Mesoderm                     62 23-DEC-25
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+SALEM                          OMALUR MAIN ROAD               636004
+
+      1035        106 VIVEK
+Male               26 Endoderm                     75 28-NOV-25
+TIRUNELVELI                    NGO COLONY                     627007
+
+      1015        103 NEHA
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+Female             21 Ectoderm                     54 01-JAN-26
+COIMBATORE                     100 FEET ROAD                  641012
+
+      1016        104 RAHUL
+Male               26 Endoderm                     88 01-JAN-26
+MADURAI                        LAKE VIEW STREET               625020
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+      1017        105 SNEHA
+Female             24 Mesoderm                     60 01-JAN-26
+SALEM                          OMALUR MAIN ROAD               636004
+
+
+15 rows selected.
+
+88)to display salary of staff with details where salary should exceed 10000 and upto 20000
+
+SQL> select * from staff where salary not between 10000 and 20000;
+
+  STAFF_ID  BRANCH_ID STAFF_NAME
+---------- ---------- --------------------------------------------------
+DATE_OF_B        AGE JOINING_D EXPERIENCE     SALARY
+--------- ---------- --------- ---------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+       301        102 RAJESH KUMAR
+12-MAY-90         35 20-FEB-26          8      24000
+CHENNAI                        USMAN ROAD                     600017
+
+       302        103 ANITHA DEVI
+22-SEP-94         31 20-FEB-26          5      21000
+COIMBATORE                     100 FEET ROAD                  641012
+
+  STAFF_ID  BRANCH_ID STAFF_NAME
+---------- ---------- --------------------------------------------------
+DATE_OF_B        AGE JOINING_D EXPERIENCE     SALARY
+--------- ---------- --------- ---------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+
+       303        104 PRAVEEN KUMAR
+18-JAN-88         37 20-FEB-26         10      26000
+MADURAI                        LAKE VIEW STREET               625020
+
+       305        106 MOHAN RAJ
+30-MAR-92         33 20-FEB-26          6      22000
+
+  STAFF_ID  BRANCH_ID STAFF_NAME
+---------- ---------- --------------------------------------------------
+DATE_OF_B        AGE JOINING_D EXPERIENCE     SALARY
+--------- ---------- --------- ---------- ----------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TIRUNELVELI                    NGO COLONY                     627007
+
+89)to display payment_id if status is not null
+
+SQL> select payment_id from payment where status is not null;
+
+PAYMENT_ID
+----------
+       501
+       502
+       503
+       504
+       505
+90)to get last day of joining date from member
+
+SQL> select member_id,member_name ,last_day(date_of_join) from member;
+
+ MEMBER_ID MEMBER_NAME                                        LAST_DAY(
+---------- -------------------------------------------------- ---------
+      1002 ARJUN                                              28-FEB-26
+      1003 PRIYA                                              28-FEB-26
+.      1004 KARTHIK                                            28-FEB-26
+      1005 DIVYA                                              28-FEB-26
+      1006 VIGNESH                                            28-FEB-26
+      1012 NITHIN                                             28-FEB-26
+      1013 VARUN                                              28-FEB-26
+      1021 ARUN                                               28-FEB-26
+      1022 LATHA                                              28-FEB-26
+      1023 SANJAY                                             28-FEB-26
+      1031 KIRAN                                              28-FEB-26
+
+ MEMBER_ID MEMBER_NAME                                        LAST_DAY(
+---------- -------------------------------------------------- ---------
+      1032 MEENA                                              31-JAN-26
+      1033 ROHIT                                              31-JAN-26
+      1034 ANITHA                                             31-DEC-25
+      1035 VIVEK                                              30-NOV-25
+      1014 AJAY                                               31-JAN-26
+      1015 NEHA                                               31-JAN-26
+      1016 RAHUL                                              31-JAN-26
+      1017 SNEHA                                              31-JAN-26
+
+19 rows selected.
+
+91)to convert text to upper case
+
+
+SQL> select upper(member_name),weight from member;
+
+UPPER(MEMBER_NAME)                                     WEIGHT
+-------------------------------------------------- ----------
+ARJUN                                                      85
+PRIYA                                                      60
+KARTHIK                                                    95
+DIVYA                                                      66
+VIGNESH                                                    73
+NITHIN                                                     28
+VARUN                                                      35
+ARUN                                                       72
+LATHA                                                      60
+SANJAY                                                     68
+KIRAN                                                      70
+
+UPPER(MEMBER_NAME)                                     WEIGHT
+-------------------------------------------------- ----------
+MEENA                                                      58
+ROHIT                                                      66
+ANITHA                                                     62
+VIVEK                                                      75
+
+15 rows selected.
+
+92)to display text in lower case
+
+SQL> select lower(member_name),weight from member;
+
+LOWER(MEMBER_NAME)                                     WEIGHT
+-------------------------------------------------- ----------
+arjun                                                      85
+priya                                                      60
+karthik                                                    95
+divya                                                      66
+vignesh                                                    73
+nithin                                                     28
+varun                                                      35
+arun                                                       72
+latha                                                      60
+sanjay                                                     68
+kiran                                                      70
+
+LOWER(MEMBER_NAME)                                     WEIGHT
+-------------------------------------------------- ----------
+meena                                                      58
+rohit                                                      66
+anitha                                                     62
+vivek                                                      75
+
+15 rows selected.
+
+93)to capitalize first letter of supplier name
+
+
+SQL> select initcap(supplier_name) from supplier;
+
+INITCAP(SUPPLIER_NAME)
+--------------------------------------------------
+Fitness Equip Mart
+Power Gym Supplies
+Iron World Distributors
+Health Pro Equipment
+Muscle Builders Hub
+
+94)to find length of body type
+
+MEMBER_NAME                                        BODY_TYPE
+-------------------------------------------------- --------------------
+LENGTH(BODY_TYPE)
+-----------------
+ARJUN                                              Mesoderm
+                8
+
+PRIYA                                              Ectoderm
+                8
+
+KARTHIK                                            Endoderm
+                8
+
+
+MEMBER_NAME                                        BODY_TYPE
+-------------------------------------------------- --------------------
+LENGTH(BODY_TYPE)
+-----------------
+DIVYA                                              Mesoderm
+                8
+
+VIGNESH                                            Ectoderm
+                8
+
+NITHIN                                             Mesoderm
+                8
+
+
+MEMBER_NAME                                        BODY_TYPE
+-------------------------------------------------- --------------------
+LENGTH(BODY_TYPE)
+-----------------
+VARUN                                              Endoderm
+                8
+
+ARUN                                               Mesoderm
+                8
+
+LATHA                                              Endoderm
+                8
+
+
+MEMBER_NAME                                        BODY_TYPE
+-------------------------------------------------- --------------------
+LENGTH(BODY_TYPE)
+-----------------
+SANJAY                                             Ectoderm
+                8
+
+KIRAN                                              Mesoderm
+                8
+
+MEENA                                              Endoderm
+                8
+
+
+MEMBER_NAME                                        BODY_TYPE
+-------------------------------------------------- --------------------
+LENGTH(BODY_TYPE)
+-----------------
+ROHIT                                              Ectoderm
+                8
+
+ANITHA                                             Mesoderm
+                8
+
+VIVEK                                              Endoderm
+                8
+
+
+15 rows selected.
+
+95)to find position of R in address street
+
+SQL> select address_street,instr(address_street,'R') from trainer;
+
+ADDRESS_STREET                 INSTR(ADDRESS_STREET,'R')
+------------------------------ -------------------------
+T NAGAR                                                7
+GANDHIPURAM                                            9
+KK NAGAR                                               8
+OMALUR ROAD                                            6
+PALAYAMKOTTAI                                          0
+VELACHERY MAIN ROAD                                    8
+
+6 rows selected.
+
+96)to concatenate member addresses 
+
+SQL> select concat(concat(address_street,address_city),address_pincode) from member;
+
+CONCAT(CONCAT(ADDRESS_STREET,ADDRESS_CITY),ADDRESS_PINCODE)
+----------------------------------------------------------------------
+POWER HOUSE GYMMADURAI625001
+FITNESS WORLDCHENNAI600028
+IRON TEMPLE GYMCOIMBATORE641001
+SHAPE UP FITNESSTRICHY620017
+MUSCLE FACTORYSALEM636007
+FITNESS WORLDCOIMBATORE641012
+IRON TEMPLE GYMMADURAI625020
+USMAN ROADCHENNAI600017
+100 FEET ROADCOIMBATORE641012
+LAKE VIEW STREETMADURAI625020
+USMAN ROADCHENNAI600017
+
+CONCAT(CONCAT(ADDRESS_STREET,ADDRESS_CITY),ADDRESS_PINCODE)
+----------------------------------------------------------------------
+100 FEET ROADCOIMBATORE641012
+LAKE VIEW STREETMADURAI625020
+OMALUR MAIN ROADSALEM636004
+NGO COLONYTIRUNELVELI627007
+
+15 rows selected.
+
+97)to trim leading spaces from trainer name
+SQL> select ltrim(trainer_name) from trainer;
+
+LTRIM(TRAINER_NAME)
+--------------------------------------------------
+ARUN
+KARTHIK
+PRIYA
+SURESH
+DIVYA
+ARUN KUMAR
+
+6 rows selected.
+
+98)to trim spaces from both sides of trainer name
+
+SQL> select trim(trainer_name) from trainer;
+
+TRIM(TRAINER_NAME)
+--------------------------------------------------
+ARUN
+KARTHIK
+PRIYA
+SURESH
+DIVYA
+ARUN KUMAR
+
+6 rows selected.
+
+99)to replace character of member name has a to i 
+
+SQL> select member_name,replace(member_name,'A','I') as replaced_name from member;
+
+MEMBER_NAME
+--------------------------------------------------
+REPLACED_NAME
+--------------------------------------------------
+ARJUN
+IRJUN
+
+PRIYA
+PRIYI
+
+KARTHIK
+KIRTHIK
+
+
+MEMBER_NAME
+--------------------------------------------------
+REPLACED_NAME
+--------------------------------------------------
+DIVYA
+DIVYI
+
+VIGNESH
+VIGNESH
+
+NITHIN
+NITHIN
+
+
+MEMBER_NAME
+--------------------------------------------------
+REPLACED_NAME
+--------------------------------------------------
+VARUN
+VIRUN
+
+ARUN
+IRUN
+
+LATHA
+LITHI
+
+
+MEMBER_NAME
+--------------------------------------------------
+REPLACED_NAME
+--------------------------------------------------
+SANJAY
+SINJIY
+
+KIRAN
+KIRIN
+
+MEENA
+MEENI
+
+
+MEMBER_NAME
+--------------------------------------------------
+REPLACED_NAME
+--------------------------------------------------
+ROHIT
+ROHIT
+
+ANITHA
+INITHI
+
+VIVEK
+VIVEK
+
+
+15 rows selected.
+
+100)to display staff with salary not between 20000 and 24000
+
+SQL> select staff_name,staff_id from staff where salary not between 20000 and 24000;
+
+STAFF_NAME                                           STAFF_ID
+-------------------------------------------------- ----------
+PRAVEEN KUMAR                                             303
+
+101)to display trainer with name starting with A
+
+
+SQL> select trainer_name from trainer where trainer_name like 'A%';
+
+TRAINER_NAME
+--------------------------------------------------
+ARUN
+ARUN KUMAR
+
+102)to display trainer with name not ending with A
+
+SQL> select trainer_name from trainer where trainer_name not like '%A';
+
+TRAINER_NAME
+--------------------------------------------------
+ARUN
+KARTHIK
+SURESH
+ARUN KUMAR
+
+103)to create commit command
+SQL> commit;
+
+Commit complete.
+
+104)to select staffs where staff id is not 301,304,307
+
+SQL> select staff_id,staff_name from staff where staff_id not in(301,304,307);
+
+  STAFF_ID STAFF_NAME
+---------- --------------------------------------------------
+       302 ANITHA DEVI
+       303 PRAVEEN KUMAR
+       305 MOHAN RAJ
+
+105)to display member_id,body_type from member but group them by according to both
+
+SQL> select member_id,body_type from member group by member_id,body_type;
+
+ MEMBER_ID BODY_TYPE
+---------- --------------------
+      1002 Mesoderm
+      1003 Ectoderm
+      1004 Endoderm
+      1005 Mesoderm
+      1006 Ectoderm
+      1012 Mesoderm
+      1013 Endoderm
+      1021 Mesoderm
+      1022 Endoderm
+      1023 Ectoderm
+      1031 Mesoderm
+
+ MEMBER_ID BODY_TYPE
+---------- --------------------
+      1032 Endoderm
+      1033 Ectoderm
+      1034 Mesoderm
+      1035 Endoderm
+
+15 rows selected.
+
+106)to display member_id,weight from member order them accordingly descending
+
+SQL> select member_id,weight from member order by member_id,weight desc;
+
+ MEMBER_ID     WEIGHT
+---------- ----------
+      1002         85
+      1003         60
+      1004         95
+      1005         66
+      1006         73
+      1012         28
+      1013         35
+      1021         72
+      1022         60
+      1023         68
+      1031         70
+
+ MEMBER_ID     WEIGHT
+---------- ----------
+      1032         58
+      1033         66
+      1034         62
+      1035         75
+
+15 rows selected.
+
+107)to display only the 1st 5 letters of members name 
+
+
+SQL> SELECT MEMBER_NAME, WEIGHT FROM MEMBER;
+
+MEMBER_NAME                                            WEIGHT
+-------------------------------------------------- ----------
+ARJUN                                                      85
+PRIYA                                                      60
+KARTHIK                                                    95
+DIVYA                                                      66
+VIGNESH                                                    73
+NITHIN                                                     28
+VARUN                                                      35
+ARUN                                                       72
+LATHA                                                      60
+SANJAY                                                     68
+KIRAN                                                      70
+
+MEMBER_NAME                                            WEIGHT
+-------------------------------------------------- ----------
+MEENA                                                      58
+ROHIT                                                      66
+ANITHA                                                     62
+VIVEK                                                      75
+rani                                                       62
+
+16 rows selected.
+
+SQL> SELECT SUBSTR(MEMBER_NAME, 1, 3) AS SHORT_NAME, WEIGHT FROM MEMBER;
+
+SHORT_NAME       WEIGHT
+------------ ----------
+ARJ                  85
+PRI                  60
+KAR                  95
+DIV                  66
+VIG                  73
+NIT                  28
+VAR                  35
+ARU                  72
+LAT                  60
+SAN                  68
+KIR                  70
+
+SHORT_NAME       WEIGHT
+------------ ----------
+MEE                  58
+ROH                  66
+ANI                  62
+VIV                  75
+ran                  62
+
+16 rows selected.
+
+108)display branch name and address but sort branches by city ascending, then assets descending:
+
+SQL> SELECT BRANCH_NAME, ADDRESS_CITY, ADDRESS_PINCODE FROM BRANCH
+  2  ORDER BY ADDRESS_CITY ASC, ADDRESS_PINCODE DESC;
+
+BRANCH_NAME
+--------------------------------------------------
+ADDRESS_CITY                   ADDRESS_PI
+------------------------------ ----------
+T NAGAR BRANCH
+CHENNAI                        600017
+
+GANDHIPURAM BRANCH
+COIMBATORE                     641012
+
+KK NAGAR BRANCH
+MADURAI                        625020
+
+
+BRANCH_NAME
+--------------------------------------------------
+ADDRESS_CITY                   ADDRESS_PI
+------------------------------ ----------
+OMALUR ROAD BRANCH
+SALEM                          636004
+
+PALAYAMKOTTAI BRANCH
+TIRUNELVELI                    627007
+
+109)to display the member name and weight (using truncate command)
+
+
+SQL> INSERT INTO MEMBER VALUES (99, 102, 'Vash', 'Male', 25, 'Mesoderm', -23.6, SYSDATE,'CHENNAI', 'KEELAMBAKAM ROAD', 600017, 'ACTIVE');
+
+1 row created.
+
+SQL> SELECT MEMBER_NAME, WEIGHT, TRUNC(WEIGHT, 0) AS TRUNC_WEIGHT FROM MEMBER;
+
+MEMBER_NAME                                            WEIGHT TRUNC_WEIGHT
+-------------------------------------------------- ---------- ------------
+ARJUN                                                      85           85
+PRIYA                                                      60           60
+KARTHIK                                                    95           95
+DIVYA                                                      66           66
+VIGNESH                                                    73           73
+NITHIN                                                     28           28
+VARUN                                                      35           35
+ARUN                                                       72           72
+LATHA                                                      60           60
+SANJAY                                                     68           68
+KIRAN                                                      70           70
+
+MEMBER_NAME                                            WEIGHT TRUNC_WEIGHT
+-------------------------------------------------- ---------- ------------
+MEENA                                                      58           58
+ROHIT                                                      66           66
+ANITHA                                                     62           62
+VIVEK                                                      75           75
+rani                                                       62           62
+Vash                                                    -23.6          -23
+
+17 rows selected.                                           -23.6          -23
+
+110)to display the member name and weight (using absolute command)
+
+
+SQL>  SELECT MEMBER_NAME, WEIGHT from member;
+
+MEMBER_NAME                                            WEIGHT
+-------------------------------------------------- ----------
+ARJUN                                                      85
+PRIYA                                                      60
+KARTHIK                                                    95
+DIVYA                                                      66
+VIGNESH                                                    73
+NITHIN                                                     28
+VARUN                                                      35
+ARUN                                                       72
+LATHA                                                      60
+SANJAY                                                     68
+KIRAN                                                      70
+
+MEMBER_NAME                                            WEIGHT
+-------------------------------------------------- ----------
+MEENA                                                      58
+ROHIT                                                      66
+ANITHA                                                     62
+VIVEK                                                      75
+rani                                                       62
+Vash                                                    -23.6
+
+17 rows selected.
+
+SQL>  SELECT MEMBER_NAME, WEIGHT, ABS(WEIGHT) AS ABS_WEIGHT FROM MEMBER;
+
+MEMBER_NAME                                            WEIGHT ABS_WEIGHT
+-------------------------------------------------- ---------- ----------
+ARJUN                                                      85         85
+PRIYA                                                      60         60
+KARTHIK                                                    95         95
+DIVYA                                                      66         66
+VIGNESH                                                    73         73
+NITHIN                                                     28         28
+VARUN                                                      35         35
+ARUN                                                       72         72
+LATHA                                                      60         60
+SANJAY                                                     68         68
+KIRAN                                                      70         70
+
+MEMBER_NAME                                            WEIGHT ABS_WEIGHT
+-------------------------------------------------- ---------- ----------
+MEENA                                                      58         58
+ROHIT                                                      66         66
+ANITHA                                                     62         62
+VIVEK                                                      75         75
+rani                                                       62         62
+Vash                                                    -23.6       23.6
+
+17 rows selected.
+
+111)to get details from user and insert them in member table
+
+
+SQL> ACCEPT p_member_id NUMBER PROMPT 'MEMBER_ID: '
+MEMBER_ID: 100
+
+SQL> ACCEPT p_branch_id NUMBER PROMPT 'BRANCH_ID: '
+BRANCH_ID: 102
+
+SQL> ACCEPT p_name CHAR PROMPT 'MEMBER_NAME: '
+MEMBER_NAME: HARRY
+
+SQL> ACCEPT p_gender CHAR PROMPT 'GENDER: '
+GENDER: Male
+
+SQL> ACCEPT p_age NUMBER PROMPT 'AGE: '
+AGE: 19
+
+SQL> ACCEPT p_body CHAR PROMPT 'BODY_TYPE: '
+BODY_TYPE: Mesoderm
+
+SQL> ACCEPT p_weight NUMBER PROMPT 'WEIGHT: '
+WEIGHT: 60
+
+SQL> ACCEPT p_city CHAR PROMPT 'ADDRESS_CITY: '
+ADDRESS_CITY: Tirunelveli
+
+SQL> ACCEPT p_street CHAR PROMPT 'ADDRESS_STREET: '
+ADDRESS_STREET: ktc nagar
+
+SQL> ACCEPT p_pin CHAR PROMPT 'ADDRESS_PINCODE: '
+ADDRESS_PINCODE: 627615
+
+SQL> ACCEPT p_status CHAR PROMPT 'STATUS: '
+STATUS: ACTIVE
+
+SQL> INSERT INTO MEMBER VALUES (&p_member_id, &p_branch_id, '&p_name', '&p_gender', &p_age,
+  2          '&p_body', &p_weight, SYSDATE, '&p_city', '&p_street',
+  3          '&p_pin', '&p_status');
+old   1: INSERT INTO MEMBER VALUES (&p_member_id, &p_branch_id, '&p_name', '&p_gender', &p_age,
+new   1: INSERT INTO MEMBER VALUES (       100,        102, 'HARRY', 'Male',         19,
+old   2:         '&p_body', &p_weight, SYSDATE, '&p_city', '&p_street',
+new   2:         'Mesoderm',         60, SYSDATE, 'Tirunelveli', 'ktc nagar',
+old   3:         '&p_pin', '&p_status')
+new   3:         '627615', 'ACTIVE')
+
+1 row created.
+
+SQL> select * from member where member_id=100;
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+STATUS
+----------
+       100        102 HARRY
+Male               19 Mesoderm                     60 24-FEB-26
+Tirunelveli                    ktc nagar                      627615
+ACTIVE
+
+
+112)to display member name , weight and apply round() on weight
+
+SQL> SELECT MEMBER_NAME, WEIGHT FROM MEMBER;
+
+MEMBER_NAME                                            WEIGHT
+-------------------------------------------------- ----------
+ARJUN                                                      85
+PRIYA                                                      60
+KARTHIK                                                    95
+DIVYA                                                      66
+VIGNESH                                                    73
+NITHIN                                                     28
+VARUN                                                      35
+ARUN                                                       72
+LATHA                                                      60
+SANJAY                                                     68
+KIRAN                                                      70
+
+MEMBER_NAME                                            WEIGHT
+-------------------------------------------------- ----------
+MEENA                                                      58
+ROHIT                                                      66
+ANITHA                                                     62
+VIVEK                                                      75
+rani                                                       62
+Vash                                                    -23.6
+
+17 rows selected.
+
+SQL> SELECT MEMBER_NAME, WEIGHT, ROUND(WEIGHT) AS ROUND_WEIGHT FROM MEMBER;
+
+MEMBER_NAME                                            WEIGHT ROUND_WEIGHT
+-------------------------------------------------- ---------- ------------
+ARJUN                                                      85           85
+PRIYA                                                      60           60
+KARTHIK                                                    95           95
+DIVYA                                                      66           66
+VIGNESH                                                    73           73
+NITHIN                                                     28           28
+VARUN                                                      35           35
+ARUN                                                       72           72
+LATHA                                                      60           60
+SANJAY                                                     68           68
+KIRAN                                                      70           70
+
+MEMBER_NAME                                            WEIGHT ROUND_WEIGHT
+-------------------------------------------------- ---------- ------------
+MEENA                                                      58           58
+ROHIT                                                      66           66
+ANITHA                                                     62           62
+VIVEK                                                      75           75
+rani                                                       62           62
+Vash                                                    -23.6          -24
+
+17 rows selected.
+
+113)to display count of members with particular age on a particular branch
+
+SQL> select address_city,age,count(*) from member group by address_city,age;
+
+ADDRESS_CITY                          AGE   COUNT(*)
+------------------------------ ---------- ----------
+MADURAI                                28          1
+CHENNAI                                24          2
+COIMBATORE                             30          1
+TRICHY                                 27          1
+SALEM                                  22          1
+COIMBATORE                              9          1
+MADURAI                                11          1
+CHENNAI                                25          2
+COIMBATORE                             29          1
+MADURAI                                31          1
+COIMBATORE                             27          1
+
+ADDRESS_CITY                          AGE   COUNT(*)
+------------------------------ ---------- ----------
+MADURAI                                29          1
+SALEM                                  31          1
+TIRUNELVELI                            26          1
+Coimbatore                              8          1
+09:41 25-02-2026
+15 rows selected.
+
+SQL> select address_city,age,count(*) from member group by address_city,age order by address_city;
+
+ADDRESS_CITY                          AGE   COUNT(*)
+------------------------------ ---------- ----------
+CHENNAI                                24          2
+CHENNAI                                25          2
+COIMBATORE                              9          1
+COIMBATORE                             27          1
+COIMBATORE                             29          1
+COIMBATORE                             30          1
+Coimbatore                              8          1
+MADURAI                                11          1
+MADURAI                                28          1
+MADURAI                                29          1
+MADURAI                                31          1
+
+ADDRESS_CITY                          AGE   COUNT(*)
+------------------------------ ---------- ----------
+SALEM                                  22          1
+SALEM                                  31          1
+TIRUNELVELI                            26          1
+TRICHY                                 27          1
+
+15 rows selected.
+
+114)to display count of members with particular age on a particular branch and order by multiple columns
+
+SQL> select address_city,age,count(*) from member group by address_city,age order by address_city,age;
+
+ADDRESS_CITY                          AGE   COUNT(*)
+------------------------------ ---------- ----------
+CHENNAI                                24          2
+CHENNAI                                25          2
+COIMBATORE                              9          1
+COIMBATORE                             27          1
+COIMBATORE                             29          1
+COIMBATORE                             30          1
+Coimbatore                              8          1
+MADURAI                                11          1
+MADURAI                                28          1
+MADURAI                                29          1
+MADURAI                                31          1
+
+ADDRESS_CITY                          AGE   COUNT(*)
+------------------------------ ---------- ----------
+SALEM                                  22          1
+SALEM                                  31          1
+TIRUNELVELI                            26          1
+TRICHY                                 27          1
+
+15 rows selected.
