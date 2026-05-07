@@ -1,0 +1,3105 @@
+1)to display all unique member id from member and takes_workout_plan
+
+SQL> select member_id from member union select member_id from takes_workout_plan;
+
+ MEMBER_ID
+----------
+      1002
+      1003
+      1004
+      1005
+      1006
+      1012
+      1013
+      1021
+      1022
+      1023
+      1031
+
+ MEMBER_ID
+----------
+      1032
+      1033
+      1034
+      1035
+
+15 rows selected.
+
+2)to display all supplier id from member and takes workout plan
+
+SQL> select member_id from member union all select member_id from takes_workout_plan;
+
+ MEMBER_ID
+----------
+      1002
+      1003
+      1004
+      1005
+      1006
+      1012
+      1013
+      1021
+      1022
+      1023
+      1031
+
+ MEMBER_ID
+----------
+      1032
+      1033
+      1034
+      1035
+      1002
+      1003
+      1004
+      1005
+      1006
+
+20 rows selected.
+
+3)to display common member id from member and takes workout plan
+
+SQL> select member_id from member intersect select member_id from takes_workout_plan;
+
+ MEMBER_ID
+----------
+      1002
+      1003
+      1004
+      1005
+      1006
+
+4)to display all common member id from member and takes workout plan
+
+SQL> select member_id from member intersect all select member_id from takes_workout_plan;
+
+ MEMBER_ID
+----------
+      1002
+      1003
+      1004
+      1005
+      1006
+
+5)to display cities from member but not trainers
+
+SQL> select address_city from member minus select address_city from trainer;
+
+ADDRESS_CITY
+------------------------------
+TRICHY
+
+6)to display cities from member but not trainers using except
+
+
+SQL> select address_city from member except select address_city from trainer;
+
+ADDRESS_CITY
+------------------------------
+TRICHY
+
+7)to display cross join between member and trainer
+
+SQL> select * from member,trainer;
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1012        103 NITHIN
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male                9 Mesoderm                     28 20-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+COIMBATORE                     FITNESS WORLD                  641012
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1013        104 VARUN
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               11 Endoderm                     35 20-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+MADURAI                        IRON TEMPLE GYM                625020
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1021        102 ARUN
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               25 Mesoderm                     72 21-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+CHENNAI                        USMAN ROAD                     600017
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1022        103 LATHA
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Female             29 Endoderm                     60 16-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+COIMBATORE                     100 FEET ROAD                  641012
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1023        104 SANJAY
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               31 Ectoderm                     68 11-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+MADURAI                        LAKE VIEW STREET               625020
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1031        102 KIRAN
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               24 Mesoderm                     70 11-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+CHENNAI                        USMAN ROAD                     600017
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1032        103 MEENA
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Female             27 Endoderm                     58 27-JAN-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+COIMBATORE                     100 FEET ROAD                  641012
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1033        104 ROHIT
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               29 Ectoderm                     66 07-JAN-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+MADURAI                        LAKE VIEW STREET               625020
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1034        105 ANITHA
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Female             31 Mesoderm                     62 23-DEC-25
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+SALEM                          OMALUR MAIN ROAD               636004
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1035        106 VIVEK
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               26 Endoderm                     75 28-NOV-25
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+TIRUNELVELI                    NGO COLONY                     627007
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      9997        103 rani
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Female              8 Mesoderm                     62 21-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Coimbatore                     Lane                           641001
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+96 rows selected.
+
+10)to display cross join between trainer and member using keyword
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1032        103 MEENA
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Female             27 Endoderm                     58 27-JAN-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+COIMBATORE                     100 FEET ROAD                  641012
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1033        104 ROHIT
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               29 Ectoderm                     66 07-JAN-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+MADURAI                        LAKE VIEW STREET               625020
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1034        105 ANITHA
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Female             31 Mesoderm                     62 23-DEC-25
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+SALEM                          OMALUR MAIN ROAD               636004
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1035        106 VIVEK
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               26 Endoderm                     75 28-NOV-25
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+TIRUNELVELI                    NGO COLONY                     627007
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      9997        103 rani
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Female              8 Mesoderm                     62 21-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Coimbatore                     Lane                           641001
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+96 rows selected.
+
+11)to display trainer and member belongs to same city
+
+
+SQL> select t.trainer_name as trainer_name,m.member_name as member_name from trainer t,member m where t.address_city=m.address_city;
+
+TRAINER_NAME
+--------------------------------------------------
+MEMBER_NAME
+--------------------------------------------------
+PRIYA
+ARJUN
+
+ARUN
+PRIYA
+
+ARUN KUMAR
+PRIYA
+
+
+TRAINER_NAME
+--------------------------------------------------
+MEMBER_NAME
+--------------------------------------------------
+KARTHIK
+KARTHIK
+
+SURESH
+VIGNESH
+
+KARTHIK
+NITHIN
+
+
+TRAINER_NAME
+--------------------------------------------------
+MEMBER_NAME
+--------------------------------------------------
+PRIYA
+VARUN
+
+ARUN
+ARUN
+
+ARUN KUMAR
+ARUN
+
+
+TRAINER_NAME
+--------------------------------------------------
+MEMBER_NAME
+--------------------------------------------------
+KARTHIK
+LATHA
+
+PRIYA
+SANJAY
+
+ARUN
+KIRAN
+
+
+TRAINER_NAME
+--------------------------------------------------
+MEMBER_NAME
+--------------------------------------------------
+ARUN KUMAR
+KIRAN
+
+KARTHIK
+MEENA
+
+PRIYA
+ROHIT
+
+
+TRAINER_NAME
+--------------------------------------------------
+MEMBER_NAME
+--------------------------------------------------
+SURESH
+ANITHA
+
+DIVYA
+VIVEK
+
+
+17 rows selected.
+
+12) to display cross join among trainer,member and staff
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+NGO COLONY                     627007
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      1035        106 VIVEK
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Male               26 Endoderm                     75 28-NOV-25
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+TIRUNELVELI                    NGO COLONY                     627007
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042            305        106
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+MOHAN RAJ                                          30-MAR-92         33
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+20-FEB-26          6      22000 TIRUNELVELI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+NGO COLONY                     627007
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+      9997        103 rani
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Female              8 Mesoderm                     62 21-FEB-26
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+Coimbatore                     Lane                           641001
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+       206 ARUN KUMAR                                         15-JUN-99
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+        26 20-FEB-26          1      25000 CHENNAI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+VELACHERY MAIN ROAD            600042            305        106
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+MOHAN RAJ                                          30-MAR-92         33
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+20-FEB-26          6      22000 TIRUNELVELI
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+NGO COLONY                     627007
+
+ MEMBER_ID  BRANCH_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+ADDRESS_CITY                   ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ------------------------------ ----------
+TRAINER_ID TRAINER_NAME                                       DATE_OF_B
+---------- -------------------------------------------------- ---------
+       AGE JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+---------- --------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI   STAFF_ID  BRANCH_ID
+------------------------------ ---------- ---------- ----------
+STAFF_NAME                                         DATE_OF_B        AGE
+-------------------------------------------------- --------- ----------
+JOINING_D EXPERIENCE     SALARY ADDRESS_CITY
+--------- ---------- ---------- ------------------------------
+ADDRESS_STREET                 ADDRESS_PI
+------------------------------ ----------
+
+
+480 rows selected.
+
+13)display all payment id from branches along branch details
+
+
+SQL> select p.payment_id,b.branch_id,b.branch_name from payment p inner join branch b on p.branch_id=b.branch_id;
+
+PAYMENT_ID  BRANCH_ID BRANCH_NAME
+---------- ---------- --------------------------------------------------
+       501        102 T NAGAR BRANCH
+       502        103 GANDHIPURAM BRANCH
+       503        104 KK NAGAR BRANCH
+       504        105 OMALUR ROAD BRANCH
+       505        106 PALAYAMKOTTAI BRANCH
+
+
+14)display maintenance record along with machine details
+
+
+SQL> select * from member natural join branch;
+
+ BRANCH_ID ADDRESS_CITY                   ADDRESS_STREET
+---------- ------------------------------ ------------------------------
+ADDRESS_PI  MEMBER_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+BRANCH_NAME                                            GYM_ID
+-------------------------------------------------- ----------
+       102 CHENNAI                        USMAN ROAD
+600017           1021 ARUN
+Male               25 Mesoderm                     72 21-FEB-26
+T NAGAR BRANCH                                              1
+
+
+ BRANCH_ID ADDRESS_CITY                   ADDRESS_STREET
+---------- ------------------------------ ------------------------------
+ADDRESS_PI  MEMBER_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+BRANCH_NAME                                            GYM_ID
+-------------------------------------------------- ----------
+       103 COIMBATORE                     100 FEET ROAD
+641012           1022 LATHA
+Female             29 Endoderm                     60 16-FEB-26
+GANDHIPURAM BRANCH                                          1
+
+
+ BRANCH_ID ADDRESS_CITY                   ADDRESS_STREET
+---------- ------------------------------ ------------------------------
+ADDRESS_PI  MEMBER_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+BRANCH_NAME                                            GYM_ID
+-------------------------------------------------- ----------
+       104 MADURAI                        LAKE VIEW STREET
+625020           1023 SANJAY
+Male               31 Ectoderm                     68 11-FEB-26
+KK NAGAR BRANCH                                             1
+
+
+ BRANCH_ID ADDRESS_CITY                   ADDRESS_STREET
+---------- ------------------------------ ------------------------------
+ADDRESS_PI  MEMBER_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+BRANCH_NAME                                            GYM_ID
+-------------------------------------------------- ----------
+       102 CHENNAI                        USMAN ROAD
+600017           1031 KIRAN
+Male               24 Mesoderm                     70 11-FEB-26
+T NAGAR BRANCH                                              1
+
+
+ BRANCH_ID ADDRESS_CITY                   ADDRESS_STREET
+---------- ------------------------------ ------------------------------
+ADDRESS_PI  MEMBER_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+BRANCH_NAME                                            GYM_ID
+-------------------------------------------------- ----------
+       103 COIMBATORE                     100 FEET ROAD
+641012           1032 MEENA
+Female             27 Endoderm                     58 27-JAN-26
+GANDHIPURAM BRANCH                                          1
+
+
+ BRANCH_ID ADDRESS_CITY                   ADDRESS_STREET
+---------- ------------------------------ ------------------------------
+ADDRESS_PI  MEMBER_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+BRANCH_NAME                                            GYM_ID
+-------------------------------------------------- ----------
+       104 MADURAI                        LAKE VIEW STREET
+625020           1033 ROHIT
+Male               29 Ectoderm                     66 07-JAN-26
+KK NAGAR BRANCH                                             1
+
+
+ BRANCH_ID ADDRESS_CITY                   ADDRESS_STREET
+---------- ------------------------------ ------------------------------
+ADDRESS_PI  MEMBER_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+BRANCH_NAME                                            GYM_ID
+-------------------------------------------------- ----------
+       105 SALEM                          OMALUR MAIN ROAD
+636004           1034 ANITHA
+Female             31 Mesoderm                     62 23-DEC-25
+OMALUR ROAD BRANCH                                          1
+
+
+ BRANCH_ID ADDRESS_CITY                   ADDRESS_STREET
+---------- ------------------------------ ------------------------------
+ADDRESS_PI  MEMBER_ID MEMBER_NAME
+---------- ---------- --------------------------------------------------
+GENDER            AGE BODY_TYPE                WEIGHT DATE_OF_J
+---------- ---------- -------------------- ---------- ---------
+BRANCH_NAME                                            GYM_ID
+-------------------------------------------------- ----------
+       106 TIRUNELVELI                    NGO COLONY
+627007           1035 VIVEK
+Male               26 Endoderm                     75 28-NOV-25
+PALAYAMKOTTAI BRANCH                                        1
+
+
+8 rows selected
+
+15)display all staff and their managers
+
+SQL> select s.staff_name,s.staff_id,s1.staff_name as manager from staff s left outer join staff s1 on s.staff_id=s1.staff_id;
+
+STAFF_NAME                                           STAFF_ID
+-------------------------------------------------- ----------
+MANAGER
+--------------------------------------------------
+RAJESH KUMAR                                              301
+RAJESH KUMAR
+
+ANITHA DEVI                                               302
+ANITHA DEVI
+
+PRAVEEN KUMAR                                             303
+PRAVEEN KUMAR
+
+
+STAFF_NAME                                           STAFF_ID
+-------------------------------------------------- ----------
+MANAGER
+--------------------------------------------------
+KEERTHANA S                                               304
+KEERTHANA S
+
+MOHAN RAJ                                                 305
+MOHAN RAJ
+
+16)display all members without membership by left outer join
+
+SQL> select m.member_name,ms.type from member m left outer join membership ms on m.member_id=ms.member_id;
+
+MEMBER_NAME                                        TYPE
+-------------------------------------------------- --------------------
+ARJUN                                              MONTHLY
+PRIYA                                              HALF-YEARLY
+KARTHIK                                            YEARLY
+DIVYA                                              MONTHLY
+VIGNESH                                            QUARTERLY
+VARUN
+rani
+KIRAN
+LATHA
+MEENA
+SANJAY
+
+MEMBER_NAME                                        TYPE
+-------------------------------------------------- --------------------
+ROHIT
+ARUN
+ANITHA
+NITHIN
+VIVEK
+
+16 rows selected.
+
+17)display all memberships even member details are missing right outer join
+
+SQL> select m.member_name,ms.type from member m right outer join membership ms on m.member_id=ms.member_id;
+
+MEMBER_NAME                                        TYPE
+-------------------------------------------------- --------------------
+ARJUN                                              MONTHLY
+PRIYA                                              HALF-YEARLY
+KARTHIK                                            YEARLY
+DIVYA                                              MONTHLY
+VIGNESH                                            QUARTERLY
+
+18)display all members and membership 
+
+SQL> select m.member_name,ms.type from member m full outer join membership ms on m.member_id=ms.member_id;
+
+MEMBER_NAME                                        TYPE
+-------------------------------------------------- --------------------
+ARJUN                                              MONTHLY
+PRIYA                                              HALF-YEARLY
+KARTHIK                                            YEARLY
+DIVYA                                              MONTHLY
+VIGNESH                                            QUARTERLY
+NITHIN
+VARUN
+ARUN
+LATHA
+SANJAY
+						   HALF-YEARLY
+						   MONTHLY
+
+MEMBER_NAME                                        TYPE
+-------------------------------------------------- --------------------
+MEENA
+ROHIT
+ANITHA
+VIVEK
+rani
+
+
+18= rows selected.
+
+
+19)display only members belonging to same branch
+
+
+SQL> select a.member_name as member1,b.member_name as member2,b.branch_id,a.branch_id from member a join member b on a.branch_id=b.branch_id and a.member_id<>b.branch_id;
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+ARJUN
+ARJUN                                                     102        102
+
+ARUN
+ARJUN                                                     102        102
+
+KIRAN
+ARJUN                                                     102        102
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+PRIYA
+PRIYA                                                     103        103
+
+NITHIN
+PRIYA                                                     103        103
+
+LATHA
+PRIYA                                                     103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+MEENA
+PRIYA                                                     103        103
+
+rani
+PRIYA                                                     103        103
+
+KARTHIK
+KARTHIK                                                   104        104
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+VARUN
+KARTHIK                                                   104        104
+
+SANJAY
+KARTHIK                                                   104        104
+
+ROHIT
+KARTHIK                                                   104        104
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+DIVYA
+DIVYA                                                     105        105
+
+ANITHA
+DIVYA                                                     105        105
+
+VIGNESH
+VIGNESH                                                   106        106
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+VIVEK
+VIGNESH                                                   106        106
+
+PRIYA
+NITHIN                                                    103        103
+
+NITHIN
+NITHIN                                                    103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+LATHA
+NITHIN                                                    103        103
+
+MEENA
+NITHIN                                                    103        103
+
+rani
+NITHIN                                                    103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+KARTHIK
+VARUN                                                     104        104
+
+VARUN
+VARUN                                                     104        104
+
+SANJAY
+VARUN                                                     104        104
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+ROHIT
+VARUN                                                     104        104
+
+ARJUN
+ARUN                                                      102        102
+
+ARUN
+ARUN                                                      102        102
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+KIRAN
+ARUN                                                      102        102
+
+PRIYA
+LATHA                                                     103        103
+
+NITHIN
+LATHA                                                     103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+LATHA
+LATHA                                                     103        103
+
+MEENA
+LATHA                                                     103        103
+
+rani
+LATHA                                                     103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+KARTHIK
+SANJAY                                                    104        104
+
+VARUN
+SANJAY                                                    104        104
+
+SANJAY
+SANJAY                                                    104        104
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+ROHIT
+SANJAY                                                    104        104
+
+ARJUN
+KIRAN                                                     102        102
+
+ARUN
+KIRAN                                                     102        102
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+KIRAN
+KIRAN                                                     102        102
+
+PRIYA
+MEENA                                                     103        103
+
+NITHIN
+MEENA                                                     103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+LATHA
+MEENA                                                     103        103
+
+MEENA
+MEENA                                                     103        103
+
+rani
+MEENA                                                     103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+KARTHIK
+ROHIT                                                     104        104
+
+VARUN
+ROHIT                                                     104        104
+
+SANJAY
+ROHIT                                                     104        104
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+ROHIT
+ROHIT                                                     104        104
+
+DIVYA
+ANITHA                                                    105        105
+
+ANITHA
+ANITHA                                                    105        105
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+VIGNESH
+VIVEK                                                     106        106
+
+VIVEK
+VIVEK                                                     106        106
+
+PRIYA
+rani                                                      103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+NITHIN
+rani                                                      103        103
+
+LATHA
+rani                                                      103        103
+
+MEENA
+rani                                                      103        103
+
+
+MEMBER1
+--------------------------------------------------
+MEMBER2                                             BRANCH_ID  BRANCH_ID
+-------------------------------------------------- ---------- ----------
+rani
+rani                                                      103        103
+
+
+58 rows selected.
+
+20) display members along with workout plans and trainers 
+
+
+SQL> select m.member_name,w.workout_plan_name, t.trainer_name from workout_plan w join member m on w.member_id=m.member_id join trainer t on w.trainer_id=t.trainer_id;
+
+MEMBER_NAME
+--------------------------------------------------
+WORKOUT_PLAN_NAME
+--------------------------------------------------
+TRAINER_NAME
+--------------------------------------------------
+ARJUN
+BEGINNER STRENGTH
+ARUN
+
+PRIYA
+FAT LOSS PROGRAM
+KARTHIK
+
+MEMBER_NAME
+--------------------------------------------------
+WORKOUT_PLAN_NAME
+--------------------------------------------------
+TRAINER_NAME
+--------------------------------------------------
+
+KARTHIK
+MUSCLE BUILDING
+PRIYA
+
+DIVYA
+CARDIO BOOST
+
+MEMBER_NAME
+--------------------------------------------------
+WORKOUT_PLAN_NAME
+--------------------------------------------------
+TRAINER_NAME
+--------------------------------------------------
+SURESH
+
+VIGNESH
+CORE STABILITY
+DIVYA
+
+21)display members with branches
+
+SQL> select m.member_name,w.workout_plan_name, t.trainer_name from workout_plan w join member m on w.member_id=m.member_id join trainer t on w.trainer_id=t.trainer_id;
+
+MEMBER_NAME
+--------------------------------------------------
+WORKOUT_PLAN_NAME
+--------------------------------------------------
+TRAINER_NAME
+--------------------------------------------------
+ARJUN
+BEGINNER STRENGTH
+ARUN
+
+PRIYA
+FAT LOSS PROGRAM
+KARTHIK
+
+MEMBER_NAME
+--------------------------------------------------
+WORKOUT_PLAN_NAME
+--------------------------------------------------
+TRAINER_NAME
+--------------------------------------------------
+
+KARTHIK
+MUSCLE BUILDING
+PRIYA
+
+DIVYA
+CARDIO BOOST
+
+MEMBER_NAME
+--------------------------------------------------
+WORKOUT_PLAN_NAME
+--------------------------------------------------
+TRAINER_NAME
+--------------------------------------------------
+SURESH
+
+VIGNESH
+CORE STABILITY
+DIVYA
+
+
+SQL> select m.member_name , b.branch_name from member m,branch b where m.branch_id=b.branch_id;
+
+MEMBER_NAME
+--------------------------------------------------
+BRANCH_NAME
+--------------------------------------------------
+ARJUN
+T NAGAR BRANCH
+
+PRIYA
+GANDHIPURAM BRANCH
+
+KARTHIK
+KK NAGAR BRANCH
+
+
+MEMBER_NAME
+--------------------------------------------------
+BRANCH_NAME
+--------------------------------------------------
+DIVYA
+OMALUR ROAD BRANCH
+
+VIGNESH
+PALAYAMKOTTAI BRANCH
+
+NITHIN
+GANDHIPURAM BRANCH
+
+
+MEMBER_NAME
+--------------------------------------------------
+BRANCH_NAME
+--------------------------------------------------
+VARUN
+KK NAGAR BRANCH
+
+ARUN
+T NAGAR BRANCH
+
+LATHA
+GANDHIPURAM BRANCH
+
+
+MEMBER_NAME
+--------------------------------------------------
+BRANCH_NAME
+--------------------------------------------------
+SANJAY
+KK NAGAR BRANCH
+
+KIRAN
+T NAGAR BRANCH
+
+MEENA
+GANDHIPURAM BRANCH
+
+
+MEMBER_NAME
+--------------------------------------------------
+BRANCH_NAME
+--------------------------------------------------
+ROHIT
+KK NAGAR BRANCH
+
+ANITHA
+OMALUR ROAD BRANCH
+
+VIVEK
+PALAYAMKOTTAI BRANCH
+
+
+MEMBER_NAME
+--------------------------------------------------
+BRANCH_NAME
+--------------------------------------------------
+rani
+GANDHIPURAM BRANCH
+
+
+16 rows selected.
+
+22)display members with membership between 1000 and 2000
+
+SQL> select m.member_name,ms.amount from member m join membership ms on ms.amount between 1000 and 2000;
+
+MEMBER_NAME                                            AMOUNT
+-------------------------------------------------- ----------
+ARJUN                                                    1700
+PRIYA                                                    1700
+KARTHIK                                                  1700
+DIVYA                                                    1700
+VIGNESH                                                  1700
+NITHIN                                                   1700
+VARUN                                                    1700
+ARUN                                                     1700
+LATHA                                                    1700
+SANJAY                                                   1700
+KIRAN                                                    1700
+
+MEMBER_NAME                                            AMOUNT
+-------------------------------------------------- ----------
+MEENA                                                    1700
+ROHIT                                                    1700
+ANITHA                                                   1700
+VIVEK                                                    1700
+rani                                                     1700
+
+16 rows selected.
+
+23)display cities where active members or staffs live
+
+SQL> select address_city from member where status='active' union select address_city from staff where status='active';
+
+ADDRESS_CITY
+------------------------------
+MADURAI
+CHENNAI
+COIMBATORE
+TIRUNELVELI
+
+
+24)display only members or staff with age above 25 and salary above 20000
+
+SQL> select member_name from member where age>25 union all select staff_name from staff where salary>20000;
+
+MEMBER_NAME
+--------------------------------------------------
+ARJUN
+KARTHIK
+DIVYA
+LATHA
+SANJAY
+MEENA
+ROHIT
+ANITHA
+VIVEK
+RAJESH KUMAR
+ANITHA DEVI
+
+MEMBER_NAME
+--------------------------------------------------
+PRAVEEN KUMAR
+MOHAN RAJ
+
+13 rows selected.
+
+
+25)to display members with existing memberships using left outer join
+
+
+SQL> SELECT m.MEMBER_NAME, ms.TYPE FROM MEMBER m left OUTER JOIN MEMBERSHIP ms ON m.MEMBER_ID = ms.MEMBER_ID;
+
+MEMBER_NAME                                        TYPE
+-------------------------------------------------- --------------------
+ARJUN                                              MONTHLY
+PRIYA                                              HALF-YEARLY
+KARTHIK                                            YEARLY
+DIVYA                                              MONTHLY
+VIGNESH                                            QUARTERLY
+VARUN
+rani
+Vash
+KIRAN
+LATHA
+MEENA
+
+MEMBER_NAME                                        TYPE
+-------------------------------------------------- --------------------
+SANJAY
+ROHIT
+ARUN
+ANITHA
+NITHIN
+VIVEK
+
+17 rows selected.
+26)to display members with existing memberships using right outer join
+
+SQL> SELECT m.MEMBER_NAME, ms.TYPE FROM MEMBER m RIGHT OUTER JOIN MEMBERSHIP ms ON m.MEMBER_ID = ms.MEMBER_ID;
+
+MEMBER_NAME                                        TYPE
+-------------------------------------------------- --------------------
+ARJUN                                              MONTHLY
+PRIYA                                              HALF-YEARLY
+KARTHIK                                            YEARLY
+DIVYA                                              MONTHLY
+VIGNESH                                            QUARTERLY
+						   HALF-YEARLY
+						   MONTHLY
+
+7 rows selected.
