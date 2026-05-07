@@ -1,0 +1,435 @@
+1) TRIGGER TO BEFORE INSERT FOR MEMBER NAME AND AGE VALIDATION
+
+SQL> CREATE OR REPLACE TRIGGER trg_before_insert_member
+BEFORE INSERT ON MEMBER
+FOR EACH ROW
+BEGIN
+IF :NEW.MEMBER_NAME IS NULL THEN
+RAISE_APPLICATION_ERROR(-20001, 'Member name cannot be null.');
+END IF;
+IF :NEW.AGE <= 0 THEN
+RAISE_APPLICATION_ERROR(-20002, 'Member age must be greater than 0.');
+END IF;
+DBMS_OUTPUT.PUT_LINE('BEFORE INSERT: Validating member - ' || :NEW.MEMBER_NAME);
+END;
+/
+SQL> INSERT INTO MEMBER(MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT)
+VALUES(201, 1, NULL, 'MALE', 25, 'MESODERM', 70);
+SQL> INSERT INTO MEMBER(MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT)
+VALUES(201, 1, 'ARJUN', 'MALE', 25, 'MESODERM', 70);
+
+2) TRIGGER TO FIRE AFTER A NEW TRAINER IS INSERTED TO DISPLAY THEIR DETAILS
+
+SQL> CREATE OR REPLACE TRIGGER trg_after_insert_trainer
+AFTER INSERT ON TRAINER
+FOR EACH ROW
+BEGIN
+DBMS_OUTPUT.PUT_LINE('AFTER INSERT: New Trainer added - ID: ' || :NEW.TRAINER_ID
+|| ', Name: ' || :NEW.TRAINER_NAME
+|| ', Salary: ' || :NEW.SALARY);
+END;
+/
+SQL> INSERT INTO TRAINER(TRAINER_ID, TRAINER_NAME, AGE, EXPERIENCE, SALARY)
+VALUES(401, 'SURESH', 30, 5, 42000);
+
+3) TRIGGER TO FIRE BEFORE A BRANCH IS DELETED THAT IT SHOULD HAVE NO ACTIVE MEMBERS
+
+SQL> CREATE OR REPLACE TRIGGER trg_before_delete_branch
+BEFORE DELETE ON BRANCH
+FOR EACH ROW
+DECLARE
+v_member_count INTEGER;
+BEGIN
+SELECT COUNT(*) INTO v_member_count
+FROM MEMBER WHERE BRANCH_ID = :OLD.BRANCH_ID;
+IF v_member_count > 0 THEN
+RAISE_APPLICATION_ERROR(-20003,
+'Cannot delete Branch ' || :OLD.BRANCH_NAME ||
+'. It has ' || v_member_count || ' active member(s).');
+END IF;
+DBMS_OUTPUT.PUT_LINE('BEFORE DELETE: Branch ' || :OLD.BRANCH_NAME || ' is safe to delete.');
+END;
+/
+SQL> DELETE FROM BRANCH WHERE BRANCH_ID = 1;
+SQL> DELETE FROM BRANCH WHERE BRANCH_ID = 99;
+
+4) TRIGGER TO RISE AFTER A STAFF IS DELETED BY SHOWING THEIR DETAILS
+
+SQL> CREATE OR REPLACE TRIGGER trg_after_delete_staff
+AFTER DELETE ON STAFF
+FOR EACH ROW
+BEGIN
+DBMS_OUTPUT.PUT_LINE('AFTER DELETE: Staff removed - ID: ' || :OLD.STAFF_ID
+|| ', Name: ' || :OLD.STAFF_NAME
+|| ', Branch ID: ' || :OLD.BRANCH_ID);
+END;
+/
+SQL> INSERT INTO STAFF(STAFF_ID, STAFF_NAME, BRANCH_ID, SALARY)
+VALUES(310, 'RAMESH', 1, 18000);
+SQL> DELETE FROM STAFF WHERE STAFF_ID = 310;
+
+5) TRIGGER TO FIRE WHEN THE USER TRIES TO UPDATE TRAINER SALARY BELOW 10000
+
+SQL> CREATE OR REPLACE TRIGGER trg_before_update_trainer_salary
+BEFORE UPDATE ON TRAINER
+FOR EACH ROW
+BEGIN
+IF :NEW.SALARY < 10000 THEN
+RAISE_APPLICATION_ERROR(-20004,
+'Trainer salary cannot be below 10000. Attempted: ' || :NEW.SALARY);
+END IF;
+DBMS_OUTPUT.PUT_LINE('BEFORE UPDATE: Trainer ' || :OLD.TRAINER_NAME ||
+' salary changing from ' || :OLD.SALARY ||
+' to ' || :NEW.SALARY);
+END;
+/
+SQL> SELECT TRAINER_ID, SALARY FROM TRAINER WHERE TRAINER_ID = 401;
+SQL> UPDATE TRAINER SET SALARY = 5000 WHERE TRAINER_ID = 401;
+SQL> UPDATE TRAINER SET SALARY = 50000 WHERE TRAINER_ID = 401;
+
+6) TRIGGER TO FIRE AFTER THE UPDATE AND DISPLAY THE UPDATED PAYMENT DETAILS
+
+SQL> CREATE OR REPLACE TRIGGER trg_after_update_payment
+AFTER UPDATE ON PAYMENT
+FOR EACH ROW
+BEGIN
+DBMS_OUTPUT.PUT_LINE('AFTER UPDATE: Payment ID ' || :OLD.PAYMENT_ID
+|| ' | Old Status: ' || :OLD.STATUS
+|| ' -> New Status: ' || :NEW.STATUS
+|| ' | Old Amount: ' || :OLD.AMOUNT
+|| ' -> New Amount: ' || :NEW.AMOUNT);
+END;
+/
+SQL> UPDATE PAYMENT SET STATUS = 'PAID', AMOUNT = 5000 WHERE PAYMENT_ID = 1;
+
+7) TRIGGER TO INSERT A NEW INVOICE INTO INVOICE TABLE AFTER A PAYMENT IS INSERTED
+
+SQL> SELECT * FROM INVOICE;
+SQL> CREATE OR REPLACE TRIGGER trg_after_insert_payment_invoice
+AFTER INSERT ON PAYMENT
+FOR EACH ROW
+DECLARE
+v_invoice_id   INTEGER;
+v_tax          FLOAT := 0.18;
+v_total        FLOAT;
+BEGIN
+SELECT NVL(MAX(INVOICE_ID), 0) + 1 INTO v_invoice_id FROM INVOICE;
+v_total := :NEW.AMOUNT + (:NEW.AMOUNT * v_tax);
+INSERT INTO INVOICE (INVOICE_ID, TAX, INVOICE_DATE, TOTAL_AMOUNT, PAYMENT_ID)
+VALUES (v_invoice_id, v_tax, SYSDATE, v_total, :NEW.PAYMENT_ID);
+DBMS_OUTPUT.PUT_LINE('AFTER INSERT: Invoice ' || v_invoice_id ||
+' auto-created for Payment ' || :NEW.PAYMENT_ID ||
+'. Total (with 18% tax): ' || v_total);
+END;
+/
+SQL> INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE, STATUS, BRANCH_ID, AMOUNT)
+VALUES(501, SYSDATE, 'PENDING', 1, 10000);
+SQL> SELECT * FROM INVOICE WHERE PAYMENT_ID = 501;
+SQL> INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE, STATUS, BRANCH_ID, AMOUNT)
+VALUES(502, SYSDATE, 'PENDING', 2, 5000);
+SQL> SELECT * FROM INVOICE;
+
+8) COMPOUND TRIGGER
+
+SQL> CREATE OR REPLACE TRIGGER trg_compound_staff_salary
+FOR UPDATE OF SALARY ON STAFF
+COMPOUND TRIGGER
+v_old_salary  FLOAT;
+v_new_salary  FLOAT;
+BEFORE EACH ROW IS
+BEGIN
+v_old_salary := :OLD.SALARY;
+v_new_salary := :NEW.SALARY;
+IF :NEW.SALARY < 15000 THEN
+RAISE_APPLICATION_ERROR(-20008,
+'Staff salary cannot be below 15000.');
+END IF;
+DBMS_OUTPUT.PUT_LINE('COMPOUND BEFORE EACH ROW: Staff ' || :OLD.STAFF_NAME ||
+' salary check passed.');
+END BEFORE EACH ROW;
+AFTER EACH ROW IS
+BEGIN
+DBMS_OUTPUT.PUT_LINE('COMPOUND AFTER EACH ROW: Staff ' || :OLD.STAFF_NAME ||
+' salary updated from ' || v_old_salary ||
+' to ' || v_new_salary);
+END AFTER EACH ROW;
+END trg_compound_staff_salary;
+/
+SQL> UPDATE STAFF SET SALARY = 5000 WHERE STAFF_ID = 301;
+SQL> UPDATE STAFF SET SALARY = 35000 WHERE STAFF_ID = 301;
+
+9) STATEMENT LEVEL TRIGGER
+
+SQL> CREATE OR REPLACE TRIGGER trg_stmt_after_update_payment_log
+AFTER UPDATE ON PAYMENT
+BEGIN
+DBMS_OUTPUT.PUT_LINE('STATEMENT TRIGGER: PAYMENT table was updated at '
+|| TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+|| '. All affected rows processed.');
+END;
+/
+SQL> UPDATE PAYMENT SET STATUS = 'FAILED' WHERE BRANCH_ID = 1;
+SQL> DESC MEMBER
+SQL> CREATE OR REPLACE TRIGGER trg_update_last_modified
+BEFORE UPDATE ON MEMBER
+FOR EACH ROW
+BEGIN
+:NEW.LAST_MODIFIED := SYSTIMESTAMP;
+END;
+/
+SQL> SELECT MEMBER_ID, WEIGHT, LAST_MODIFIED FROM MEMBER WHERE MEMBER_ID = 201;
+SQL> UPDATE MEMBER SET WEIGHT = 80 WHERE MEMBER_ID = 201;
+SQL> SELECT MEMBER_ID, WEIGHT, LAST_MODIFIED FROM MEMBER WHERE MEMBER_ID = 201;
+SQL> CREATE OR REPLACE TRIGGER trg_restrict_trainer_salary_update
+BEFORE UPDATE ON TRAINER
+FOR EACH ROW
+BEGIN
+IF TO_NUMBER(TO_CHAR(SYSDATE, 'HH24')) >= 18
+OR TO_NUMBER(TO_CHAR(SYSDATE, 'HH24')) < 9 THEN
+RAISE_APPLICATION_ERROR(-20009, 'Salary updates are not allowed before 9AM or after 6PM.');
+END IF;
+END;
+/
+SQL> UPDATE TRAINER SET SALARY = 20000 WHERE TRAINER_ID = 401;
+SQL> UPDATE TRAINER SET SALARY = 20000 WHERE TRAINER_ID = 401;
+SQL> CREATE OR REPLACE TRIGGER trg_restrict_branch_delete
+BEFORE DELETE ON BRANCH
+FOR EACH ROW
+DECLARE
+n NUMBER;
+BEGIN
+SELECT COUNT(*) INTO n
+FROM MEMBER
+WHERE BRANCH_ID = :OLD.BRANCH_ID;
+IF n > 0 THEN
+RAISE_APPLICATION_ERROR(-20003, 'Cannot delete branch inherited by MEMBER table.');
+END IF;
+END;
+/
+SQL> DELETE FROM BRANCH WHERE BRANCH_ID = 1;
+SQL> CREATE OR REPLACE TRIGGER trg_restrict_duplicate_member
+BEFORE INSERT ON MEMBER
+FOR EACH ROW
+DECLARE
+n NUMBER;
+BEGIN
+SELECT COUNT(*) INTO n
+FROM MEMBER
+WHERE MEMBER_NAME = :NEW.MEMBER_NAME;
+IF n > 0 THEN
+RAISE_APPLICATION_ERROR(-20004, 'Cannot insert member name already exists.');
+END IF;
+END;
+/
+SQL> SELECT MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = 201;
+SQL> INSERT INTO MEMBER(MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT)
+VALUES(205, 1, 'ARJUN', 'MALE', 22, 'ECTODERM', 65);
+SQL> SELECT EQUIPMENT_ID, EQUIPMENT_NAME, STOCK_AVAILABLE, REORDER_LEVEL
+FROM GYM_EQUIPMENT;
+SQL> CREATE OR REPLACE TRIGGER trg_validate_equipment_before_plan
+BEFORE INSERT ON TAKES_WORKOUT_PLAN
+FOR EACH ROW
+DECLARE
+n NUMBER;
+BEGIN
+SELECT COUNT(*) INTO n
+FROM GYM_EQUIPMENT
+WHERE STOCK_AVAILABLE <= REORDER_LEVEL;
+IF n > 0 THEN
+RAISE_APPLICATION_ERROR(-20010,
+'Cannot assign workout plan. Equipment stock is below reorder level.');
+END IF;
+END;
+/
+SQL> INSERT INTO TAKES_WORKOUT_PLAN(MEMBER_ID, PLAN_ID, ASSIGNED_DATE)
+VALUES(201, 3, TO_DATE('2026-03-27','YYYY-MM-DD'));
+SQL> UPDATE GYM_EQUIPMENT SET STOCK_AVAILABLE = 10 WHERE STOCK_AVAILABLE <= REORDER_LEVEL;
+SQL> SELECT EQUIPMENT_ID, EQUIPMENT_NAME, STOCK_AVAILABLE, REORDER_LEVEL
+FROM GYM_EQUIPMENT;
+SQL> INSERT INTO TAKES_WORKOUT_PLAN(MEMBER_ID, PLAN_ID, ASSIGNED_DATE)
+VALUES(201, 3, TO_DATE('2026-03-27','YYYY-MM-DD'));
+SQL> CREATE TABLE Student (student_id INT PRIMARY KEY, student_name VARCHAR(25), city VARCHAR(25));
+SQL> CREATE TABLE Course (course_id INT PRIMARY KEY, course_name VARCHAR(25), department VARCHAR(25));
+SQL> CREATE TABLE Enroll (
+student_id INT,
+course_id  INT,
+marks      INT,
+PRIMARY KEY (student_id, course_id),
+FOREIGN KEY (student_id) REFERENCES Student(student_id),
+FOREIGN KEY (course_id)  REFERENCES Course(course_id)
+);
+SQL> CREATE TABLE Teaches (
+instructor_name VARCHAR(25),
+course_id       INT,
+FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);
+SQL> INSERT INTO Student VALUES (1, 'Hari',     'Tirunelveli');
+SQL> INSERT INTO Student VALUES (2, 'Rohini',   'Bangalore');
+SQL> INSERT INTO Student VALUES (3, 'Dharun',   'Madurai');
+SQL> INSERT INTO Student VALUES (4, 'Prabha',   'Bangalore');
+SQL> INSERT INTO Course VALUES (102, 'OS',       'CSE');
+SQL> INSERT INTO Course VALUES (103, 'Networks', 'ECE');
+SQL> INSERT INTO Student VALUES (5, 'Nishanth', 'Tirunelveli');
+SQL> INSERT INTO Course VALUES (101, 'DBMS', 'CSE');
+SQL> INSERT INTO Teaches VALUES ('Dr. Kavi',      101);
+SQL> INSERT INTO Teaches VALUES ('Dr. Mala',      102);
+SQL> INSERT INTO Teaches VALUES ('Dr. Rajasekar', 103);
+SQL> INSERT INTO Enroll VALUES (1, 101, 82);
+SQL> INSERT INTO Enroll VALUES (1, 102, 88);
+SQL> INSERT INTO Enroll VALUES (2, 101, 74);
+SQL> INSERT INTO Enroll VALUES (3, 102, 91);
+SQL> INSERT INTO Enroll VALUES (4, 101, 86);
+SQL> INSERT INTO Enroll VALUES (5, 103, 70);
+SQL> INSERT INTO Teaches VALUES ('Dr. Kumar', 101);
+SQL> INSERT INTO Teaches VALUES ('Dr. Kumar', 102);
+SQL> INSERT INTO Teaches VALUES ('Dr. Raj',   103);
+SQL> SELECT student_id, instructor_name
+FROM Enroll e
+JOIN Teaches t USING (course_id)
+WHERE instructor_name = 'Dr. Kumar';
+SQL> UPDATE Enroll
+SET marks = marks * 1.10
+WHERE course_id IN (
+SELECT course_id FROM Teaches
+WHERE instructor_name = 'Dr. Kumar'
+);
+SQL> SELECT student_id, instructor_name, marks
+FROM Enroll e
+JOIN Teaches t USING (course_id)
+WHERE instructor_name = 'Dr. Kumar';
+SQL> SELECT s.student_name, e.marks
+FROM Student s
+JOIN Enroll e ON s.student_id = e.student_id
+WHERE e.marks = (
+SELECT MAX(marks)
+FROM Enroll
+WHERE marks < (SELECT MAX(marks) FROM Enroll)
+)
+AND ROWNUM = 1;
+SQL> SELECT AVG(marks) FROM Enroll;
+SQL> SELECT c.course_name,
+(SELECT AVG(marks) FROM Enroll) AS average_marks
+FROM Course c
+JOIN Enroll e ON c.course_id = e.course_id
+WHERE e.marks > (
+SELECT AVG(marks) FROM Enroll
+)
+GROUP BY c.course_name;
+SQL> SELECT s.student_name, s.city
+FROM Student s
+WHERE s.student_id IN (
+SELECT student_id
+FROM Enroll
+GROUP BY student_id
+HAVING COUNT(course_id) > 1
+);
+SQL> CREATE OR REPLACE FUNCTION get_most_enrolled_course
+RETURN VARCHAR2
+AS
+v_course_name VARCHAR2(25);
+BEGIN
+SELECT c.course_name
+INTO v_course_name
+FROM Course c
+JOIN Enroll e ON c.course_id = e.course_id
+GROUP BY c.course_name
+HAVING COUNT(e.student_id) = (
+SELECT MAX(COUNT(student_id))
+FROM Enroll
+GROUP BY course_id
+);
+RETURN v_course_name;
+END get_most_enrolled_course;
+/
+SQL> SELECT get_most_enrolled_course() FROM DUAL;
+SQL> CREATE TABLE Members (
+member_id   INT PRIMARY KEY,
+member_name VARCHAR(25),
+dept        VARCHAR(25),
+address     VARCHAR(50),
+phone       VARCHAR(15)
+);
+SQL> CREATE TABLE Books (
+book_id    INT PRIMARY KEY,
+book_title VARCHAR(50),
+author     VARCHAR(25),
+category   VARCHAR(25),
+price      FLOAT
+);
+SQL> CREATE TABLE Borrow (
+member_id   INT,
+book_id     INT,
+issue_date  DATE,
+return_date DATE,
+PRIMARY KEY (member_id, book_id),
+FOREIGN KEY (member_id) REFERENCES Members(member_id),
+FOREIGN KEY (book_id)   REFERENCES Books(book_id)
+);
+SQL> CREATE TABLE Staff (
+staff_id   INT PRIMARY KEY,
+staff_name VARCHAR(25),
+block      VARCHAR(10),
+building   VARCHAR(10)
+);
+SQL> CREATE TABLE Fine (
+member_id INT,
+amount    FLOAT,
+status    VARCHAR(15),
+FOREIGN KEY (member_id) REFERENCES Members(member_id)
+);
+SQL> INSERT INTO Members VALUES (1, 'Rohith',  'CSE', 'Tirunelveli', '9994561230');
+SQL> INSERT INTO Members VALUES (2, 'Gopesh',  'ECE', 'Bangalore',   '8870123456');
+SQL> INSERT INTO Members VALUES (3, 'Praveen', 'IT',  'Madurai',     '7558904321');
+SQL> INSERT INTO Members VALUES (4, 'Siva',    'CSE', 'Tirunelveli', '9345678901');
+SQL> INSERT INTO Books VALUES (1, 'Database Concepts',  'Suresh', 'Database',    475);
+SQL> INSERT INTO Books VALUES (2, 'Data Mining Basics', 'Raj',    'Data Mining', 530);
+SQL> INSERT INTO Books VALUES (3, 'Operating Systems',  'Anil',   'OS',          420);
+SQL> INSERT INTO Books VALUES (4, 'Advanced DBMS',      'Ajay',   'Database',    625);
+SQL> INSERT INTO Borrow VALUES (1, 1, DATE '2024-01-10', DATE '2024-01-20');
+SQL> INSERT INTO Borrow VALUES (2, 2, DATE '2024-02-01', DATE '2024-02-15');
+SQL> INSERT INTO Borrow VALUES (3, 3, DATE '2024-03-05', DATE '2024-03-20');
+SQL> INSERT INTO Borrow VALUES (4, 4, DATE '2024-04-01', DATE '2024-04-10');
+SQL> INSERT INTO Staff VALUES (1, 'Anto',     'A', 'Main');
+SQL> INSERT INTO Staff VALUES (2, 'Ajosh',    'C', 'Main');
+SQL> INSERT INTO Staff VALUES (3, 'Dharun',   'B', 'Annex');
+SQL> INSERT INTO Staff VALUES (4, 'Nishanth', 'A', 'Main');
+SQL> INSERT INTO Fine VALUES (1, 620, 'Paid');
+SQL> INSERT INTO Fine VALUES (2, 210, 'Unpaid');
+SQL> INSERT INTO Fine VALUES (3, 0,   'Paid');
+SQL> SELECT staff_name
+FROM Staff
+WHERE UPPER(block) IN ('A', 'C');
+SQL> SELECT b.*
+FROM Books b
+WHERE UPPER(b.category) IN ('DATABASE', 'DATA MINING');
+SQL> SELECT m.*
+FROM Members m
+JOIN Fine f ON m.member_id = f.member_id
+WHERE f.amount > 500;
+SQL> CREATE VIEW MemberBorrowedBooks AS
+SELECT m.member_id, m.member_name, b.book_title
+FROM Members m
+JOIN Borrow br ON m.member_id = br.member_id
+JOIN Books  b  ON br.book_id  = b.book_id;
+SQL> SELECT * FROM MemberBorrowedBooks;
+SQL> CREATE OR REPLACE PROCEDURE insert_book (
+p_book_id    IN INT,
+p_title      IN VARCHAR2,
+p_author     IN VARCHAR2,
+p_category   IN VARCHAR2,
+p_price      IN FLOAT
+)
+AS
+BEGIN
+INSERT INTO Books (book_id, book_title, author, category, price)
+VALUES (p_book_id, p_title, p_author, p_category, p_price);
+COMMIT;
+DBMS_OUTPUT.PUT_LINE('Book inserted successfully.');
+END;
+/
+SQL> EXEC insert_book(5, 'Computer Networks', 'Mani', 'Networks', 545);
+SQL> SELECT * FROM Books;
+SQL> set timing on;
+SQL> SELECT * FROM Members ORDER BY member_name;
+SQL> CREATE INDEX idx_member_name ON Members(member_name);
+SQL> SELECT * FROM Members ORDER BY member_name;
