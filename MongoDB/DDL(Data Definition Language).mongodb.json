@@ -1,0 +1,727 @@
+
+
+create member table 
+
+test> use gymdb
+switched to db gymdb
+gymdb> db.createCollection("MEMBER", {
+|   validator: {
+|     $jsonSchema: {
+|       bsonType: "object",
+|       required: ["member_id", "member_name", "gender", "age", "body_type"],
+|       properties: {
+|         member_id: { bsonType: "int" },
+|         branch_id: { bsonType: "int" },
+|         member_name: { bsonType: "string" },
+|         gender: { bsonType: "string", enum: ["Male", "Female", "Other"] },
+|         age: { bsonType: "int", minimum: 1 },
+|         body_type: { bsonType: "string", enum: ["Mesoderm", "Endoderm", "Ectoderm"] },
+|         weight: { bsonType: "double" },
+|         date_of_join: { bsonType: "date" },
+|         address_city: { bsonType: "string" },
+|         address_street: { bsonType: "string" },
+|         address_pincode: { bsonType: "string" }
+|       }
+|     }
+|   }
+| });
+{ ok: 1 }
+
+
+insert record
+gymdb> db.MEMBER.insertOne({
+|   member_id: 1062,
+|   branch_id: 102,
+|   member_name: "Amaz",
+|   gender: "Male",
+|   age: 28,
+|   body_type: "Mesoderm",
+|   weight: Double(80),
+|   date_of_join: new Date(),
+|   address_city: "MADURAI",
+|   address_street: "POWER HOUSE GYM",
+|   address_pincode: "625001"
+| });
+{
+  acknowledged: true,
+  insertedId: ObjectId('69f16b2e4312bca21a3682d2')
+}
+
+insert many record
+gymdb> db.MEMBER.insertMany([
+|   {
+|     member_id: 1063,
+|     branch_id: 103,
+|     member_name: "Praveena",
+|     gender: "Female",
+|     age: 24,
+|     body_type: "Ectoderm",
+|     weight: Double(55),
+|     date_of_join: new Date(),
+|     address_city: "CHENNAI",
+|     address_street: "FITNESS WORLD",
+|     address_pincode: "600028"
+|   },
+|   {
+|     member_id: 1064,
+|     branch_id: 104,
+|     member_name: "Krish",
+|     gender: "Male",
+|     age: 30,
+|     body_type: "Endoderm",
+|     weight: Double(90),
+|     date_of_join: new Date(),
+|     address_city: "COIMBATORE",
+|     address_street: "IRON TEMPLE GYM",
+|     address_pincode: "641001"
+|   },
+|   {
+|     member_id: 1065,
+|     branch_id: 105,
+|     member_name: "Deeksha",
+|     gender: "Female",
+|     age: 27,
+|     body_type: "Mesoderm",
+|     weight: Double(61),
+|     date_of_join: new Date(),
+|     address_city: "TRICHY",
+|     address_street: "SHAPE UP FITNESS",
+|     address_pincode: "620017"
+|   },
+|   {
+|     member_id: 1066,
+|     branch_id: 106,
+|     member_name: "Vimal",
+|     gender: "Male",
+|     age: 22,
+|     body_type: "Ectoderm",
+|     weight: Double(68),
+|     date_of_join: new Date(),
+|     address_city: "SALEM",
+|     address_street: "MUSCLE FACTORY",
+|     address_pincode: "636007"
+|   }
+| ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69f16b864312bca21a3682d3'),
+    '1': ObjectId('69f16b864312bca21a3682d4'),
+    '2': ObjectId('69f16b864312bca21a3682d5'),
+    '3': ObjectId('69f16b864312bca21a3682d6')
+  }
+}
+
+update a record 
+gymdb> db.MEMBER.updateOne(
+|   { member_id: 1062 },
+|   { $inc: { weight: Double(5) } }
+| );
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+gymdb> db.MEMBER.updateOne(
+|   { member_id: 1062 },
+|   { $set: { body_type: "Endoderm" } }
+| );
+|
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+gymdb> db.MEMBER.updateOne(
+|   { member_id: 1062 },
+|   { $rename: { "joining_date": "date_of_join" } }
+| );
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+
+update many record
+
+gymdb> db.MEMBER.updateMany(
+|   {},
+|   { $inc: { weight: Double(5) } }
+| );
+|
+|
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+
+replace record
+gymdb> db.MEMBER.replaceOne(
+|   { member_id: 1062 },
+|   {
+|     member_id: 1062,
+|     branch_id: 102,
+|     member_name: "Amosh",
+|     gender: "Male",
+|     age: 28,
+|     body_type: "Mesoderm",
+|     weight: Double(85),
+|     date_of_join: new Date(),
+|     address_city: "MADURAI",
+|     address_street: "POWER HOUSE GYM",
+|     address_pincode: "625001"
+|   }
+| );
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+display all members
+gymdb> db.MEMBER.find();
+[
+  {
+    _id: ObjectId('69f16b2e4312bca21a3682d2'),
+    member_id: 1062,
+    branch_id: 102,
+    member_name: 'Amosh',
+    gender: 'Male',
+    age: 28,
+    body_type: 'Mesoderm',
+    weight: 85,
+    date_of_join: ISODate('2026-04-29T02:25:03.486Z'),
+    address_city: 'MADURAI',
+    address_street: 'POWER HOUSE GYM',
+    address_pincode: '625001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d3'),
+    member_id: 1063,
+    branch_id: 103,
+    member_name: 'Praveena',
+    gender: 'Female',
+    age: 24,
+    body_type: 'Ectoderm',
+    weight: 60,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'CHENNAI',
+    address_street: 'FITNESS WORLD',
+    address_pincode: '600028'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d4'),
+    member_id: 1064,
+    branch_id: 104,
+    member_name: 'Krish',
+    gender: 'Male',
+    age: 30,
+    body_type: 'Endoderm',
+    weight: 95,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'COIMBATORE',
+    address_street: 'IRON TEMPLE GYM',
+    address_pincode: '641001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d5'),
+    member_id: 1065,
+    branch_id: 105,
+    member_name: 'Deeksha',
+    gender: 'Female',
+    age: 27,
+    body_type: 'Mesoderm',
+    weight: 66,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'TRICHY',
+    address_street: 'SHAPE UP FITNESS',
+    address_pincode: '620017'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d6'),
+    member_id: 1066,
+    branch_id: 106,
+    member_name: 'Vimal',
+    gender: 'Male',
+    age: 22,
+    body_type: 'Ectoderm',
+    weight: 73,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'SALEM',
+    address_street: 'MUSCLE FACTORY',
+    address_pincode: '636007'
+  }
+]
+
+display single record of member 1062 
+
+gymdb> db.MEMBER.find({ member_id: 1062 });
+[
+  {
+    _id: ObjectId('69f16b2e4312bca21a3682d2'),
+    member_id: 1062,
+    branch_id: 102,
+    member_name: 'Amosh',
+    gender: 'Male',
+    age: 28,
+    body_type: 'Mesoderm',
+    weight: 85,
+    date_of_join: ISODate('2026-04-29T02:25:03.486Z'),
+    address_city: 'MADURAI',
+    address_street: 'POWER HOUSE GYM',
+    address_pincode: '625001'
+  }
+]
+
+
+display only male members who are ectoderm
+gymdb>
+| db.MEMBER.find({
+|   $or: [
+|     { gender: "Male" },
+|     { body_type: "Ectoderm" }
+|   ]
+| });
+[
+  {
+    _id: ObjectId('69f16b2e4312bca21a3682d2'),
+    member_id: 1062,
+    branch_id: 102,
+    member_name: 'Amosh',
+    gender: 'Male',
+    age: 28,
+    body_type: 'Mesoderm',
+    weight: 85,
+    date_of_join: ISODate('2026-04-29T02:25:03.486Z'),
+    address_city: 'MADURAI',
+    address_street: 'POWER HOUSE GYM',
+    address_pincode: '625001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d3'),
+    member_id: 1063,
+    branch_id: 103,
+    member_name: 'Praveena',
+    gender: 'Female',
+    age: 24,
+    body_type: 'Ectoderm',
+    weight: 60,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'CHENNAI',
+    address_street: 'FITNESS WORLD',
+    address_pincode: '600028'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d4'),
+    member_id: 1064,
+    branch_id: 104,
+    member_name: 'Krish',
+    gender: 'Male',
+    age: 30,
+    body_type: 'Endoderm',
+    weight: 95,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'COIMBATORE',
+    address_street: 'IRON TEMPLE GYM',
+    address_pincode: '641001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d6'),
+    member_id: 1066,
+    branch_id: 106,
+    member_name: 'Vimal',
+    gender: 'Male',
+    age: 22,
+    body_type: 'Ectoderm',
+    weight: 73,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'SALEM',
+    address_street: 'MUSCLE FACTORY',
+    address_pincode: '636007'
+  }
+]
+
+members age greater than 25
+gymdb> db.MEMBER.find({ age: { $gt: 25 } });
+[
+  {
+    _id: ObjectId('69f16b2e4312bca21a3682d2'),
+    member_id: 1062,
+    branch_id: 102,
+    member_name: 'Amosh',
+    gender: 'Male',
+    age: 28,
+    body_type: 'Mesoderm',
+    weight: 85,
+    date_of_join: ISODate('2026-04-29T02:25:03.486Z'),
+    address_city: 'MADURAI',
+    address_street: 'POWER HOUSE GYM',
+    address_pincode: '625001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d4'),
+    member_id: 1064,
+    branch_id: 104,
+    member_name: 'Krish',
+    gender: 'Male',
+    age: 30,
+    body_type: 'Endoderm',
+    weight: 95,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'COIMBATORE',
+    address_street: 'IRON TEMPLE GYM',
+    address_pincode: '641001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d5'),
+    member_id: 1065,
+    branch_id: 105,
+    member_name: 'Deeksha',
+    gender: 'Female',
+    age: 27,
+    body_type: 'Mesoderm',
+    weight: 66,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'TRICHY',
+    address_street: 'SHAPE UP FITNESS',
+    address_pincode: '620017'
+  }
+]
+gymdb>
+
+members less than 27
+gymdb> db.MEMBER.find({ age: { $lt: 27 } });
+[
+  {
+    _id: ObjectId('69f16b864312bca21a3682d3'),
+    member_id: 1063,
+    branch_id: 103,
+    member_name: 'Praveena',
+    gender: 'Female',
+    age: 24,
+    body_type: 'Ectoderm',
+    weight: 60,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'CHENNAI',
+    address_street: 'FITNESS WORLD',
+    address_pincode: '600028'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d6'),
+    member_id: 1066,
+    branch_id: 106,
+    member_name: 'Vimal',
+    gender: 'Male',
+    age: 22,
+    body_type: 'Ectoderm',
+    weight: 73,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'SALEM',
+    address_street: 'MUSCLE FACTORY',
+    address_pincode: '636007'
+  }
+]
+gymdb>
+
+members with body type mesoderm , endoderm
+gymdb> db.MEMBER.find({
+|   body_type: { $in: ["Mesoderm", "Endoderm"] }
+| });
+[
+  {
+    _id: ObjectId('69f16b2e4312bca21a3682d2'),
+    member_id: 1062,
+    branch_id: 102,
+    member_name: 'Amosh',
+    gender: 'Male',
+    age: 28,
+    body_type: 'Mesoderm',
+    weight: 85,
+    date_of_join: ISODate('2026-04-29T02:25:03.486Z'),
+    address_city: 'MADURAI',
+    address_street: 'POWER HOUSE GYM',
+    address_pincode: '625001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d4'),
+    member_id: 1064,
+    branch_id: 104,
+    member_name: 'Krish',
+    gender: 'Male',
+    age: 30,
+    body_type: 'Endoderm',
+    weight: 95,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'COIMBATORE',
+    address_street: 'IRON TEMPLE GYM',
+    address_pincode: '641001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d5'),
+    member_id: 1065,
+    branch_id: 105,
+    member_name: 'Deeksha',
+    gender: 'Female',
+    age: 27,
+    body_type: 'Mesoderm',
+    weight: 66,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'TRICHY',
+    address_street: 'SHAPE UP FITNESS',
+    address_pincode: '620017'
+  }
+]
+gymdb>
+
+members with body type not in mesoderm , endoderm
+
+gymdb> db.MEMBER.find({
+|   body_type: { $nin: ["Mesoderm", "Endoderm"] }
+| });
+[
+  {
+    _id: ObjectId('69f16b864312bca21a3682d3'),
+    member_id: 1063,
+    branch_id: 103,
+    member_name: 'Praveena',
+    gender: 'Female',
+    age: 24,
+    body_type: 'Ectoderm',
+    weight: 60,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'CHENNAI',
+    address_street: 'FITNESS WORLD',
+    address_pincode: '600028'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d6'),
+    member_id: 1066,
+    branch_id: 106,
+    member_name: 'Vimal',
+    gender: 'Male',
+    age: 22,
+    body_type: 'Ectoderm',
+    weight: 73,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'SALEM',
+    address_street: 'MUSCLE FACTORY',
+    address_pincode: '636007'
+  }
+]
+gymdb>
+
+member ascending order
+gymdb> db.MEMBER.find().sort({ member_name: 1 });
+[
+  {
+    _id: ObjectId('69f16b2e4312bca21a3682d2'),
+    member_id: 1062,
+    branch_id: 102,
+    member_name: 'Amosh',
+    gender: 'Male',
+    age: 28,
+    body_type: 'Mesoderm',
+    weight: 85,
+    date_of_join: ISODate('2026-04-29T02:25:03.486Z'),
+    address_city: 'MADURAI',
+    address_street: 'POWER HOUSE GYM',
+    address_pincode: '625001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d5'),
+    member_id: 1065,
+    branch_id: 105,
+    member_name: 'Deeksha',
+    gender: 'Female',
+    age: 27,
+    body_type: 'Mesoderm',
+    weight: 66,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'TRICHY',
+    address_street: 'SHAPE UP FITNESS',
+    address_pincode: '620017'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d4'),
+    member_id: 1064,
+    branch_id: 104,
+    member_name: 'Krish',
+    gender: 'Male',
+    age: 30,
+    body_type: 'Endoderm',
+    weight: 95,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'COIMBATORE',
+    address_street: 'IRON TEMPLE GYM',
+    address_pincode: '641001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d3'),
+    member_id: 1063,
+    branch_id: 103,
+    member_name: 'Praveena',
+    gender: 'Female',
+    age: 24,
+    body_type: 'Ectoderm',
+    weight: 60,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'CHENNAI',
+    address_street: 'FITNESS WORLD',
+    address_pincode: '600028'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d6'),
+    member_id: 1066,
+    branch_id: 106,
+    member_name: 'Vimal',
+    gender: 'Male',
+    age: 22,
+    body_type: 'Ectoderm',
+    weight: 73,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'SALEM',
+    address_street: 'MUSCLE FACTORY',
+    address_pincode: '636007'
+  }
+]
+gymdb>
+
+members descending order
+gymdb> db.MEMBER.find().sort({ member_id: -1 });
+[
+  {
+    _id: ObjectId('69f16b864312bca21a3682d6'),
+    member_id: 1066,
+    branch_id: 106,
+    member_name: 'Vimal',
+    gender: 'Male',
+    age: 22,
+    body_type: 'Ectoderm',
+    weight: 73,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'SALEM',
+    address_street: 'MUSCLE FACTORY',
+    address_pincode: '636007'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d5'),
+    member_id: 1065,
+    branch_id: 105,
+    member_name: 'Deeksha',
+    gender: 'Female',
+    age: 27,
+    body_type: 'Mesoderm',
+    weight: 66,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'TRICHY',
+    address_street: 'SHAPE UP FITNESS',
+    address_pincode: '620017'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d4'),
+    member_id: 1064,
+    branch_id: 104,
+    member_name: 'Krish',
+    gender: 'Male',
+    age: 30,
+    body_type: 'Endoderm',
+    weight: 95,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'COIMBATORE',
+    address_street: 'IRON TEMPLE GYM',
+    address_pincode: '641001'
+  },
+  {
+    _id: ObjectId('69f16b864312bca21a3682d3'),
+    member_id: 1063,
+    branch_id: 103,
+    member_name: 'Praveena',
+    gender: 'Female',
+    age: 24,
+    body_type: 'Ectoderm',
+    weight: 60,
+    date_of_join: ISODate('2026-04-29T02:23:02.212Z'),
+    address_city: 'CHENNAI',
+    address_street: 'FITNESS WORLD',
+    address_pincode: '600028'
+  },
+  {
+    _id: ObjectId('69f16b2e4312bca21a3682d2'),
+    member_id: 1062,
+    branch_id: 102,
+    member_name: 'Amosh',
+    gender: 'Male',
+    age: 28,
+    body_type: 'Mesoderm',
+    weight: 85,
+    date_of_join: ISODate('2026-04-29T02:25:03.486Z'),
+    address_city: 'MADURAI',
+    address_street: 'POWER HOUSE GYM',
+    address_pincode: '625001'
+  }
+]
+gymdb>
+
+total members by body type
+gymdb> db.MEMBER.aggregate([
+|   {
+|     $group: {
+|       _id: "$body_type",
+|       total_members: { $sum: 1 }
+|     }
+|   }
+| ]);
+|
+[
+  { _id: 'Ectoderm', total_members: 2 },
+  { _id: 'Mesoderm', total_members: 2 },
+  { _id: 'Endoderm', total_members: 1 }
+]
+
+members by gender with max and min weight
+gymdb> db.MEMBER.aggregate([
+|   {
+|     $group: {
+|       _id: "$gender",
+|       total: { $sum: 1 },
+|       max_weight: { $max: "$weight" },
+|       min_weight: { $min: "$weight" }
+|     }
+|   }
+| ]);
+|
+[
+  { _id: 'Female', total: 2, max_weight: 66, min_weight: 60 },
+  { _id: 'Male', total: 3, max_weight: 95, min_weight: 73 }
+]
+gymdb>
+
+
+delete  a record
+gymdb> db.MEMBER.deleteOne({ member_id: 1062 });
+{ acknowledged: true, deletedCount: 1 }
+
+
+delete member with age less than 24
+gymdb> db.MEMBER.deleteMany({ age: { $lt: 24 } });
+{ acknowledged: true, deletedCount: 1 }
+gymdb>
+
+delele all
+gymdb> db.MEMBER.deleteMany({});
+{ acknowledged: true, deletedCount: 3 }
+gymdb>
+
+
