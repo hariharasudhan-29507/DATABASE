@@ -1,0 +1,1093 @@
+1.) FUNCTION TO GET TOTAL NUMBER OF MEMBERS (NO PARAMETER)
+
+
+SQL> CREATE OR REPLACE FUNCTION get_total_members
+  2  RETURN NUMBER
+  3  IS
+  4  v_total NUMBER;
+  5  BEGIN
+  6  SELECT COUNT(*) INTO v_total
+  7  FROM MEMBER;
+  8  RETURN v_total;
+  9  EXCEPTION
+ 10  WHEN OTHERS THEN
+ 11  RETURN 0;
+ 12  END get_total_members;
+ 13  /
+
+Function created.
+
+SQL> BEGIN
+  2  DBMS_OUTPUT.PUT_LINE('Total Members: ' || get_total_members);
+  3  END;
+  4  /
+Total Members: 5
+
+PL/SQL procedure successfully completed.
+
+
+2.) FUNCTION TO GET AGE OF A MEMBER (SINGLE IN PARAMETER)
+
+
+SQL> CREATE OR REPLACE FUNCTION get_member_age(p_member_id IN NUMBER)
+  2  RETURN NUMBER
+  3  IS
+  4  v_age NUMBER;
+  5  BEGIN
+  6  SELECT AGE INTO v_age
+  7  FROM MEMBER
+  8  WHERE MEMBER_ID = p_member_id;
+  9  RETURN v_age;
+ 10  EXCEPTION
+ 11  WHEN NO_DATA_FOUND THEN
+ 12  RETURN NULL;
+ 13  WHEN OTHERS THEN
+ 14  RETURN NULL;
+ 15  END get_member_age;
+ 16  /
+
+Function created.
+
+SQL> DECLARE
+  2  n NUMBER;
+  3  BEGIN
+  4  n :=&n;
+  5  DBMS_OUTPUT.PUT_LINE('AGE OF MEMBER ' || n || ' IS ' || get_member_age(n));
+  6  END;
+  7  /
+Enter value for n: 1002
+old   4: n :=&n;
+new   4: n :=1002;
+AGE OF MEMBER 1002 IS 28
+
+PL/SQL procedure successfully completed.
+
+Enter value for n: 1003
+old   4: n :=&n;
+new   4: n :=1003;
+AGE OF MEMBER 1003 IS 24
+
+PL/SQL procedure successfully completed.
+
+3.) FUNCTION TO COUNT MEMBERS BY BRANCH AND GENDER (MULTIPLE IN PARAMETERS)
+
+SQL> CREATE OR REPLACE FUNCTION get_members_by_branch_gender(
+  2  p_branch_id IN NUMBER,
+  3  p_gender    IN VARCHAR2
+  4  ) RETURN NUMBER
+  5  IS
+  6  v_count NUMBER;
+  7  BEGIN
+  8  SELECT COUNT(*) INTO v_count
+  9  FROM MEMBER
+ 10  WHERE BRANCH_ID = p_branch_id
+ 11  AND GENDER = p_gender;
+ 12  RETURN v_count;
+ 13  END get_members_by_branch_gender;
+ 14  /
+
+Function created.
+
+SQL> DECLARE
+  2  bid NUMBER;
+  3  gen VARCHAR2(10);
+  4  BEGIN
+  5  bid :=&bid;
+  6  gen :=&gen;
+  7  DBMS_OUTPUT.PUT_LINE('COUNT: ' || get_members_by_branch_gender(bid, gen));
+  8  END;
+  9  /
+Enter value for bid: 102
+old   5: bid :=&bid;
+new   5: bid :=102;
+Enter value for gen: 'Male'
+old   6: gen :=&gen;
+new   6: gen :='Male';
+COUNT: 1
+
+PL/SQL procedure successfully completed.
+
+Enter value for bid: 103
+old   5: bid :=&bid;
+new   5: bid :=103;
+Enter value for gen: 'Female'
+old   6: gen :=&gen;
+new   6: gen :='Female';
+COUNT: 1
+
+PL/SQL procedure successfully completed.
+
+4.) FUNCTION TO RETURN FULL TRAINER RECORD (RETURN ROWTYPE)
+
+SQL> CREATE OR REPLACE FUNCTION get_trainer_record(p_trainer_id IN NUMBER)
+  2  RETURN TRAINER%ROWTYPE
+  3  IS
+  4  v_trainer TRAINER%ROWTYPE;
+  5  BEGIN
+  6  SELECT * INTO v_trainer
+  7  FROM TRAINER
+  8  WHERE TRAINER_ID = p_trainer_id;
+  9  RETURN v_trainer;
+ 10  EXCEPTION
+ 11  WHEN NO_DATA_FOUND THEN RETURN NULL;
+ 12  WHEN OTHERS THEN RETURN NULL;
+ 13  END get_trainer_record;
+ 14  /
+
+Function created.
+
+SQL> DECLARE
+  2  n     NUMBER;
+  3  v_rec TRAINER%ROWTYPE;
+  4  BEGIN
+  5  n :=&n;
+  6  v_rec := get_trainer_record(n);
+  7  IF v_rec.TRAINER_ID IS NOT NULL THEN
+  8  DBMS_OUTPUT.PUT_LINE('NAME   : ' || v_rec.TRAINER_NAME);
+  9  DBMS_OUTPUT.PUT_LINE('SALARY : ' || v_rec.SALARY);
+ 10  DBMS_OUTPUT.PUT_LINE('EXP    : ' || v_rec.EXPERIENCE);
+ 11  END IF;
+ 12  END;
+ 13  /
+Enter value for n: 201
+old   5: n :=&n;
+new   5: n :=201;
+NAME   : ARUN
+SALARY : 41000
+EXP    : 7
+
+PL/SQL procedure successfully completed.
+
+Enter value for n: 204
+old   5: n :=&n;
+new   5: n :=204;
+NAME   : SURESH
+SALARY : 56000
+EXP    : 12
+
+PL/SQL procedure successfully completed.
+
+5.) FUNCTION TO RETURN ALL ACTIVE MEMBERSHIPS (RETURN REF CURSOR)
+
+SQL> CREATE OR REPLACE FUNCTION get_active_memberships_cursor
+  2  RETURN SYS_REFCURSOR
+  3  IS
+  4  v_cursor SYS_REFCURSOR;
+  5  BEGIN
+  6  OPEN v_cursor FOR
+  7  SELECT * FROM MEMBERSHIP
+  8  WHERE END_DATE >= SYSDATE;
+  9  RETURN v_cursor;
+ 10  END get_active_memberships_cursor;
+ 11  /
+
+Function created.
+
+SQL> DECLARE
+  2  v_cur    SYS_REFCURSOR;
+  3  v_mid    MEMBERSHIP.MEMBERSHIP_ID%TYPE;
+  4  v_memid  MEMBERSHIP.MEMBER_ID%TYPE;
+  5  v_branch MEMBERSHIP.BRANCH_ID%TYPE;
+  6  v_dur    MEMBERSHIP.DURATION%TYPE;
+  7  v_type   MEMBERSHIP.TYPE%TYPE;
+  8  v_amount MEMBERSHIP.AMOUNT%TYPE;
+  9  v_start  MEMBERSHIP.START_DATE%TYPE;
+ 10  v_end    MEMBERSHIP.END_DATE%TYPE;
+ 11  BEGIN
+ 12  v_cur := get_active_memberships_cursor;
+ 13  DBMS_OUTPUT.PUT_LINE('MEMBERSHIP_ID | MEMBER_ID | TYPE        | AMOUNT');
+ 14  DBMS_OUTPUT.PUT_LINE('------------------------------------------------');
+ 15  LOOP
+ 16  FETCH v_cur INTO v_mid, v_memid, v_branch, v_dur, v_type, v_amount, v_start, v_end;
+ 17  EXIT WHEN v_cur%NOTFOUND;
+ 18  DBMS_OUTPUT.PUT_LINE(v_mid || ' | ' || v_memid || ' | ' || v_type || ' | ' || v_amount);
+ 19  END LOOP;
+ 20  CLOSE v_cur;
+ 21  END;
+ 22  /
+MEMBERSHIP_ID | MEMBER_ID | TYPE        | AMOUNT
+------------------------------------------------
+10001 | 1002 | MONTHLY     | 3500
+10002 | 1003 | HALF-YEARLY | 6000
+10003 | 1004 | YEARLY      | 10500
+10004 | 1005 | MONTHLY     | 1700
+10005 | 1006 | QUARTERLY   | 3700
+
+PL/SQL procedure successfully completed.
+
+6.) FUNCTION TO GET TOTAL TRAINER SALARY EXPENSE (NO PARAMETER)
+
+SQL> CREATE OR REPLACE FUNCTION get_total_salary_expense
+  2  RETURN FLOAT
+  3  IS
+  4  v_total FLOAT;
+  5  BEGIN
+  6  SELECT SUM(SALARY) INTO v_total
+  7  FROM TRAINER;
+  8  RETURN NVL(v_total, 0);
+  9  EXCEPTION
+ 10  WHEN OTHERS THEN
+ 11  RETURN 0;
+ 12  END get_total_salary_expense;
+ 13  /
+
+Function created.
+
+SQL> BEGIN
+  2  DBMS_OUTPUT.PUT_LINE('Total Salary Expense: ' || get_total_salary_expense);
+  3  END;
+  4  /
+Total Salary Expense: 244000
+
+PL/SQL procedure successfully completed.
+
+7.) FUNCTION TO GET MEMBERSHIP AMOUNT BY ID (SINGLE IN PARAMETER)
+
+SQL> CREATE OR REPLACE FUNCTION get_membership_amount(p_membership_id IN NUMBER)
+  2  RETURN FLOAT
+  3  IS
+  4  v_amount FLOAT;
+  5  BEGIN
+  6  SELECT AMOUNT INTO v_amount
+  7  FROM MEMBERSHIP
+  8  WHERE MEMBERSHIP_ID = p_membership_id;
+  9  RETURN v_amount;
+ 10  EXCEPTION
+ 11  WHEN NO_DATA_FOUND THEN RETURN 0;
+ 12  WHEN OTHERS THEN RETURN NULL;
+ 13  END get_membership_amount;
+ 14  /
+
+Function created.
+
+SQL> DECLARE
+  2  n NUMBER;
+  3  BEGIN
+  4  n :=&n;
+  5  DBMS_OUTPUT.PUT_LINE('MEMBERSHIP FEE FOR ID ' || n || ' IS ' || get_membership_amount(n));
+  6  END;
+  7  /
+Enter value for n: 10001
+old   4: n :=&n;
+new   4: n :=10001;
+MEMBERSHIP FEE FOR ID 10001 IS 3500
+
+PL/SQL procedure successfully completed.
+
+Enter value for n: 10003
+old   4: n :=&n;
+new   4: n :=10003;
+MEMBERSHIP FEE FOR ID 10003 IS 10500
+
+PL/SQL procedure successfully completed.
+
+8.) FUNCTION TO COUNT PAID PAYMENTS ABOVE AMOUNT IN A BRANCH (MULTIPLE IN PARAMETERS)
+
+SQL> CREATE OR REPLACE FUNCTION get_payments_above_amount(
+  2  p_branch_id  IN NUMBER,
+  3  p_min_amount IN FLOAT
+  4  ) RETURN NUMBER
+  5  IS
+  6  v_count NUMBER;
+  7  BEGIN
+  8  SELECT COUNT(*) INTO v_count
+  9  FROM PAYMENT
+ 10  WHERE BRANCH_ID = p_branch_id
+ 11  AND AMOUNT > p_min_amount
+ 12  AND STATUS = 'PAID';
+ 13  RETURN v_count;
+ 14  EXCEPTION
+ 15  WHEN OTHERS THEN
+ 16  RETURN 0;
+ 17  END get_payments_above_amount;
+ 18  /
+
+Function created.
+
+SQL> DECLARE
+  2  bid NUMBER;
+  3  amt FLOAT;
+  4  BEGIN
+  5  bid :=&bid;
+  6  amt :=&amt;
+  7  DBMS_OUTPUT.PUT_LINE('PAYMENTS ABOVE ' || amt || ' IN BRANCH ' || bid || ' : ' || get_payments_above_amount(bid, amt));
+  8  END;
+  9  /
+Enter value for bid: 102
+old   5: bid :=&bid;
+new   5: bid :=102;
+Enter value for amt: 3000
+old   6: amt :=&amt;
+new   6: amt :=3000;
+PAYMENTS ABOVE 3000 IN BRANCH 102 : 1
+
+PL/SQL procedure successfully completed.
+
+Enter value for bid: 106
+old   5: bid :=&bid;
+new   5: bid :=106;
+Enter value for amt: 5000
+old   6: amt :=&amt;
+new   6: amt :=5000;
+PAYMENTS ABOVE 5000 IN BRANCH 106 : 1
+
+PL/SQL procedure successfully completed.
+
+9.) FUNCTION TO RETURN FULL STAFF RECORD (RETURN ROWTYPE)
+
+SQL> CREATE OR REPLACE FUNCTION get_staff_record(p_staff_id IN NUMBER)
+  2  RETURN STAFF%ROWTYPE
+  3  IS
+  4  v_staff STAFF%ROWTYPE;
+  5  BEGIN
+  6  SELECT * INTO v_staff
+  7  FROM STAFF
+  8  WHERE STAFF_ID = p_staff_id;
+  9  RETURN v_staff;
+ 10  EXCEPTION
+ 11  WHEN NO_DATA_FOUND THEN RETURN NULL;
+ 12  WHEN OTHERS THEN RETURN NULL;
+ 13  END get_staff_record;
+ 14  /
+
+Function created.
+
+SQL> DECLARE
+  2  n     NUMBER;
+  3  v_rec STAFF%ROWTYPE;
+  4  BEGIN
+  5  n :=&n;
+  6  v_rec := get_staff_record(n);
+  7  IF v_rec.STAFF_ID IS NOT NULL THEN
+  8  DBMS_OUTPUT.PUT_LINE('NAME   : ' || v_rec.STAFF_NAME);
+  9  DBMS_OUTPUT.PUT_LINE('SALARY : ' || v_rec.SALARY);
+ 10  DBMS_OUTPUT.PUT_LINE('CITY   : ' || v_rec.ADDRESS_CITY);
+ 11  END IF;
+ 12  END;
+ 13  /
+Enter value for n: 301
+old   5: n :=&n;
+new   5: n :=301;
+NAME   : RAJESH KUMAR
+SALARY : 24000
+CITY   : CHENNAI
+
+PL/SQL procedure successfully completed.
+
+Enter value for n: 303
+old   5: n :=&n;
+new   5: n :=303;
+NAME   : PRAVEEN KUMAR
+SALARY : 26000
+CITY   : MADURAI
+
+PL/SQL procedure successfully completed.
+
+10.) FUNCTION TO RETURN PAYMENTS OF A BRANCH (RETURN REF CURSOR)
+
+SQL> CREATE OR REPLACE FUNCTION get_branch_payments_cursor(p_branch_id IN NUMBER)
+  2  RETURN SYS_REFCURSOR
+  3  IS
+  4  v_cursor SYS_REFCURSOR;
+  5  BEGIN
+  6  OPEN v_cursor FOR
+  7  SELECT PAYMENT_ID, PAYMENT_DATE, STATUS, AMOUNT
+  8  FROM PAYMENT
+  9  WHERE BRANCH_ID = p_branch_id;
+ 10  RETURN v_cursor;
+ 11  END get_branch_payments_cursor;
+ 12  /
+
+Function created.
+
+SQL> DECLARE
+  2  n        NUMBER;
+  3  v_cur    SYS_REFCURSOR;
+  4  v_pid    PAYMENT.PAYMENT_ID%TYPE;
+  5  v_date   PAYMENT.PAYMENT_DATE%TYPE;
+  6  v_status PAYMENT.STATUS%TYPE;
+  7  v_amt    PAYMENT.AMOUNT%TYPE;
+  8  BEGIN
+  9  n :=&n;
+ 10  v_cur := get_branch_payments_cursor(n);
+ 11  DBMS_OUTPUT.PUT_LINE('PAYMENT_ID | DATE      | STATUS  | AMOUNT');
+ 12  DBMS_OUTPUT.PUT_LINE('------------------------------------------');
+ 13  LOOP
+ 14  FETCH v_cur INTO v_pid, v_date, v_status, v_amt;
+ 15  EXIT WHEN v_cur%NOTFOUND;
+ 16  DBMS_OUTPUT.PUT_LINE(v_pid || ' | ' || TO_CHAR(v_date,'DD-MON-YY') || ' | ' || v_status || ' | ' || v_amt);
+ 17  END LOOP;
+ 18  CLOSE v_cur;
+ 19  END;
+ 20  /
+Enter value for n: 102
+old   9: n :=&n;
+new   9: n :=102;
+PAYMENT_ID | DATE      | STATUS  | AMOUNT
+------------------------------------------
+501 | 20-FEB-26 | PAID | 5000
+
+PL/SQL procedure successfully completed.
+
+Enter value for n: 103
+old   9: n :=&n;
+new   9: n :=103;
+PAYMENT_ID | DATE      | STATUS  | AMOUNT
+------------------------------------------
+502 | 20-FEB-26 | PAID | 7500
+
+PL/SQL procedure successfully completed.
+
+
+11.) PROCEDURE TO DISPLAY TOTAL MEMBER COUNT (NO PARAMETER)
+
+SQL> CREATE OR REPLACE PROCEDURE show_total_members
+  2  IS
+  3  v_count NUMBER;
+  4  BEGIN
+  5  SELECT COUNT(*) INTO v_count FROM MEMBER;
+  6  DBMS_OUTPUT.PUT_LINE('TOTAL MEMBERS IN GYM: ' || v_count);
+  7  END show_total_members;
+  8  /
+
+Procedure created.
+
+SQL> EXEC show_total_members;
+TOTAL MEMBERS IN GYM: 5
+
+PL/SQL procedure successfully completed.
+
+12.) PROCEDURE TO INSERT A NEW MEMBER (IN PARAMETERS)
+
+SQL> CREATE OR REPLACE PROCEDURE add_member(
+  2  p_member_id IN NUMBER,
+  3  p_branch_id IN NUMBER,
+  4  p_name      IN VARCHAR2,
+  5  p_gender    IN VARCHAR2,
+  6  p_age       IN NUMBER,
+  7  p_body_type IN VARCHAR2,
+  8  p_weight    IN FLOAT
+  9  )
+ 10  IS
+ 11  BEGIN
+ 12  INSERT INTO MEMBER
+ 13  (MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT, DATE_OF_JOIN)
+ 14  VALUES
+ 15  (p_member_id, p_branch_id, p_name, p_gender, p_age, p_body_type, p_weight, SYSDATE);
+ 16  COMMIT;
+ 17  DBMS_OUTPUT.PUT_LINE('Member ' || p_name || ' added successfully.');
+ 18  END add_member;
+ 19  /
+
+Procedure created.
+
+SQL> EXEC add_member(2001, 102, 'RAVI', 'Male', 26, 'Mesoderm', 72);
+Member RAVI added successfully.
+
+PL/SQL procedure successfully completed.
+
+SQL> EXEC add_member(2002, 103, 'KAVYA', 'Female', 23, 'Ectoderm', 54);
+Member KAVYA added successfully.
+
+PL/SQL procedure successfully completed.
+
+13.) PROCEDURE TO GET MEMBER NAME BY ID (OUT PARAMETER)
+
+SQL> CREATE OR REPLACE PROCEDURE get_member_name(
+  2  p_member_id IN  NUMBER,
+  3  p_name      OUT VARCHAR2
+  4  )
+  5  IS
+  6  BEGIN
+  7  SELECT MEMBER_NAME INTO p_name
+  8  FROM MEMBER
+  9  WHERE MEMBER_ID = p_member_id;
+ 10  END get_member_name;
+ 11  /
+
+Procedure created.
+
+SQL> DECLARE
+  2  id   NUMBER;
+  3  name VARCHAR2(50);
+  4  BEGIN
+  5  id :=&id;
+  6  get_member_name(id, name);
+  7  DBMS_OUTPUT.PUT_LINE('NAME: ' || name);
+  8  END;
+  9  /
+Enter value for id: 1002
+old   5: id :=&id;
+new   5: id :=1002;
+NAME: ARJUN
+
+PL/SQL procedure successfully completed.
+
+Enter value for id: 1005
+old   5: id :=&id;
+new   5: id :=1005;
+NAME: DIVYA
+
+PL/SQL procedure successfully completed.
+
+14.) PROCEDURE TO UPDATE MEMBER WEIGHT (IN OUT PARAMETER)
+
+SQL> CREATE OR REPLACE PROCEDURE update_member_weight(
+  2  p_member_id IN     NUMBER,
+  3  p_weight    IN OUT VARCHAR2
+  4  )
+  5  IS
+  6  v_new_weight FLOAT := TO_NUMBER(p_weight);
+  7  BEGIN
+  8  UPDATE MEMBER
+  9  SET WEIGHT = v_new_weight
+ 10  WHERE MEMBER_ID = p_member_id;
+ 11  SELECT TO_CHAR(WEIGHT) INTO p_weight
+ 12  FROM MEMBER
+ 13  WHERE MEMBER_ID = p_member_id;
+ 14  COMMIT;
+ 15  END update_member_weight;
+ 16  /
+
+Procedure created.
+
+SQL> DECLARE
+  2  id NUMBER;
+  3  wt VARCHAR2(20);
+  4  BEGIN
+  5  id :=&id;
+  6  wt :=&wt;
+  7  update_member_weight(id, wt);
+  8  DBMS_OUTPUT.PUT_LINE('UPDATED WEIGHT FOR MEMBER ' || id || ': ' || wt || ' kg');
+  9  END;
+ 10  /
+Enter value for id: 1002
+old   5: id :=&id;
+new   5: id :=1002;
+Enter value for wt: '90'
+old   6: wt :=&wt;
+new   6: wt :='90';
+UPDATED WEIGHT FOR MEMBER 1002: 90 kg
+
+PL/SQL procedure successfully completed.
+
+Enter value for id: 1004
+old   5: id :=&id;
+new   5: id :=1004;
+Enter value for wt: '100'
+old   6: wt :=&wt;
+new   6: wt :='100';
+UPDATED WEIGHT FOR MEMBER 1004: 100 kg
+
+PL/SQL procedure successfully completed.
+
+15.) PROCEDURE TO DISPLAY ALL MEMBERS USING CURSOR (OUT REF CURSOR)
+
+SQL> CREATE OR REPLACE PROCEDURE get_members_cursor(
+  2  p_cursor OUT SYS_REFCURSOR
+  3  )
+  4  IS
+  5  BEGIN
+  6  OPEN p_cursor FOR
+  7  SELECT MEMBER_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE
+  8  FROM MEMBER;
+  9  END get_members_cursor;
+ 10  /
+
+Procedure created.
+
+SQL> DECLARE
+  2  v_cur    SYS_REFCURSOR;
+  3  v_id     MEMBER.MEMBER_ID%TYPE;
+  4  v_name   MEMBER.MEMBER_NAME%TYPE;
+  5  v_gender MEMBER.GENDER%TYPE;
+  6  v_age    MEMBER.AGE%TYPE;
+  7  v_btype  MEMBER.BODY_TYPE%TYPE;
+  8  BEGIN
+  9  get_members_cursor(v_cur);
+ 10  LOOP
+ 11  FETCH v_cur INTO v_id, v_name, v_gender, v_age, v_btype;
+ 12  EXIT WHEN v_cur%NOTFOUND;
+ 13  DBMS_OUTPUT.PUT_LINE(v_id || ' | ' || v_name || ' | ' || v_gender || ' | AGE:' || v_age);
+ 14  END LOOP;
+ 15  CLOSE v_cur;
+ 16  END;
+ 17  /
+1002 | ARJUN   | Male   | AGE:28
+1003 | PRIYA   | Female | AGE:24
+1004 | KARTHIK | Male   | AGE:30
+1005 | DIVYA   | Female | AGE:27
+1006 | VIGNESH | Male   | AGE:22
+
+PL/SQL procedure successfully completed.
+
+16.) PROCEDURE TO ADD A SUPPLIER WITH EXCEPTION HANDLING
+
+SQL> CREATE OR REPLACE PROCEDURE add_supplier(
+  2  p_supplier_id IN NUMBER,
+  3  p_name        IN VARCHAR2,
+  4  p_branch_id   IN NUMBER,
+  5  p_amount      IN FLOAT,
+  6  p_gst         IN VARCHAR2
+  7  )
+  8  IS
+  9  BEGIN
+ 10  INSERT INTO SUPPLIER
+ 11  (SUPPLIER_ID, SUPPLIER_NAME, BRANCH_ID, AMOUNT, GST_NUMBER)
+ 12  VALUES
+ 13  (p_supplier_id, p_name, p_branch_id, p_amount, p_gst);
+ 14  COMMIT;
+ 15  DBMS_OUTPUT.PUT_LINE('Supplier ' || p_name || ' registered.');
+ 16  EXCEPTION
+ 17  WHEN DUP_VAL_ON_INDEX THEN
+ 18  DBMS_OUTPUT.PUT_LINE('Error: Supplier ID already exists.');
+ 19  WHEN OTHERS THEN
+ 20  DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+ 21  END add_supplier;
+ 22  /
+
+Procedure created.
+
+SQL> EXEC add_supplier(501, 'FitGear Pvt Ltd', 102, 85000, '27AABCU9603R1ZM');
+Supplier FitGear Pvt Ltd registered.
+
+PL/SQL procedure successfully completed.
+
+-- Duplicate test:
+SQL> EXEC add_supplier(501, 'Duplicate Supplier', 103, 5000, '27AABCU0000R1ZX');
+Error: Supplier ID already exists.
+
+PL/SQL procedure successfully completed.
+
+17.) PROCEDURE TO RECORD A PAYMENT (IN PARAMETERS)
+
+SQL> CREATE OR REPLACE PROCEDURE record_payment(
+  2  p_payment_id IN NUMBER,
+  3  p_branch_id  IN NUMBER,
+  4  p_amount     IN FLOAT,
+  5  p_status     IN VARCHAR2
+  6  )
+  7  IS
+  8  BEGIN
+  9  INSERT INTO PAYMENT
+ 10  (PAYMENT_ID, PAYMENT_DATE, STATUS, BRANCH_ID, AMOUNT)
+ 11  VALUES
+ 12  (p_payment_id, SYSDATE, p_status, p_branch_id, p_amount);
+ 13  COMMIT;
+ 14  DBMS_OUTPUT.PUT_LINE('Payment ID ' || p_payment_id || ' recorded.');
+ 15  END record_payment;
+ 16  /
+
+Procedure created.
+
+SQL> EXEC record_payment(5001, 102, 12000, 'PAID');
+Payment ID 5001 recorded.
+
+PL/SQL procedure successfully completed.
+
+SQL> EXEC record_payment(5002, 103, 8500, 'PENDING');
+Payment ID 5002 recorded.
+
+PL/SQL procedure successfully completed.
+
+18.) PROCEDURE TO GET MEMBER COUNT OF A BRANCH (OUT PARAMETER)
+
+SQL> CREATE OR REPLACE PROCEDURE get_branch_member_count(
+  2  p_branch_id IN  NUMBER,
+  3  p_count     OUT NUMBER
+  4  )
+  5  IS
+  6  BEGIN
+  7  SELECT COUNT(*) INTO p_count
+  8  FROM MEMBER
+  9  WHERE BRANCH_ID = p_branch_id;
+ 10  END get_branch_member_count;
+ 11  /
+
+Procedure created.
+
+SQL> DECLARE
+  2  bid     NUMBER;
+  3  v_count NUMBER;
+  4  BEGIN
+  5  bid :=&bid;
+  6  get_branch_member_count(bid, v_count);
+  7  DBMS_OUTPUT.PUT_LINE('MEMBERS IN BRANCH ' || bid || ': ' || v_count);
+  8  END;
+  9  /
+Enter value for bid: 102
+old   5: bid :=&bid;
+new   5: bid :=102;
+MEMBERS IN BRANCH 102: 1
+
+PL/SQL procedure successfully completed.
+
+Enter value for bid: 104
+old   5: bid :=&bid;
+new   5: bid :=104;
+MEMBERS IN BRANCH 104: 1
+
+PL/SQL procedure successfully completed.
+
+19.) PROCEDURE TO RENEW MEMBERSHIP BY EXTENDING MONTHS (IN OUT PARAMETER)
+
+SQL> CREATE OR REPLACE PROCEDURE renew_membership(
+  2  p_membership_id IN     NUMBER,
+  3  p_extra_months  IN OUT VARCHAR2
+  4  )
+  5  IS
+  6  v_months NUMBER := TO_NUMBER(p_extra_months);
+  7  BEGIN
+  8  UPDATE MEMBERSHIP
+  9  SET END_DATE = ADD_MONTHS(END_DATE, v_months)
+ 10  WHERE MEMBERSHIP_ID = p_membership_id;
+ 11  SELECT TO_CHAR(END_DATE, 'DD-MON-YYYY')
+ 12  INTO p_extra_months
+ 13  FROM MEMBERSHIP
+ 14  WHERE MEMBERSHIP_ID = p_membership_id;
+ 15  COMMIT;
+ 16  END renew_membership;
+ 17  /
+
+Procedure created.
+
+SQL> DECLARE
+  2  v_val VARCHAR2(20) := '3';  
+  3  BEGIN
+  4  renew_membership(10001, v_val);
+  5  DBMS_OUTPUT.PUT_LINE('New End Date: ' || v_val);
+  6  END;
+  7  /
+New End Date: 20-AUG-2026
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2  v_val VARCHAR2(20) := '6';   
+  3  BEGIN
+  4  renew_membership(10002, v_val);
+  5  DBMS_OUTPUT.PUT_LINE('New End Date: ' || v_val);
+  6  END;
+  7  /
+New End Date: 20-FEB-2027
+
+PL/SQL procedure successfully completed.
+
+20.) PROCEDURE TO LIST TRAINERS OF A BRANCH USING CURSOR (OUT REF CURSOR)
+
+SQL> CREATE OR REPLACE PROCEDURE get_trainers_by_branch_cursor(
+  2  p_branch_id IN  NUMBER,
+  3  p_cursor    OUT SYS_REFCURSOR
+  4  )
+  5  IS
+  6  BEGIN
+  7  OPEN p_cursor FOR
+  8  SELECT T.TRAINER_ID, T.TRAINER_NAME, T.EXPERIENCE, T.SALARY
+  9  FROM TRAINER T
+ 10  JOIN STAFF S ON S.BRANCH_ID = p_branch_id
+ 11  WHERE T.ADDRESS_CITY = (
+ 12      SELECT ADDRESS_CITY FROM BRANCH WHERE BRANCH_ID = p_branch_id
+ 13  );
+ 14  END get_trainers_by_branch_cursor;
+ 15  /
+
+Procedure created.
+
+SQL> DECLARE
+  2  bid    NUMBER;
+  3  v_cur  SYS_REFCURSOR;
+  4  v_tid  TRAINER.TRAINER_ID%TYPE;
+  5  v_name TRAINER.TRAINER_NAME%TYPE;
+  6  v_exp  TRAINER.EXPERIENCE%TYPE;
+  7  v_sal  TRAINER.SALARY%TYPE;
+  8  BEGIN
+  9  bid :=&bid;
+ 10  get_trainers_by_branch_cursor(bid, v_cur);
+ 11  DBMS_OUTPUT.PUT_LINE('ID  | NAME   | EXP | SALARY');
+ 12  DBMS_OUTPUT.PUT_LINE('--------------------------------');
+ 13  LOOP
+ 14  FETCH v_cur INTO v_tid, v_name, v_exp, v_sal;
+ 15  EXIT WHEN v_cur%NOTFOUND;
+ 16  DBMS_OUTPUT.PUT_LINE(v_tid || ' | ' || v_name || ' | Exp: ' || v_exp || ' | ' || v_sal);
+ 17  END LOOP;
+ 18  CLOSE v_cur;
+ 19  END;
+ 20  /
+Enter value for bid: 102
+old   9: bid :=&bid;
+new   9: bid :=102;
+ID  | NAME   | EXP | SALARY
+--------------------------------
+201 | ARUN   | Exp: 7  | 41000
+
+PL/SQL procedure successfully completed.
+
+Enter value for bid: 104
+old   9: bid :=&bid;
+new   9: bid :=104;
+ID  | NAME   | EXP | SALARY
+--------------------------------
+203 | PRIYA  | Exp: 5  | 36000
+
+PL/SQL procedure successfully completed.
+
+
+21.) PROCEDURE TO DISPLAY ALL MEMBER IDs, NAMES, GENDER AND MEMBERSHIP TYPE
+     (JOIN MEMBER WITH MEMBERSHIP -- REF CURSOR OUT PARAMETER)
+
+SQL> CREATE OR REPLACE PROCEDURE member_details(c_cursor OUT SYS_REFCURSOR)
+  2  IS
+  3  BEGIN
+  4  OPEN c_cursor FOR
+  5  SELECT M.MEMBER_ID, M.MEMBER_NAME, M.GENDER, MS.TYPE AS MEMBERSHIP_TYPE
+  6  FROM MEMBER M
+  7  JOIN MEMBERSHIP MS ON M.MEMBER_ID = MS.MEMBER_ID;
+  8  END member_details;
+  9  /
+
+Procedure created.
+
+SQL> DECLARE
+  2  v_cursor        SYS_REFCURSOR;
+  3  v_member_id     MEMBER.MEMBER_ID%TYPE;
+  4  v_member_name   MEMBER.MEMBER_NAME%TYPE;
+  5  v_gender        MEMBER.GENDER%TYPE;
+  6  v_membership    MEMBERSHIP.TYPE%TYPE;
+  7  BEGIN
+  8  member_details(v_cursor);
+  9  LOOP
+ 10  FETCH v_cursor INTO v_member_id, v_member_name, v_gender, v_membership;
+ 11  EXIT WHEN v_cursor%NOTFOUND;
+ 12  DBMS_OUTPUT.PUT_LINE('ID:'||v_member_id||' NAME:'||v_member_name||' GENDER:'||v_gender||' MEMBERSHIP:'||v_membership);
+ 13  END LOOP;
+ 14  END;
+ 15  /
+ID:1002 NAME:ARJUN   GENDER:Male   MEMBERSHIP:MONTHLY
+ID:1003 NAME:PRIYA   GENDER:Female MEMBERSHIP:HALF-YEARLY
+ID:1004 NAME:KARTHIK GENDER:Male   MEMBERSHIP:YEARLY
+ID:1005 NAME:DIVYA   GENDER:Female MEMBERSHIP:MONTHLY
+ID:1006 NAME:VIGNESH GENDER:Male   MEMBERSHIP:QUARTERLY
+
+PL/SQL procedure successfully completed.
+
+22.) FUNCTION TO DISPLAY MEMBERSHIP TYPE OF ALL MEMBERS
+     (RETURN REF CURSOR)
+
+SQL> CREATE OR REPLACE FUNCTION get_membership_types RETURN SYS_REFCURSOR
+  2  IS
+  3  c_cursor SYS_REFCURSOR;
+  4  BEGIN
+  5  OPEN c_cursor FOR
+  6  SELECT MEMBER_ID, TYPE AS MEMBERSHIP_TYPE, AMOUNT
+  7  FROM MEMBERSHIP
+  8  WHERE TYPE IS NOT NULL;
+  9  RETURN c_cursor;
+ 10  END get_membership_types;
+ 11  /
+
+Function created.
+
+SQL> DECLARE
+  2  v_cursor SYS_REFCURSOR;
+  3  v_mid    MEMBERSHIP.MEMBER_ID%TYPE;
+  4  v_type   MEMBERSHIP.TYPE%TYPE;
+  5  v_amount MEMBERSHIP.AMOUNT%TYPE;
+  6  BEGIN
+  7  v_cursor := get_membership_types;
+  8  DBMS_OUTPUT.PUT_LINE('MEMBER_ID   MEMBERSHIP_TYPE   AMOUNT');
+  9  LOOP
+ 10  FETCH v_cursor INTO v_mid, v_type, v_amount;
+ 11  EXIT WHEN v_cursor%NOTFOUND;
+ 12  DBMS_OUTPUT.PUT_LINE(v_mid || '        ' || v_type || '        ' || v_amount);
+ 13  END LOOP;
+ 14  END;
+ 15  /
+MEMBER_ID   MEMBERSHIP_TYPE   AMOUNT
+1002        MONTHLY           3500
+1003        HALF-YEARLY       6000
+1004        YEARLY            10500
+1005        MONTHLY           1700
+1006        QUARTERLY         3700
+
+PL/SQL procedure successfully completed.
+
+23.) FUNCTION TO DISPLAY AVERAGE SALARY FOR EACH CITY
+     (RETURN REF CURSOR -- TRAINER TABLE)
+
+SQL> CREATE OR REPLACE FUNCTION avg_salary_by_city RETURN SYS_REFCURSOR
+  2  IS
+  3  c_cursor SYS_REFCURSOR;
+  4  BEGIN
+  5  OPEN c_cursor FOR
+  6  SELECT ADDRESS_CITY, AVG(SALARY) AS AVG_SALARY
+  7  FROM TRAINER
+  8  GROUP BY ADDRESS_CITY;
+  9  RETURN c_cursor;
+ 10  END avg_salary_by_city;
+ 11  /
+
+Function created.
+
+SQL> DECLARE
+  2  v_cursor SYS_REFCURSOR;
+  3  v_salary NUMBER;
+  4  v_city   VARCHAR2(30);
+  5  BEGIN
+  6  v_cursor := avg_salary_by_city;
+  7  DBMS_OUTPUT.PUT_LINE('AVG_SALARY    CITY');
+  8  LOOP
+  9  FETCH v_cursor INTO v_city, v_salary;
+ 10  EXIT WHEN v_cursor%NOTFOUND;
+ 11  DBMS_OUTPUT.PUT_LINE(v_salary || '        ' || v_city);
+ 12  END LOOP;
+ 13  END;
+ 14  /
+AVG_SALARY    CITY
+41000        CHENNAI
+48000        COIMBATORE
+36000        MADURAI
+56000        SALEM
+38000        TIRUNELVELI
+
+PL/SQL procedure successfully completed.
+
+24.) PROCEDURE TO DISPLAY THE MEMBER WITH HIGHEST AGE IN EACH CITY
+     (NESTED WHILE LOOP)
+
+SQL> CREATE OR REPLACE PROCEDURE max_age_per_city
+  2  IS
+  3      CURSOR city_cur IS
+  4          SELECT DISTINCT ADDRESS_CITY FROM MEMBER WHERE ADDRESS_CITY IS NOT NULL;
+  5
+  6      v_city     MEMBER.ADDRESS_CITY%TYPE;
+  7      v_max_age  NUMBER;
+  8      v_mem_name MEMBER.MEMBER_NAME%TYPE;
+  9  BEGIN
+ 10      OPEN city_cur;
+ 11      FETCH city_cur INTO v_city;
+ 12
+ 13      -- Outer loop: iterate through each city
+ 14      WHILE city_cur%FOUND LOOP
+ 15          v_max_age := 0;
+ 16
+ 17          -- Find max age for current city
+ 18          SELECT MAX(AGE) INTO v_max_age
+ 19          FROM MEMBER
+ 20          WHERE ADDRESS_CITY = v_city;
+ 21
+ 22          DECLARE
+ 23              CURSOR mem_cur IS
+ 24                  SELECT MEMBER_NAME FROM MEMBER
+ 25                  WHERE ADDRESS_CITY = v_city AND AGE = v_max_age;
+ 26          BEGIN
+ 27              OPEN mem_cur;
+ 28              FETCH mem_cur INTO v_mem_name;
+ 29
+ 30              -- Inner loop: print all members with max age in this city
+ 31              WHILE mem_cur%FOUND LOOP
+ 32                  DBMS_OUTPUT.PUT_LINE('CITY: ' || v_city || ' | NAME: ' || v_mem_name || ' | AGE: ' || v_max_age);
+ 33                  FETCH mem_cur INTO v_mem_name;
+ 34              END LOOP;
+ 35              CLOSE mem_cur;
+ 36          END;
+ 37
+ 38          FETCH city_cur INTO v_city;
+ 39      END LOOP;
+ 40
+ 41      CLOSE city_cur;
+ 42  END;
+ 43  /
+
+Procedure created.
+
+SQL> EXEC max_age_per_city;
+CITY: CHENNAI     | NAME: ARJUN    | AGE: 28
+CITY: COIMBATORE  | NAME: KARTHIK  | AGE: 30
+CITY: MADURAI     | NAME: ARJUN    | AGE: 28
+CITY: SALEM       | NAME: VIGNESH  | AGE: 22
+CITY: TRICHY      | NAME: DIVYA    | AGE: 27
+CITY: TIRUNELVELI | NAME: VIGNESH  | AGE: 22
+
+PL/SQL procedure successfully completed.
+
+25.) PROCEDURE TO RETURN THE BRANCH WITH THE MAXIMUM NUMBER OF MEMBERS
+     (OUT PARAMETERS)
+
+SQL> CREATE OR REPLACE PROCEDURE max_members_branch(
+  2  v_out_branch OUT VARCHAR2,
+  3  v_out_count  OUT NUMBER
+  4  ) IS
+  5  BEGIN
+  6  SELECT ADDRESS_CITY, count_val
+  7  INTO v_out_branch, v_out_count
+  8  FROM (
+  9      SELECT ADDRESS_CITY, COUNT(*) AS count_val
+ 10      FROM MEMBER
+ 11      WHERE ADDRESS_CITY IS NOT NULL
+ 12      GROUP BY ADDRESS_CITY
+ 13      ORDER BY count_val DESC
+ 14  )
+ 15  WHERE ROWNUM = 1;
+ 16  END;
+ 17  /
+
+Procedure created.
+
+SQL> DECLARE
+  2  branch_name VARCHAR2(50);
+  3  mem_count   NUMBER;
+  4  BEGIN
+  5  max_members_branch(branch_name, mem_count);
+  6  DBMS_OUTPUT.PUT_LINE('Branch city with most members: ' || branch_name || ' (Count: ' || mem_count || ')');
+  7  END;
+  8  /
+Branch city with most members: MADURAI (Count: 2)
+
+PL/SQL procedure successfully completed.
+
+26.) FUNCTION TO RETURN DETAILS OF MEMBERS YOUNGER THAN THE AVERAGE AGE
+     IN KARTHIK'S CITY  (REF CURSOR -- SUBQUERY)
+
+SQL> CREATE OR REPLACE FUNCTION members_below_avg_karthik RETURN SYS_REFCURSOR
+  2  IS
+  3      v_cursor SYS_REFCURSOR;
+  4  BEGIN
+  5      OPEN v_cursor FOR
+  6      SELECT MEMBER_NAME, AGE, ADDRESS_CITY
+  7      FROM MEMBER
+  8      WHERE AGE < (
+  9          -- Subquery: average age of members in the same city as KARTHIK
+ 10          SELECT AVG(AGE)
+ 11          FROM MEMBER
+ 12          WHERE ADDRESS_CITY = (
+ 13              SELECT ADDRESS_CITY FROM MEMBER
+ 14              WHERE MEMBER_NAME = 'KARTHIK' AND ROWNUM = 1
+ 15          )
+ 16      );
+ 17      RETURN v_cursor;
+ 18  END;
+ 19  /
+
+Function created.
+
+SQL> DECLARE
+  2      v_res    SYS_REFCURSOR;
+  3      v_name   MEMBER.MEMBER_NAME%TYPE;
+  4      v_age    MEMBER.AGE%TYPE;
+  5      v_city   MEMBER.ADDRESS_CITY%TYPE;
+  6  BEGIN
+  7      v_res := members_below_avg_karthik;
+  8      LOOP
+  9          FETCH v_res INTO v_name, v_age, v_city;
+ 10          EXIT WHEN v_res%NOTFOUND;
+ 11          DBMS_OUTPUT.PUT_LINE('NAME: ' || v_name || ' | AGE: ' || v_age || ' | CITY: ' || v_city);
+ 12      END LOOP;
+ 13      CLOSE v_res;
+ 14  END;
+ 15  /
+NAME: PRIYA   | AGE: 24 | CITY: CHENNAI
+NAME: DIVYA   | AGE: 27 | CITY: TRICHY
+NAME: VIGNESH | AGE: 22 | CITY: SALEM
+NAME: ARJUN   | AGE: 28 | CITY: MADURAI
+
+PL/SQL procedure successfully completed.
