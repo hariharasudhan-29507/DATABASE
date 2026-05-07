@@ -1,0 +1,1035 @@
+1.)TRIGGER TO BEFORE INSERT FOR MEMBER NAME AND AGE VALIDATION
+
+SQL> CREATE OR REPLACE TRIGGER trg_before_insert_member
+  2  BEFORE INSERT ON MEMBER
+  3  FOR EACH ROW
+  4  BEGIN
+  5      IF :NEW.MEMBER_NAME IS NULL THEN
+  6          RAISE_APPLICATION_ERROR(-20001, 'Member name cannot be null.');
+  7      END IF;
+  8      IF :NEW.AGE <= 0 THEN
+  9          RAISE_APPLICATION_ERROR(-20002, 'Member age must be greater than 0.');
+ 10      END IF;
+ 11      DBMS_OUTPUT.PUT_LINE('BEFORE INSERT: Validating member - ' || :NEW.MEMBER_NAME);
+ 12  END;
+ 13  /
+
+Trigger created.
+
+SQL> INSERT INTO MEMBER(MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT)
+  2  VALUES(201, 1, NULL, 'MALE', 25, 'MESODERM', 70);
+INSERT INTO MEMBER(MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT)
+            *
+ERROR at line 1:
+ORA-20001: Member name cannot be null.
+ORA-06512: at "C##HR.TRG_BEFORE_INSERT_MEMBER", line 3
+ORA-04088: error during execution of trigger 'C##HR.TRG_BEFORE_INSERT_MEMBER'
+
+SQL> INSERT INTO MEMBER(MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT)
+  2  VALUES(201, 1, 'ARJUN', 'MALE', 25, 'MESODERM', 70);
+BEFORE INSERT: Validating member - ARJUN
+
+1 row created.
+
+
+2.)TRIGGER TO FIRE AFTER A NEW TRAINER IS INSERTED TO DISPLAY THEIR DETAILS
+
+SQL> CREATE OR REPLACE TRIGGER trg_after_insert_trainer
+  2  AFTER INSERT ON TRAINER
+  3  FOR EACH ROW
+  4  BEGIN
+  5      DBMS_OUTPUT.PUT_LINE('AFTER INSERT: New Trainer added - ID: ' || :NEW.TRAINER_ID
+  6                           || ', Name: ' || :NEW.TRAINER_NAME
+  7                           || ', Salary: ' || :NEW.SALARY);
+  8  END;
+  9  /
+
+Trigger created.
+
+SQL> INSERT INTO TRAINER(TRAINER_ID, TRAINER_NAME, AGE, EXPERIENCE, SALARY)
+  2  VALUES(401, 'SURESH', 30, 5, 42000);
+AFTER INSERT: New Trainer added - ID: 401, Name: SURESH, Salary: 42000
+
+1 row created.
+
+
+3.)TRIGGER TO FIRE BEFORE A BRANCH IS DELETED THAT IT SHOULD HAVE NO ACTIVE MEMBERS
+
+SQL> CREATE OR REPLACE TRIGGER trg_before_delete_branch
+  2  BEFORE DELETE ON BRANCH
+  3  FOR EACH ROW
+  4  DECLARE
+  5      v_member_count INTEGER;
+  6  BEGIN
+  7      SELECT COUNT(*) INTO v_member_count
+  8      FROM MEMBER WHERE BRANCH_ID = :OLD.BRANCH_ID;
+  9      IF v_member_count > 0 THEN
+ 10          RAISE_APPLICATION_ERROR(-20003,
+ 11              'Cannot delete Branch ' || :OLD.BRANCH_NAME ||
+ 12              '. It has ' || v_member_count || ' active member(s).');
+ 13      END IF;
+ 14      DBMS_OUTPUT.PUT_LINE('BEFORE DELETE: Branch ' || :OLD.BRANCH_NAME || ' is safe to delete.');
+ 15  END;
+ 16  /
+
+Trigger created.
+
+SQL> DELETE FROM BRANCH WHERE BRANCH_ID = 1;
+DELETE FROM BRANCH WHERE BRANCH_ID = 1
+            *
+ERROR at line 1:
+ORA-20003: Cannot delete Branch IRONZONE. It has 3 active member(s).
+ORA-06512: at "C##HR.TRG_BEFORE_DELETE_BRANCH", line 8
+ORA-04088: error during execution of trigger 'C##HR.TRG_BEFORE_DELETE_BRANCH'
+
+SQL> DELETE FROM BRANCH WHERE BRANCH_ID = 99;
+BEFORE DELETE: Branch TEMP_BRANCH is safe to delete.
+
+1 row deleted.
+
+
+4.)TRIGGER TO RISE AFTER A STAFF IS DELETED BY SHOWING THEIR DETAILS
+
+SQL> CREATE OR REPLACE TRIGGER trg_after_delete_staff
+  2  AFTER DELETE ON STAFF
+  3  FOR EACH ROW
+  4  BEGIN
+  5      DBMS_OUTPUT.PUT_LINE('AFTER DELETE: Staff removed - ID: ' || :OLD.STAFF_ID
+  6                           || ', Name: ' || :OLD.STAFF_NAME
+  7                           || ', Branch ID: ' || :OLD.BRANCH_ID);
+  8  END;
+  9  /
+
+Trigger created.
+
+SQL> INSERT INTO STAFF(STAFF_ID, STAFF_NAME, BRANCH_ID, SALARY)
+  2  VALUES(310, 'RAMESH', 1, 18000);
+
+1 row created.
+
+SQL> DELETE FROM STAFF WHERE STAFF_ID = 310;
+AFTER DELETE: Staff removed - ID: 310, Name: RAMESH, Branch ID: 1
+
+1 row deleted.
+
+
+5.)TRIGGER TO FIRE WHEN THE USER TRIES TO UPDATE TRAINER SALARY BELOW 10000
+
+SQL> CREATE OR REPLACE TRIGGER trg_before_update_trainer_salary
+  2  BEFORE UPDATE ON TRAINER
+  3  FOR EACH ROW
+  4  BEGIN
+  5      IF :NEW.SALARY < 10000 THEN
+  6          RAISE_APPLICATION_ERROR(-20004,
+  7              'Trainer salary cannot be below 10000. Attempted: ' || :NEW.SALARY);
+  8      END IF;
+  9      DBMS_OUTPUT.PUT_LINE('BEFORE UPDATE: Trainer ' || :OLD.TRAINER_NAME ||
+ 10                           ' salary changing from ' || :OLD.SALARY ||
+ 11                           ' to ' || :NEW.SALARY);
+ 12  END;
+ 13  /
+
+Trigger created.
+
+SQL> SELECT TRAINER_ID, SALARY FROM TRAINER WHERE TRAINER_ID = 401;
+
+TRAINER_ID     SALARY
+---------- ----------
+       401      42000
+
+SQL> UPDATE TRAINER SET SALARY = 5000 WHERE TRAINER_ID = 401;
+UPDATE TRAINER SET SALARY = 5000 WHERE TRAINER_ID = 401
+       *
+ERROR at line 1:
+ORA-20004: Trainer salary cannot be below 10000. Attempted: 5000
+ORA-06512: at "C##HR.TRG_BEFORE_UPDATE_TRAINER_SALARY", line 4
+ORA-04088: error during execution of trigger 'C##HR.TRG_BEFORE_UPDATE_TRAINER_SALARY'
+
+SQL> UPDATE TRAINER SET SALARY = 50000 WHERE TRAINER_ID = 401;
+BEFORE UPDATE: Trainer SURESH salary changing from 42000 to 50000
+
+1 row updated.
+
+
+6.)TRIGGER TO FIRE AFTER THE UPDATE AND DISPLAY THE UPDATED PAYMENT DETAILS
+
+SQL> CREATE OR REPLACE TRIGGER trg_after_update_payment
+  2  AFTER UPDATE ON PAYMENT
+  3  FOR EACH ROW
+  4  BEGIN
+  5      DBMS_OUTPUT.PUT_LINE('AFTER UPDATE: Payment ID ' || :OLD.PAYMENT_ID
+  6                           || ' | Old Status: ' || :OLD.STATUS
+  7                           || ' -> New Status: ' || :NEW.STATUS
+  8                           || ' | Old Amount: ' || :OLD.AMOUNT
+  9                           || ' -> New Amount: ' || :NEW.AMOUNT);
+ 10  END;
+ 11  /
+
+Trigger created.
+
+SQL> UPDATE PAYMENT SET STATUS = 'PAID', AMOUNT = 5000 WHERE PAYMENT_ID = 1;
+AFTER UPDATE: Payment ID 1 | Old Status: PENDING -> New Status: PAID | Old Amount: 3000 -> New Amount: 5000
+
+1 row updated.
+
+
+7.)TRIGGER TO INSERT A NEW INVOICE INTO INVOICE TABLE AFTER A PAYMENT IS INSERTED
+
+SQL> SELECT * FROM INVOICE;
+
+no rows selected
+
+SQL> CREATE OR REPLACE TRIGGER trg_after_insert_payment_invoice
+  2  AFTER INSERT ON PAYMENT
+  3  FOR EACH ROW
+  4  DECLARE
+  5      v_invoice_id   INTEGER;
+  6      v_tax          FLOAT := 0.18;
+  7      v_total        FLOAT;
+  8  BEGIN
+  9      SELECT NVL(MAX(INVOICE_ID), 0) + 1 INTO v_invoice_id FROM INVOICE;
+ 10      v_total := :NEW.AMOUNT + (:NEW.AMOUNT * v_tax);
+ 11      INSERT INTO INVOICE (INVOICE_ID, TAX, INVOICE_DATE, TOTAL_AMOUNT, PAYMENT_ID)
+ 12      VALUES (v_invoice_id, v_tax, SYSDATE, v_total, :NEW.PAYMENT_ID);
+ 13      DBMS_OUTPUT.PUT_LINE('AFTER INSERT: Invoice ' || v_invoice_id ||
+ 14                           ' auto-created for Payment ' || :NEW.PAYMENT_ID ||
+ 15                           '. Total (with 18% tax): ' || v_total);
+ 16  END;
+ 17  /
+
+Trigger created.
+
+SQL> INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE, STATUS, BRANCH_ID, AMOUNT)
+  2  VALUES(501, SYSDATE, 'PENDING', 1, 10000);
+AFTER INSERT: Invoice 8001 auto-created for Payment 501. Total (with 18% tax): 11800
+
+1 row created.
+
+SQL> SELECT * FROM INVOICE WHERE PAYMENT_ID = 501;
+
+INVOICE_ID        TAX INVOICE_DAT TOTAL_AMOUNT PAYMENT_ID
+---------- ---------- ----------- ------------ ----------
+      8001        .18 27-MAR-26         11800        501
+
+SQL> INSERT INTO PAYMENT(PAYMENT_ID, PAYMENT_DATE, STATUS, BRANCH_ID, AMOUNT)
+  2  VALUES(502, SYSDATE, 'PENDING', 2, 5000);
+AFTER INSERT: Invoice 8002 auto-created for Payment 502. Total (with 18% tax): 5900
+
+1 row created.
+
+SQL> SELECT * FROM INVOICE;
+
+INVOICE_ID        TAX INVOICE_DAT TOTAL_AMOUNT PAYMENT_ID
+---------- ---------- ----------- ------------ ----------
+      8001        .18 27-MAR-26         11800        501
+      8002        .18 27-MAR-26          5900        502
+
+
+8.)COMPOUND TRIGGER
+
+SQL> CREATE OR REPLACE TRIGGER trg_compound_staff_salary
+  2  FOR UPDATE OF SALARY ON STAFF
+  3  COMPOUND TRIGGER
+  4
+  5      v_old_salary  FLOAT;
+  6      v_new_salary  FLOAT;
+  7
+  8      BEFORE EACH ROW IS
+  9      BEGIN
+ 10          v_old_salary := :OLD.SALARY;
+ 11          v_new_salary := :NEW.SALARY;
+ 12          IF :NEW.SALARY < 15000 THEN
+ 13              RAISE_APPLICATION_ERROR(-20008,
+ 14                  'Staff salary cannot be below 15000.');
+ 15          END IF;
+ 16          DBMS_OUTPUT.PUT_LINE('COMPOUND BEFORE EACH ROW: Staff ' || :OLD.STAFF_NAME ||
+ 17                               ' salary check passed.');
+ 18      END BEFORE EACH ROW;
+ 19
+ 20      AFTER EACH ROW IS
+ 21      BEGIN
+ 22          DBMS_OUTPUT.PUT_LINE('COMPOUND AFTER EACH ROW: Staff ' || :OLD.STAFF_NAME ||
+ 23                               ' salary updated from ' || v_old_salary ||
+ 24                               ' to ' || v_new_salary);
+ 25      END AFTER EACH ROW;
+ 26
+ 27  END trg_compound_staff_salary;
+ 28  /
+
+Trigger created.
+
+SQL> UPDATE STAFF SET SALARY = 5000 WHERE STAFF_ID = 301;
+UPDATE STAFF SET SALARY = 5000 WHERE STAFF_ID = 301
+       *
+ERROR at line 1:
+ORA-20008: Staff salary cannot be below 15000.
+ORA-06512: at "C##HR.TRG_COMPOUND_STAFF_SALARY", line 6
+ORA-04088: error during execution of trigger 'C##HR.TRG_COMPOUND_STAFF_SALARY'
+
+SQL> UPDATE STAFF SET SALARY = 35000 WHERE STAFF_ID = 301;
+COMPOUND BEFORE EACH ROW: Staff KAVITHA salary check passed.
+COMPOUND AFTER EACH ROW: Staff KAVITHA salary updated from 20000 to 35000
+
+1 row updated.
+
+
+9.)STATEMENT LEVEL TRIGGER
+
+SQL> CREATE OR REPLACE TRIGGER trg_stmt_after_update_payment_log
+  2  AFTER UPDATE ON PAYMENT
+  3  BEGIN
+  4      DBMS_OUTPUT.PUT_LINE('STATEMENT TRIGGER: PAYMENT table was updated at '
+  5                           || TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+  6                           || '. All affected rows processed.');
+  7  END;
+  8  /
+
+Trigger created.
+
+SQL> UPDATE PAYMENT SET STATUS = 'FAILED' WHERE BRANCH_ID = 1;
+STATEMENT TRIGGER: PAYMENT table was updated at 2026-03-27 14:35:22. All affected rows processed.
+
+3 rows updated.
+
+
+Hackerrank
+
+
+SELF - I
+
+A.)TRIGGER TO AUTOMATICALLY UPDATE last_modified TIMESTAMP WHENEVER A ROW IN MEMBER TABLE IS UPDATED
+
+SQL> DESC MEMBER
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MEMBER_ID                                          NUMBER
+ BRANCH_ID                                          NUMBER
+ MEMBER_NAME                                        VARCHAR2(30)
+ GENDER                                             VARCHAR2(10)
+ AGE                                                NUMBER
+ BODY_TYPE                                          VARCHAR2(20)
+ WEIGHT                                             NUMBER
+ ADDRESS_CITY                                       VARCHAR2(30)
+ LAST_MODIFIED                                      TIMESTAMP(6)
+
+SQL> CREATE OR REPLACE TRIGGER trg_update_last_modified
+  2  BEFORE UPDATE ON MEMBER
+  3  FOR EACH ROW
+  4  BEGIN
+  5      :NEW.LAST_MODIFIED := SYSTIMESTAMP;
+  6  END;
+  7  /
+
+Trigger created.
+
+SQL> SELECT MEMBER_ID, WEIGHT, LAST_MODIFIED FROM MEMBER WHERE MEMBER_ID = 201;
+
+ MEMBER_ID     WEIGHT
+---------- ----------
+LAST_MODIFIED
+---------------------------------------------------------------------------
+       201         70
+
+
+SQL> UPDATE MEMBER SET WEIGHT = 80 WHERE MEMBER_ID = 201;
+
+1 row updated.
+
+SQL> SELECT MEMBER_ID, WEIGHT, LAST_MODIFIED FROM MEMBER WHERE MEMBER_ID = 201;
+
+ MEMBER_ID     WEIGHT
+---------- ----------
+LAST_MODIFIED
+---------------------------------------------------------------------------
+       201         80
+27-MAR-26 02.15.43.812000 PM
+
+
+B.)TRIGGER TO PREVENT UPDATES ON SALARY COLUMN IN TRAINER TABLE DURING SPECIFIC HOURS (BEFORE 9AM OR AFTER 6PM)
+
+SQL> CREATE OR REPLACE TRIGGER trg_restrict_trainer_salary_update
+  2  BEFORE UPDATE ON TRAINER
+  3  FOR EACH ROW
+  4  BEGIN
+  5      IF TO_NUMBER(TO_CHAR(SYSDATE, 'HH24')) >= 18
+  6      OR TO_NUMBER(TO_CHAR(SYSDATE, 'HH24')) < 9 THEN
+  7          RAISE_APPLICATION_ERROR(-20009, 'Salary updates are not allowed before 9AM or after 6PM.');
+  8      END IF;
+  9  END;
+ 10  /
+
+Trigger created.
+
+SQL> UPDATE TRAINER SET SALARY = 20000 WHERE TRAINER_ID = 401;
+UPDATE TRAINER SET SALARY = 20000 WHERE TRAINER_ID = 401
+       *
+ERROR at line 1:
+ORA-20009: Salary updates are not allowed before 9AM or after 6PM.
+ORA-06512: at "C##HR.TRG_RESTRICT_TRAINER_SALARY_UPDATE", line 3
+ORA-04088: error during execution of trigger 'C##HR.TRG_RESTRICT_TRAINER_SALARY_UPDATE'
+
+SQL> UPDATE TRAINER SET SALARY = 20000 WHERE TRAINER_ID = 401;
+
+1 row updated.
+
+
+SELF - II
+
+A.)TRIGGER TO ENFORCE REFERENTIAL INTEGRITY BY PREVENTING DELETION OF A BRANCH IF MEMBER RECORDS EXIST
+
+SQL> CREATE OR REPLACE TRIGGER trg_restrict_branch_delete
+  2  BEFORE DELETE ON BRANCH
+  3  FOR EACH ROW
+  4  DECLARE
+  5      n NUMBER;
+  6  BEGIN
+  7      SELECT COUNT(*) INTO n
+  8      FROM MEMBER
+  9      WHERE BRANCH_ID = :OLD.BRANCH_ID;
+ 10      IF n > 0 THEN
+ 11          RAISE_APPLICATION_ERROR(-20003, 'Cannot delete branch inherited by MEMBER table.');
+ 12      END IF;
+ 13  END;
+ 14  /
+
+Trigger created.
+
+SQL> DELETE FROM BRANCH WHERE BRANCH_ID = 1;
+DELETE FROM BRANCH WHERE BRANCH_ID = 1
+            *
+ERROR at line 1:
+ORA-20003: Cannot delete branch inherited by MEMBER table.
+ORA-06512: at "C##HR.TRG_RESTRICT_BRANCH_DELETE", line 7
+ORA-04088: error during execution of trigger 'C##HR.TRG_RESTRICT_BRANCH_DELETE'
+
+
+B.)TRIGGER TO CHECK FOR DUPLICATE VALUES IN MEMBER_NAME COLUMN AND RAISE AN EXCEPTION IF FOUND
+
+SQL> CREATE OR REPLACE TRIGGER trg_restrict_duplicate_member
+  2  BEFORE INSERT ON MEMBER
+  3  FOR EACH ROW
+  4  DECLARE
+  5      n NUMBER;
+  6  BEGIN
+  7      SELECT COUNT(*) INTO n
+  8      FROM MEMBER
+  9      WHERE MEMBER_NAME = :NEW.MEMBER_NAME;
+ 10      IF n > 0 THEN
+ 11          RAISE_APPLICATION_ERROR(-20004, 'Cannot insert member name already exists.');
+ 12      END IF;
+ 13  END;
+ 14  /
+
+Trigger created.
+
+SQL> SELECT MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = 201;
+
+MEMBER_NAME
+------------------------------
+ARJUN
+
+SQL> INSERT INTO MEMBER(MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT)
+  2  VALUES(205, 1, 'ARJUN', 'MALE', 22, 'ECTODERM', 65);
+INSERT INTO MEMBER(MEMBER_ID, BRANCH_ID, MEMBER_NAME, GENDER, AGE, BODY_TYPE, WEIGHT)
+            *
+ERROR at line 1:
+ORA-20004: Cannot insert member name already exists.
+ORA-06512: at "C##HR.TRG_RESTRICT_DUPLICATE_MEMBER", line 7
+ORA-04088: error during execution of trigger 'C##HR.TRG_RESTRICT_DUPLICATE_MEMBER'
+
+
+SELF - III
+
+A.)TRIGGER TO VALIDATE EQUIPMENT AVAILABILITY BEFORE ALLOWING A WORKOUT PLAN TO BE ASSIGNED
+
+SQL> SELECT EQUIPMENT_ID, EQUIPMENT_NAME, STOCK_AVAILABLE, REORDER_LEVEL
+  2  FROM GYM_EQUIPMENT;
+
+EQUIPMENT_ID EQUIPMENT_NAME         STOCK_AVAILABLE REORDER_LEVEL
+------------ ---------------------- --------------- -------------
+           1 TREADMILL                            2             5
+           2 DUMBBELLS                            8             3
+           3 BENCH PRESS                          4             6
+           4 CYCLING MACHINE                      1             4
+           5 ROWING MACHINE                       7             5
+
+5 rows selected.
+
+SQL> CREATE OR REPLACE TRIGGER trg_validate_equipment_before_plan
+  2  BEFORE INSERT ON TAKES_WORKOUT_PLAN
+  3  FOR EACH ROW
+  4  DECLARE
+  5      n NUMBER;
+  6  BEGIN
+  7      SELECT COUNT(*) INTO n
+  8      FROM GYM_EQUIPMENT
+  9      WHERE STOCK_AVAILABLE <= REORDER_LEVEL;
+  10     IF n > 0 THEN
+  11         RAISE_APPLICATION_ERROR(-20010,
+  12             'Cannot assign workout plan. Equipment stock is below reorder level.');
+  13     END IF;
+  14  END;
+ 15  /
+
+Trigger created.
+
+SQL> INSERT INTO TAKES_WORKOUT_PLAN(MEMBER_ID, PLAN_ID, ASSIGNED_DATE)
+  2  VALUES(201, 3, TO_DATE('2026-03-27','YYYY-MM-DD'));
+INSERT INTO TAKES_WORKOUT_PLAN(MEMBER_ID, PLAN_ID, ASSIGNED_DATE)
+            *
+ERROR at line 1:
+ORA-20010: Cannot assign workout plan. Equipment stock is below reorder level.
+ORA-06512: at "C##HR.TRG_VALIDATE_EQUIPMENT_BEFORE_PLAN", line 9
+ORA-04088: error during execution of trigger 'C##HR.TRG_VALIDATE_EQUIPMENT_BEFORE_PLAN'
+
+SQL> UPDATE GYM_EQUIPMENT SET STOCK_AVAILABLE = 10 WHERE STOCK_AVAILABLE <= REORDER_LEVEL;
+
+3 rows updated.
+
+SQL> SELECT EQUIPMENT_ID, EQUIPMENT_NAME, STOCK_AVAILABLE, REORDER_LEVEL
+  2  FROM GYM_EQUIPMENT;
+
+EQUIPMENT_ID EQUIPMENT_NAME         STOCK_AVAILABLE REORDER_LEVEL
+------------ ---------------------- --------------- -------------
+           1 TREADMILL                           10             5
+           2 DUMBBELLS                            8             3
+           3 BENCH PRESS                         10             6
+           4 CYCLING MACHINE                     10             4
+           5 ROWING MACHINE                       7             5
+
+5 rows selected.
+
+SQL> INSERT INTO TAKES_WORKOUT_PLAN(MEMBER_ID, PLAN_ID, ASSIGNED_DATE)
+  2  VALUES(201, 3, TO_DATE('2026-03-27','YYYY-MM-DD'));
+
+1 row created.
+
+
+
+Question paper
+
+7.a)
+
+SQL> CREATE TABLE Student (student_id INT PRIMARY KEY, student_name VARCHAR(25), city VARCHAR(25));
+
+Table created.
+
+SQL> CREATE TABLE Course (course_id INT PRIMARY KEY, course_name VARCHAR(25), department VARCHAR(25));
+
+Table created.
+
+SQL> CREATE TABLE Enroll (
+  2      student_id INT,
+  3      course_id  INT,
+  4      marks      INT,
+  5      PRIMARY KEY (student_id, course_id),
+  6      FOREIGN KEY (student_id) REFERENCES Student(student_id),
+  7      FOREIGN KEY (course_id)  REFERENCES Course(course_id)
+  8  );
+
+Table created.
+
+SQL> CREATE TABLE Teaches (
+  2      instructor_name VARCHAR(25),
+  3      course_id       INT,
+  4      FOREIGN KEY (course_id) REFERENCES Course(course_id)
+  5  );
+
+Table created.
+
+SQL> INSERT INTO Student VALUES (1, 'Hari',     'Tirunelveli');
+
+1 row created.
+
+SQL> INSERT INTO Student VALUES (2, 'Rohini',   'Bangalore');
+
+1 row created.
+
+SQL> INSERT INTO Student VALUES (3, 'Dharun',   'Madurai');
+
+1 row created.
+
+SQL> INSERT INTO Student VALUES (4, 'Prabha',   'Bangalore');
+
+1 row created.
+
+SQL> INSERT INTO Course VALUES (102, 'OS',       'CSE');
+
+1 row created.
+
+SQL> INSERT INTO Course VALUES (103, 'Networks', 'ECE');
+
+1 row created.
+
+SQL> INSERT INTO Student VALUES (5, 'Nishanth', 'Tirunelveli');
+
+1 row created.
+
+SQL> INSERT INTO Course VALUES (101, 'DBMS', 'CSE');
+
+1 row created.
+
+SQL> INSERT INTO Teaches VALUES ('Dr. Kavi',      101);
+
+1 row created.
+
+SQL> INSERT INTO Teaches VALUES ('Dr. Mala',      102);
+
+1 row created.
+
+SQL> INSERT INTO Teaches VALUES ('Dr. Rajasekar', 103);
+
+1 row created.
+
+SQL> INSERT INTO Enroll VALUES (1, 101, 82);
+
+1 row created.
+
+SQL> INSERT INTO Enroll VALUES (1, 102, 88);
+
+1 row created.
+
+SQL> INSERT INTO Enroll VALUES (2, 101, 74);
+
+1 row created.
+
+SQL> INSERT INTO Enroll VALUES (3, 102, 91);
+
+1 row created.
+
+SQL> INSERT INTO Enroll VALUES (4, 101, 86);
+
+1 row created.
+
+SQL> INSERT INTO Enroll VALUES (5, 103, 70);
+
+1 row created.
+
+SQL> INSERT INTO Teaches VALUES ('Dr. Kumar', 101);
+
+1 row created.
+
+SQL> INSERT INTO Teaches VALUES ('Dr. Kumar', 102);
+
+1 row created.
+
+SQL> INSERT INTO Teaches VALUES ('Dr. Raj',   103);
+
+1 row created.
+
+A. Increase marks by 10% for students in courses taught by 'Dr. Kumar'
+
+SQL> SELECT student_id, instructor_name
+  2  FROM Enroll e
+  3  JOIN Teaches t USING (course_id)
+  4  WHERE instructor_name = 'Dr. Kumar';
+
+STUDENT_ID INSTRUCTOR_NAME
+---------- -------------------------
+         1 Dr. Kumar
+         1 Dr. Kumar
+         2 Dr. Kumar
+         3 Dr. Kumar
+         4 Dr. Kumar
+
+SQL> UPDATE Enroll
+  2  SET marks = marks * 1.10
+  3  WHERE course_id IN (
+  4      SELECT course_id FROM Teaches
+  5      WHERE instructor_name = 'Dr. Kumar'
+  6  );
+
+5 rows updated.
+
+SQL> SELECT student_id, instructor_name, marks
+  2  FROM Enroll e
+  3  JOIN Teaches t USING (course_id)
+  4  WHERE instructor_name = 'Dr. Kumar';
+
+STUDENT_ID INSTRUCTOR_NAME           MARKS
+---------- ------------------------- ----------
+         1 Dr. Kumar                         90
+         1 Dr. Kumar                         97
+         2 Dr. Kumar                         81
+         3 Dr. Kumar                        100
+         4 Dr. Kumar                         95
+
+B. Student name with the second highest marks
+
+SQL> SELECT s.student_name, e.marks
+  2  FROM Student s
+  3  JOIN Enroll e ON s.student_id = e.student_id
+  4  WHERE e.marks = (
+  5      SELECT MAX(marks)
+  6      FROM Enroll
+  7      WHERE marks < (SELECT MAX(marks) FROM Enroll)
+  8  )
+  9  AND ROWNUM = 1;
+
+STUDENT_NAME              MARKS
+------------------------- ----------
+Hari                               97
+
+C. Course names where marks obtained > average marks of all students
+
+SQL> SELECT AVG(marks) FROM Enroll;
+
+AVG(MARKS)
+----------
+88.8333333
+
+SQL> SELECT c.course_name,
+  2         (SELECT AVG(marks) FROM Enroll) AS average_marks
+  3  FROM Course c
+  4  JOIN Enroll e ON c.course_id = e.course_id
+  5  WHERE e.marks > (
+  6      SELECT AVG(marks) FROM Enroll
+  7  )
+  8  GROUP BY c.course_name;
+
+COURSE_NAME               AVERAGE_MARKS
+------------------------- -------------
+OS                           88.8333333
+DBMS                         88.8333333
+
+D. Student name and city of students who enrolled in more than one course
+
+SQL> SELECT s.student_name, s.city
+  2  FROM Student s
+  3  WHERE s.student_id IN (
+  4      SELECT student_id
+  5      FROM Enroll
+  6      GROUP BY student_id
+  7      HAVING COUNT(course_id) > 1
+  8  );
+
+STUDENT_NAME              CITY
+------------------------- -------------------------
+Hari                      Tirunelveli
+
+PL/SQL Function to return course name with largest number of enrollments
+
+SQL> CREATE OR REPLACE FUNCTION get_most_enrolled_course
+  2  RETURN VARCHAR2
+  3  AS
+  4      v_course_name VARCHAR2(25);
+  5  BEGIN
+  6      SELECT c.course_name
+  7      INTO v_course_name
+  8      FROM Course c
+  9      JOIN Enroll e ON c.course_id = e.course_id
+ 10      GROUP BY c.course_name
+ 11      HAVING COUNT(e.student_id) = (
+ 12          SELECT MAX(COUNT(student_id))
+ 13          FROM Enroll
+ 14          GROUP BY course_id
+ 15      );
+ 16
+ 17      RETURN v_course_name;
+ 18  END get_most_enrolled_course;
+ 19  /
+
+Function created.
+
+SQL> SELECT get_most_enrolled_course() FROM DUAL;
+
+GET_MOST_ENROLLED_COURSE()
+--------------------------------------------------------------------------------
+DBMS
+
+
+7.b)
+
+SQL> CREATE TABLE Members (
+  2      member_id   INT PRIMARY KEY,
+  3      member_name VARCHAR(25),
+  4      dept        VARCHAR(25),
+  5      address     VARCHAR(50),
+  6      phone       VARCHAR(15)
+  7  );
+
+Table created.
+
+SQL> CREATE TABLE Books (
+  2      book_id    INT PRIMARY KEY,
+  3      book_title VARCHAR(50),
+  4      author     VARCHAR(25),
+  5      category   VARCHAR(25),
+  6      price      FLOAT
+  7  );
+
+Table created.
+
+SQL> CREATE TABLE Borrow (
+  2      member_id   INT,
+  3      book_id     INT,
+  4      issue_date  DATE,
+  5      return_date DATE,
+  6      PRIMARY KEY (member_id, book_id),
+  7      FOREIGN KEY (member_id) REFERENCES Members(member_id),
+  8      FOREIGN KEY (book_id)   REFERENCES Books(book_id)
+  9  );
+
+Table created.
+
+SQL> CREATE TABLE Staff (
+  2      staff_id   INT PRIMARY KEY,
+  3      staff_name VARCHAR(25),
+  4      block      VARCHAR(10),
+  5      building   VARCHAR(10)
+  6  );
+
+Table created.
+
+SQL> CREATE TABLE Fine (
+  2      member_id INT,
+  3      amount    FLOAT,
+  4      status    VARCHAR(15),
+  5      FOREIGN KEY (member_id) REFERENCES Members(member_id)
+  6  );
+
+Table created.
+
+SQL> INSERT INTO Members VALUES (1, 'Rohith',  'CSE', 'Tirunelveli', '9994561230');
+
+1 row created.
+
+SQL> INSERT INTO Members VALUES (2, 'Gopesh',  'ECE', 'Bangalore',   '8870123456');
+
+1 row created.
+
+SQL> INSERT INTO Members VALUES (3, 'Praveen', 'IT',  'Madurai',     '7558904321');
+
+1 row created.
+
+SQL> INSERT INTO Members VALUES (4, 'Siva',    'CSE', 'Tirunelveli', '9345678901');
+
+1 row created.
+
+SQL> INSERT INTO Books VALUES (1, 'Database Concepts',  'Suresh', 'Database',    475);
+
+1 row created.
+
+SQL> INSERT INTO Books VALUES (2, 'Data Mining Basics', 'Raj',    'Data Mining', 530);
+
+1 row created.
+
+SQL> INSERT INTO Books VALUES (3, 'Operating Systems',  'Anil',   'OS',          420);
+
+1 row created.
+
+SQL> INSERT INTO Books VALUES (4, 'Advanced DBMS',      'Ajay',   'Database',    625);
+
+1 row created.
+
+SQL> INSERT INTO Borrow VALUES (1, 1, DATE '2024-01-10', DATE '2024-01-20');
+
+1 row created.
+
+SQL> INSERT INTO Borrow VALUES (2, 2, DATE '2024-02-01', DATE '2024-02-15');
+
+1 row created.
+
+SQL> INSERT INTO Borrow VALUES (3, 3, DATE '2024-03-05', DATE '2024-03-20');
+
+1 row created.
+
+SQL> INSERT INTO Borrow VALUES (4, 4, DATE '2024-04-01', DATE '2024-04-10');
+
+1 row created.
+
+SQL> INSERT INTO Staff VALUES (1, 'Anto',     'A', 'Main');
+
+1 row created.
+
+SQL> INSERT INTO Staff VALUES (2, 'Ajosh',    'C', 'Main');
+
+1 row created.
+
+SQL> INSERT INTO Staff VALUES (3, 'Dharun',   'B', 'Annex');
+
+1 row created.
+
+SQL> INSERT INTO Staff VALUES (4, 'Nishanth', 'A', 'Main');
+
+1 row created.
+
+SQL> INSERT INTO Fine VALUES (1, 620, 'Paid');
+
+1 row created.
+
+SQL> INSERT INTO Fine VALUES (2, 210, 'Unpaid');
+
+1 row created.
+
+SQL> INSERT INTO Fine VALUES (3, 0,   'Paid');
+
+1 row created.
+
+A. Staff working in 'A' block or 'C' block (case-insensitive)
+
+SQL> SELECT staff_name
+  2  FROM Staff
+  3  WHERE UPPER(block) IN ('A', 'C');
+
+STAFF_NAME
+-------------------------
+Anto
+Ajosh
+Nishanth
+
+B. Book details for category 'Database' or 'Data Mining' AND member details where fine > 500
+
+SQL> SELECT b.*
+  2  FROM Books b
+  3  WHERE UPPER(b.category) IN ('DATABASE', 'DATA MINING');
+
+   BOOK_ID BOOK_TITLE
+---------- --------------------------------------------------
+AUTHOR                    CATEGORY                       PRICE
+------------------------- ------------------------- ----------
+         1 Database Concepts
+Suresh                    Database                         475
+
+         2 Data Mining Basics
+Raj                       Data Mining                      530
+
+         4 Advanced DBMS
+Ajay                      Database                         625
+
+SQL> SELECT m.*
+  2  FROM Members m
+  3  JOIN Fine f ON m.member_id = f.member_id
+  4  WHERE f.amount > 500;
+
+ MEMBER_ID MEMBER_NAME               DEPT
+---------- ------------------------- -------------------------
+ADDRESS                                            PHONE
+-------------------------------------------------- ---------------
+         1 Rohith                    CSE
+Tirunelveli                                        9994561230
+
+C. View - member_id, member_name, and titles of books borrowed
+
+SQL> CREATE VIEW MemberBorrowedBooks AS
+  2  SELECT m.member_id, m.member_name, b.book_title
+  3  FROM Members m
+  4  JOIN Borrow br ON m.member_id = br.member_id
+  5  JOIN Books  b  ON br.book_id  = b.book_id;
+
+View created.
+
+SQL> SELECT * FROM MemberBorrowedBooks;
+
+ MEMBER_ID MEMBER_NAME
+---------- -------------------------
+BOOK_TITLE
+--------------------------------------------------
+         1 Rohith
+Database Concepts
+
+         2 Gopesh
+Data Mining Basics
+
+         3 Praveen
+Operating Systems
+
+         4 Siva
+Advanced DBMS
+
+D. Procedure to insert new book details
+
+SQL> CREATE OR REPLACE PROCEDURE insert_book (
+  2      p_book_id    IN INT,
+  3      p_title      IN VARCHAR2,
+  4      p_author     IN VARCHAR2,
+  5      p_category   IN VARCHAR2,
+  6      p_price      IN FLOAT
+  7  )
+  8  AS
+  9  BEGIN
+ 10      INSERT INTO Books (book_id, book_title, author, category, price)
+ 11      VALUES (p_book_id, p_title, p_author, p_category, p_price);
+ 12      COMMIT;
+ 13      DBMS_OUTPUT.PUT_LINE('Book inserted successfully.');
+ 14  END;
+ 15  /
+
+Procedure created.
+
+SQL> EXEC insert_book(5, 'Computer Networks', 'Mani', 'Networks', 545);
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM Books;
+
+   BOOK_ID BOOK_TITLE
+---------- --------------------------------------------------
+AUTHOR                    CATEGORY                       PRICE
+------------------------- ------------------------- ----------
+         1 Database Concepts
+Suresh                    Database                         475
+
+         2 Data Mining Basics
+Raj                       Data Mining                      530
+
+         3 Operating Systems
+Anil                      OS                               420
+
+         4 Advanced DBMS
+Ajay                      Database                         625
+
+         5 Computer Networks
+Mani                      Networks                         545
+
+5 rows selected.
+
+E. Index on member_name for alphabetical quick retrieval
+
+SQL> set timing on;
+SQL> SELECT * FROM Members ORDER BY member_name;
+
+ MEMBER_ID MEMBER_NAME               DEPT
+---------- ------------------------- -------------------------
+ADDRESS                                            PHONE
+-------------------------------------------------- ---------------
+         2 Gopesh                    ECE
+Bangalore                                          8870123456
+
+         3 Praveen                   IT
+Madurai                                            7558904321
+
+         1 Rohith                    CSE
+Tirunelveli                                        9994561230
+
+         4 Siva                      CSE
+Tirunelveli                                        9345678901
+
+Elapsed: 00:00:00.03
+
+SQL> CREATE INDEX idx_member_name ON Members(member_name);
+
+Index created.
+
+SQL> SELECT * FROM Members ORDER BY member_name;
+
+ MEMBER_ID MEMBER_NAME               DEPT
+---------- ------------------------- -------------------------
+ADDRESS                                            PHONE
+-------------------------------------------------- ---------------
+         2 Gopesh                    ECE
+Bangalore                                          8870123456
+
+         3 Praveen                   IT
+Madurai                                            7558904321
+
+         1 Rohith                    CSE
+Tirunelveli                                        9994561230
+
+         4 Siva                      CSE
+Tirunelveli                                        9345678901
+
+Elapsed: 00:00:00.00
+
+
