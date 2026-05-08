@@ -35,7 +35,7 @@ DATABASE/
 ### Prerequisites
 
 - [Oracle Database 21c+](https://www.oracle.com/database/technologies/) or Oracle XE with SQL\*Plus
-- [MongoDB 6.0+](https://www.mongodb.com/try/download/community) with `mongosh`
+- [MongoDB 6.0+](https://www.mongodb.com/try/download/community) with `mongosh` on macOS, Ubuntu, or Windows
 - [JDK 11+](https://adoptium.net/) for the ODBC/JDBC examples
 - Any MySQL-compatible client (e.g., [MySQL 8.0+](https://dev.mysql.com/downloads/)) for HackerRank / LeetCode queries
 
@@ -87,6 +87,9 @@ DATABASE/
 
    # Ubuntu
    sudo systemctl start mongod
+
+   # Windows (PowerShell, after installing MongoDB Community Server)
+   net start MongoDB
    ```
 
 2. **Open the MongoDB shell**:
@@ -117,10 +120,18 @@ DATABASE/
    ```bash
    javac -cp .:ojdbc11.jar Oracle/ODBC/GymMemberForm.java
    ```
+   On Windows, use `;` instead of `:` in the classpath:
+   ```bat
+   javac -cp .;ojdbc11.jar Oracle/ODBC/GymMemberForm.java
+   ```
 
 3. **Run** the compiled class:
    ```bash
    java -cp .:ojdbc11.jar GymMemberForm
+   ```
+   On Windows:
+   ```bat
+   java -cp .;ojdbc11.jar GymMemberForm
    ```
 
 ---
