@@ -1,6 +1,6 @@
 # DATABASE
 
-A comprehensive collection of database exercises, SQL queries, and programming examples spanning multiple database technologies. This repository covers Oracle SQL, MongoDB, HackerRank SQL challenges, and LeetCode SQL problems — all built around a **Gym Management System** domain.
+A comprehensive, production-grade collection of database exercises, SQL queries, and NoSQL programming examples spanning multiple database technologies. This repository covers Oracle SQL/PL-SQL, MongoDB document design, HackerRank SQL challenges, and LeetCode SQL problems — all built around a fully realized **Gym Management System** domain.
 
 ---
 
@@ -10,33 +10,35 @@ A comprehensive collection of database exercises, SQL queries, and programming e
 DATABASE/
 ├── HackerRank/          # SQL solutions to HackerRank database challenges
 ├── LeetCode/            # SQL solutions to LeetCode database problems
-├── MongoDB/             # MongoDB CRUD and aggregation exercises
-└── Oracle/
+├── MongoDB/             # MongoDB CRUD, Schema Validation, and Aggregations
+│   └── docs/            # Exhaustive guides for schema rules & operations
+└── Oracle/              # Complete DDL/DML, PL/SQL blocks, and connectivity
     ├── Code/            # Oracle SQL and PL/SQL scripts
     ├── Console-Outputs/ # SQL*Plus session transcripts with outputs
-    └── ODBC/            # Java applications using ODBC/JDBC connectivity
+    ├── docs/            # Deep-dive manuals on schema, queries, and PL/SQL
+    └── ODBC/            # Java applications using JDBC connectivity
 ```
 
 ---
 
-## Contents
+## Contents & Documentation Navigators
 
-| Section | Technology | Description |
-|---|---|---|
-| [HackerRank](./HackerRank) | SQL (MySQL / Oracle) | Solutions to HackerRank SQL challenges |
-| [LeetCode](./LeetCode) | SQL (MySQL) | Solutions to LeetCode SQL problems |
-| [MongoDB](./MongoDB) | MongoDB Shell | CRUD and aggregation on a GymDB collection |
-| [Oracle](./Oracle) | Oracle SQL & PL/SQL | Full DDL/DML/PL/SQL exercise set with ODBC integration |
+| Section | Technology | Description | Documentation Links |
+|---|---|---|---|
+| **[Oracle](./Oracle)** | Oracle SQL & PL/SQL | Full DDL/DML/PL/SQL exercise set with JDBC integration | • [Schema Design](./Oracle/docs/schema_design.md)<br>• [PL/SQL Developer's Guide](./Oracle/docs/plsql_guide.md)<br>• [Queries, Joins, and Views](./Oracle/docs/queries_and_views.md) |
+| **[MongoDB](./MongoDB)** | MongoDB Shell | NoSQL CRUD, schema validations, and aggregation pipelines on `gymdb` | • [Schema Validation Guide](./MongoDB/docs/schema_validation.md)<br>• [Operations & Aggregation Guide](./MongoDB/docs/operations_guide.md) |
+| **[HackerRank](./HackerRank)** | SQL (MySQL / Oracle) | Solutions to HackerRank SQL challenges | • [HackerRank Directory](./HackerRank) |
+| **[LeetCode](./LeetCode)** | SQL (MySQL) | Solutions to LeetCode SQL problems | • [LeetCode Directory](./LeetCode) |
 
 ---
 
-## Setup
+## Setup & Execution
 
 ### Prerequisites
 
 - [Oracle Database 21c+](https://www.oracle.com/database/technologies/) or Oracle XE with SQL\*Plus
 - [MongoDB 6.0+](https://www.mongodb.com/try/download/community) with `mongosh` on macOS, Ubuntu, or Windows
-- [JDK 11+](https://adoptium.net/) for the ODBC/JDBC examples
+- [JDK 11+](https://adoptium.net/) for the JDBC examples
 - Any MySQL-compatible client (e.g., [MySQL 8.0+](https://dev.mysql.com/downloads/)) for HackerRank / LeetCode queries
 
 ---
@@ -63,7 +65,7 @@ DATABASE/
    @Oracle/Code/dml.sql
    ```
 
-5. **Execute further scripts** as needed (views, subqueries, PL/SQL blocks, etc.):
+5. **Execute further scripts** as needed (views, subqueries, PL/SQL blocks, triggers, etc.):
    ```sql
    @Oracle/Code/viewsandindex.sql
    @Oracle/Code/subqueries.sql
@@ -73,7 +75,7 @@ DATABASE/
    @Oracle/Code/plsqltriggers.sql
    ```
 
-> Console outputs for every script are available in `Oracle/Console-Outputs/` for reference.
+> Console outputs for every script are available in `Oracle/Console-Outputs/` for reference. Read more details in the [Oracle Guide](./Oracle/Readme.md).
 
 ---
 
@@ -107,9 +109,11 @@ DATABASE/
    mongosh < MongoDB/"DDL(Data Definition Language).json"
    ```
 
+> Read more details in the [MongoDB Guide](./MongoDB/README.md).
+
 ---
 
-### Java ODBC / JDBC Setup
+### Java JDBC Setup
 
 1. **Add the Oracle JDBC driver** (`ojdbc11.jar`) to your classpath. Download from:
    ```
