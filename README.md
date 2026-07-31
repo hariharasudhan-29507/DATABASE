@@ -1,6 +1,6 @@
-# DATABASE
+# Gym Management System — Multi-Database Repository
 
-A comprehensive collection of database exercises, SQL queries, and programming examples spanning multiple database technologies. This repository covers Oracle SQL, MongoDB, HackerRank SQL challenges, and LeetCode SQL problems — all built around a **Gym Management System** domain.
+A comprehensive collection of database exercises, SQL queries, relational schemas, NoSQL documents, and programming examples spanning multiple database technologies. This repository covers Oracle SQL/PL-SQL, MongoDB, HackerRank SQL challenges, and LeetCode SQL problems — all unified around a **Gym Management System** domain.
 
 ---
 
@@ -8,62 +8,52 @@ A comprehensive collection of database exercises, SQL queries, and programming e
 
 ```
 DATABASE/
+├── docs/                # Comprehensive setup & explanation documentation
+│   ├── mongodb.md       # Detailed guide for MongoDB setup and operations
+│   └── oracle.md        # Detailed guide for Oracle schema, PL/SQL and JDBC
 ├── HackerRank/          # SQL solutions to HackerRank database challenges
 ├── LeetCode/            # SQL solutions to LeetCode database problems
-├── MongoDB/             # MongoDB CRUD and aggregation exercises
+├── MongoDB/             # MongoDB CRUD and aggregation scripts (JSON logs)
 └── Oracle/
-    ├── Code/            # Oracle SQL and PL/SQL scripts
-    ├── Console-Outputs/ # SQL*Plus session transcripts with outputs
-    └── ODBC/            # Java applications using ODBC/JDBC connectivity
+    ├── Code/            # Oracle SQL and PL/SQL source scripts
+    ├── Console-Outputs/ # SQL*Plus execution transcripts (logs & outputs)
+    └── ODBC/            # Java applications connecting via JDBC
 ```
 
 ---
 
-## Contents
+## Contents & Quick Navigation
 
-| Section | Technology | Description |
+To help you get the most out of this repository, we have prepared detailed documentation for each database engine. Click on the guides below for extensive explanations and setup steps.
+
+| Technology / Section | Documentation Guide | Description |
 |---|---|---|
-| [HackerRank](./HackerRank) | SQL (MySQL / Oracle) | Solutions to HackerRank SQL challenges |
-| [LeetCode](./LeetCode) | SQL (MySQL) | Solutions to LeetCode SQL problems |
-| [MongoDB](./MongoDB) | MongoDB Shell | CRUD and aggregation on a GymDB collection |
-| [Oracle](./Oracle) | Oracle SQL & PL/SQL | Full DDL/DML/PL/SQL exercise set with ODBC integration |
+| 🍃 **MongoDB** | [**MongoDB Setup & Explanation Guide**](./docs/mongodb.md) | JSON Schema validation, CRUD operations, comparison operators, and aggregation pipelines on the `MEMBER` collection. |
+| 🔴 **Oracle SQL & PL/SQL** | [**Oracle Setup & Explanation Guide**](./docs/oracle.md) | Relational design, advanced queries (Joins, Subqueries), PL/SQL logic (Stored Functions, Procedures, Triggers), and Java JDBC integration. |
+| 🏆 **HackerRank** | [HackerRank Solutions](./HackerRank) | Solutions to intermediate/advanced SQL challenges (MySQL/Oracle dialect) hosted on HackerRank. |
+| 💻 **LeetCode** | [LeetCode Solutions](./LeetCode) | Structured SQL queries resolving complex business logic queries on LeetCode. |
 
 ---
 
-## Setup
+## Getting Started (Quick Start)
 
-### Prerequisites
+### 1. Oracle SQL & PL/SQL
 
-- [Oracle Database 21c+](https://www.oracle.com/database/technologies/) or Oracle XE with SQL\*Plus
-- [MongoDB 6.0+](https://www.mongodb.com/try/download/community) with `mongosh` on macOS, Ubuntu, or Windows
-- [JDK 11+](https://adoptium.net/) for the ODBC/JDBC examples
-- Any MySQL-compatible client (e.g., [MySQL 8.0+](https://dev.mysql.com/downloads/)) for HackerRank / LeetCode queries
+For full detailed setup, refer to the [Oracle Setup & Explanation Guide](./docs/oracle.md).
 
----
-
-### Oracle Setup
-
-1. **Install Oracle Database** (XE edition is free):
-   ```
-   https://www.oracle.com/database/technologies/xe-downloads.html
-   ```
-
-2. **Launch SQL\*Plus**:
+1. Launch SQL*Plus and connect to your Oracle instance:
    ```bash
    sqlplus username/password@localhost:1521/XE
    ```
-
-3. **Run the DDL script** to create all tables:
+2. Build the relational schema:
    ```sql
    @Oracle/Code/ddl.sql
    ```
-
-4. **Populate data** with the DML script:
+3. Populate with dummy records:
    ```sql
    @Oracle/Code/dml.sql
    ```
-
-5. **Execute further scripts** as needed (views, subqueries, PL/SQL blocks, etc.):
+4. Run analytical queries and PL/SQL scripts:
    ```sql
    @Oracle/Code/viewsandindex.sql
    @Oracle/Code/subqueries.sql
@@ -73,100 +63,72 @@ DATABASE/
    @Oracle/Code/plsqltriggers.sql
    ```
 
-> Console outputs for every script are available in `Oracle/Console-Outputs/` for reference.
-
 ---
 
-### MongoDB Setup
+### 2. MongoDB Shell (`mongosh`)
 
-1. **Install MongoDB** and start `mongod`:
-   ```bash
-   # macOS (Homebrew)
-   brew install mongodb-community
-   brew services start mongodb-community
+For full detailed setup and JSON schema explanations, refer to the [MongoDB Setup & Explanation Guide](./docs/mongodb.md).
 
-   # Ubuntu
-   sudo systemctl start mongod
-
-   # Windows (PowerShell, after installing MongoDB Community Server)
-   net start MongoDB
-   ```
-
-2. **Open the MongoDB shell**:
+1. Connect to your local instance using the MongoDB shell:
    ```bash
    mongosh
    ```
-
-3. **Switch to the gym database**:
-   ```js
+2. Switch to the `gymdb` database:
+   ```javascript
    use gymdb
    ```
-
-4. **Run the DDL file** to create the collection with validation rules and sample data:
+3. Import the database schema validation rule and execute the CRUD log actions:
    ```bash
-   mongosh < MongoDB/"DDL(Data Definition Language).json"
+   mongosh gymdb < MongoDB/"DDL(Data Definition Language).json"
    ```
 
 ---
 
-### Java ODBC / JDBC Setup
+### 3. Java JDBC Setup
 
-1. **Add the Oracle JDBC driver** (`ojdbc11.jar`) to your classpath. Download from:
-   ```
-   https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html
-   ```
-
-2. **Compile** a Java source file:
+1. Add `ojdbc11.jar` to your classpath.
+2. Compile and run the Java database interface:
    ```bash
+   # Compile
    javac -cp .:ojdbc11.jar Oracle/ODBC/GymMemberForm.java
-   ```
-   On Windows, use `;` instead of `:` in the classpath:
-   ```bat
-   javac -cp .;ojdbc11.jar Oracle/ODBC/GymMemberForm.java
-   ```
 
-3. **Run** the compiled class:
-   ```bash
+   # Run
    java -cp .:ojdbc11.jar GymMemberForm
    ```
-   On Windows:
-   ```bat
-   java -cp .;ojdbc11.jar GymMemberForm
-   ```
+   *(For Windows environments, use a semicolon `;` as path separator in place of `:`)*
 
 ---
 
-### HackerRank / LeetCode
+### 4. HackerRank / LeetCode Standalone Queries
 
-These are standalone SQL files. Paste the contents of each file directly into the relevant online judge editor:
-
-- **HackerRank SQL**: [https://www.hackerrank.com/domains/sql](https://www.hackerrank.com/domains/sql)
-- **LeetCode SQL**: [https://leetcode.com/problemset/database/](https://leetcode.com/problemset/database/)
-
-Alternatively, run them against a local MySQL instance:
-```bash
-mysql -u root -p < HackerRank/JapaneseCities.sql
-```
-
----
-
-## Domain: Gym Management System
-
-Most exercises in this repository are modelled around a **Gym Management System** database containing the following core entities:
-
-- **GYM** – Top-level gym organisation
-- **BRANCH** – Individual gym branches
-- **MEMBER** – Gym members with personal and physical details
-- **TRAINER** – Trainers assigned to branches
-- **STAFF** – Non-trainer staff at branches
-- **MEMBERSHIP** – Member subscription plans
-- **WORKOUT_PLAN** – Exercise plans assigned to members
-- **TRAINING_SESSION** – Scheduled training sessions
-- **PAYMENT / INVOICE** – Billing and payment records
-- **SUPPLIER / MACHINE** – Equipment and supply management
+These SQL scripts are isolated query solutions. To execute:
+- Copy/paste the queries directly to online platforms:
+  - [HackerRank SQL Domain](https://www.hackerrank.com/domains/sql)
+  - [LeetCode Database Problem Set](https://leetcode.com/problemset/database/)
+- Alternatively, load them into a local MySQL/Oracle engine:
+  ```bash
+  mysql -u root -p < HackerRank/JapaneseCities.sql
+  ```
 
 ---
 
-## License
+## Domain Entity Model: Gym Management System
 
-This repository is intended for educational purposes.
+The core domain across the projects is a modern multi-facility **Gym Management System**. The unified business entity relations include:
+
+* **GYM** – Brand details and corporate headquarters.
+* **BRANCH** – Physical gym venues complete with location details and associated staff.
+* **MEMBER** – Member registrations tracking profiles, somatic body types, and registered branches.
+* **TRAINER** – Certified fitness professionals hosting personal/group sessions.
+* **STAFF** – Supporting operations, front-desk, and management personnel.
+* **MEMBERSHIP** – Subscription options (e.g. Bronze, Gold, Elite tiers).
+* **WORKOUT_PLAN** – Tailored exercise routines mapped to members by trainers.
+* **TRAINING_SESSION** – Group classes (Zumba, Powerlifting, HIIT) scheduled regularly.
+* **PAYMENT / INVOICE** – Financial records, receipts, and line-item detail statements.
+* **SUPPLIER / MACHINE** – Procurement records for equipment maintenance and vendor tracking.
+
+---
+
+## License & Contribution
+
+This project is open-source and intended for educational training and developer portfolio reference. Contributions or suggestions are always welcome!
