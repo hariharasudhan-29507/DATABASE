@@ -4,11 +4,25 @@ This folder contains MongoDB shell exercises built around a **Gym Management Sys
 
 ---
 
-## File
+## Folder Structure
 
-| File | Description |
-|---|---|
-| `DDL(Data Definition Language).json` | Full MongoDB shell session — collection setup, inserts, updates, deletes, queries, and aggregations |
+```
+MongoDB/
+├── docs/                             # Exhaustive guides for schema rules & operations
+│   ├── operations_guide.md           # Full CRUD operations & aggregation guide
+│   └── schema_validation.md          # Schema validator configuration and rules
+└── DDL(Data Definition Language).json # Full MongoDB shell session setup & queries
+```
+
+---
+
+## Files and Guides
+
+| Path | Description | Documentation Links |
+|---|---|---|
+| `DDL(Data Definition Language).json` | Full MongoDB shell session — collection setup, inserts, updates, deletes, queries, and aggregations | • [How to Run](#how-to-run) |
+| `docs/schema_validation.md` | Deep dive into `$jsonSchema` rules, types, mandatory fields, and enum constraints | • [Schema Validation Guide](./docs/schema_validation.md) |
+| `docs/operations_guide.md` | Complete reference for CRUD operations, query operators, and aggregation pipelines | • [Operations Guide](./docs/operations_guide.md) |
 
 ---
 
@@ -35,6 +49,8 @@ The `MEMBER` collection is created with a **JSON Schema validator** enforcing th
 | `address_city` | string | Optional |
 | `address_street` | string | Optional |
 | `address_pincode` | string | Optional |
+
+To read more about specific schema constraints, see the [Schema Validation Guide](./docs/schema_validation.md).
 
 ---
 
@@ -71,6 +87,8 @@ The `MEMBER` collection is created with a **JSON Schema validator** enforcing th
 ### Aggregation Pipeline
 - **`$group` with `$sum`** — Count members grouped by `body_type`
 - **`$group` with `$max` / `$min`** — Find maximum and minimum weight per gender
+
+To view precise examples of execution and usage commands, see the [Operations Guide](./docs/operations_guide.md).
 
 ---
 

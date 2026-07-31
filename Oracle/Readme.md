@@ -10,14 +10,16 @@ This folder contains a complete Oracle SQL and PL/SQL exercise set modelled arou
 Oracle/
 ├── Code/                   # SQL and PL/SQL source scripts
 ├── Console-Outputs/        # SQL*Plus session transcripts (commands + outputs)
+├── docs/                   # Markdown guides covering advanced database topics
 └── ODBC/                   # Java applications connecting via ODBC/JDBC
 ```
 
-| Sub-folder | Contents |
-|---|---|
-| [`Code/`](./Code) | Runnable `.sql` scripts covering DDL, DML, Views, Joins, Subqueries, and PL/SQL |
-| [`Console-Outputs/`](./Console-Outputs) | `.txt` transcripts showing SQL\*Plus prompts and query results |
-| [`ODBC/`](./ODBC) | Java source files demonstrating JDBC connectivity to Oracle |
+| Sub-folder | Contents | Reference Guides |
+|---|---|---|
+| [`Code/`](./Code) | Runnable `.sql` scripts covering DDL, DML, Views, Joins, Subqueries, and PL/SQL | • [Schema Design](./docs/schema_design.md)<br>• [PL/SQL Developer's Guide](./docs/plsql_guide.md) |
+| [`Console-Outputs/`](./Console-Outputs) | `.txt` transcripts showing SQL\*Plus prompts and query results | • [Console README](./Console-Outputs/README.md) |
+| [`docs/`](./docs) | Fully formatted developer and system administration guides | • [Queries, Joins, and Views](./docs/queries_and_views.md) |
+| [`ODBC/`](./ODBC) | Java source files demonstrating JDBC connectivity to Oracle | • [ODBC README](./ODBC/README.md) |
 
 ---
 
@@ -41,6 +43,8 @@ The database schema models a multi-branch gym organisation with the following co
 | `INVOICE / INVOICE_LINE` | Invoice header and line-item details |
 | `CARD / CASH` | Payment modes |
 | `SUPPLIER` | Supplier records per branch |
+
+For a complete and deep explanation of keys, constraints, and relational design, see the [Schema Design Guide](./docs/schema_design.md).
 
 ---
 
